@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <record id="paper_format_advance_payment" model="report.paperformat">
+            <field name="name">Advance Payment</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">30</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="advance_payment_report_pdf"
+                string="Advance Payment"
+                model="account.move"
+                report_type="qweb-pdf"
+                name="advance_payment.report_advance_amount_temp"
+                file="advance_payment.report_advance_amount_temp"
+                paperformat="paper_format_advance_payment"
+        />
+    </data>
+</odoo>
