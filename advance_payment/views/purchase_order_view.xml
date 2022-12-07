@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+        <record id="purchase_order_form_inherited" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherited</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="payment_ref" attrs="{'invisible': [('po_type', '!=', 'project')]}"/>
+                    <field name="attendant" attrs="{'invisible': [('po_type', '!=', 'project')]}"
+                           domain="[('parent_id', '=', partner_id)]"/>
+                    <field name="project_name" attrs="{'invisible': [('po_type', '!=', 'project')]}"/>
+                    <field name="project_shipment" attrs="{'invisible': [('po_type', '!=', 'project')]}"/>
+                    <field name="project_code" attrs="{'invisible': [('po_type', '!=', 'project')]}"/>
+                    <field name="po_no" attrs="{'invisible': [('po_type', '!=', 'project')]}" />
+                    <field name="po_type" />
+                </xpath>
+                <xpath expr="//sheet/group/group[2]/div[1]" position="after">
+                    <field name="sub_contractor" domain="[('parent_id', '=', partner_id)]"
+                           attrs="{'invisible': [('po_type', '!=', 'project')]}"/>
+                </xpath>
+                <xpath expr="//sheet/group/group[2]/div[last()]" position="after">
+                    <!--                        <field name="sub_contractor"/>-->
+                    <field name="contract_order" attrs="{'invisible': [('po_type', '!=', 'project')]}"/>
+                </xpath>
+                <!--                Lines-->
+                <xpath expr="//field[@name='order_line']/tree//field[@name='product_qty']"
+                       position="after">
+                    <field name="contract_per_amount" class="text-center"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
