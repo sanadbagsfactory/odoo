@@ -175,24 +175,31 @@ class AccountMoveLines(models.Model):
                 rec.previous_percentage = f'0.00%'
                 rec.previous_bill_amount = 0.0
 
-    #
+    @api.depends('current_bill_amount')
     def _compute_this_month_percentage(self):
         for rec in self:
-            temp = rec.current_bill_amount / rec.price_unit * 100
-            rec.this_month_percentage = f'{round(float(temp), 2)}%'
+            if rec.current_bill_amount:
+                temp = rec.current_bill_amount / rec.price_unit * 100
+                rec.this_month_percentage = f'{round(float(temp), 2)}%'
+            else:
+                rec.this_month_percentage = f'0.00%'
 
     @api.depends('previous_percentage', 'this_month_percentage')
     def _compute_total(self):
         for rec in self:
-            previous = float(rec.previous_percentage.replace('%', ''))
-            current = float(rec.this_month_percentage.replace('%', ''))
-            temp = previous + current
-            total = rec.previous_bill_amount + rec.current_bill_amount
-            print(f'{previous} + {current} = {temp}')
-            if temp and total:
-                rec.total_percentage = f'{round(float(temp), 2)}%'
-                rec.total_bill_amount = total
+            if rec.previous_percentage and rec.this_month_percentage:
+                previous = float(rec.previous_percentage.replace('%', ''))
+                current = float(rec.this_month_percentage.replace('%', ''))
+                temp = previous + current
+                total = rec.previous_bill_amount + rec.current_bill_amount
+                print(f'{previous} + {current} = {temp}')
+                if temp and total:
+                    rec.total_percentage = f'{round(float(temp), 2)}%'
+                    rec.total_bill_amount = total
 
+                else:
+                    rec.total_percentage = f'0.00%'
+                    rec.total_bill_amount = 0.0
             else:
                 rec.total_percentage = f'0.00%'
                 rec.total_bill_amount = 0.0
