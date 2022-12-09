@@ -50,16 +50,24 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLines(models.Model):
     _inherit = 'purchase.order.line'
 
-    contract_per_amount = fields.Char('Contract Amount (%)', compute='_compute_contract_per_amount')
+    contract_per_amount = fields.Char('% Contract Amount', compute='_compute_contract_per_amount')
+    # previous_percentage = fields.Char('Previous')
+    # this_month_percentage = fields.Char('This Month')
+    # total_percentage = fields.Char('Total')
+    # percentage_total_amount = fields.Char('% Total Amount')
 
-    @api.depends('price_unit')
+    @api.depends('price_unit', 'product_qty')
     def _compute_contract_per_amount(self):
         for rec in self:
-            if rec.price_unit:
+            # print(rec.invoice_lines)
+            # temp = [float(line.contract_per_amount.replace('%', '')) for line in rec.invoice_lines]
+            # temp = sum(temp)
+            # print(temp)
+            if rec.price_unit or rec.product_qty or rec.order_id.amount_untaxed:
                 try:
                     rec.contract_per_amount = f'{round((rec.price_unit / rec.order_id.amount_untaxed) * 100, 2)}%'
+                    # rec.contract_per_amount = f'{round((rec.product_qty / rec.order_id.amount_untaxed) * 100, 2)}%'
                 except:
-                    rec.contract_per_amount = 0
-
+                    rec.contract_per_amount = f'0.00%'
             else:
-                rec.contract_per_amount = 0
+                rec.contract_per_amount = f'0.00%'

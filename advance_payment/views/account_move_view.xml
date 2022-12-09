@@ -59,9 +59,31 @@
                        position="after">
                     <field name="is_bill" invisible="1"/>
                     <field name="is_project" invisible="1"/>
-                    <field name="contract_per_amount"
+                    <field name="contract_per_amount" force_save="1"
                            attrs="{'invisible': ['|',('is_bill', '!=', True), ('is_project', '!=', True)]}"
                            class="text-center" optional="hide"/>
+
+                    <field name="previous_percentage"
+                           attrs="{'invisible': ['|',('is_bill', '!=', True), ('is_project', '!=', True)]}"
+                           class="text-center" optional="hide"/>
+                    <field name="this_month_percentage"
+                           attrs="{'invisible': ['|',('is_bill', '!=', True), ('is_project', '!=', True)]}"
+                           class="text-center" optional="hide"/>
+                    <field name="total_percentage"
+                           attrs="{'invisible': ['|',('is_bill', '!=', True), ('is_project', '!=', True)]}"
+                           class="text-center" optional="hide"/>
+                    <field name="percentage_total_amount"
+                           attrs="{'invisible': ['|',('is_bill', '!=', True), ('is_project', '!=', True)]}"
+                           class="text-center" optional="hide"/>
+                    <field name="previous_bill_amount"
+                           attrs="{'invisible': ['|',('is_bill', '!=', True), ('is_project', '!=', True)]}"
+                           class="text-center" optional="hide" sum="Previous Bill"/>
+                    <field name="current_bill_amount"
+                           attrs="{'invisible': ['|',('is_bill', '!=', True), ('is_project', '!=', True)]}"
+                           class="text-center" optional="hide" sum="Current Bill"/>
+                    <field name="total_bill_amount"
+                           attrs="{'invisible': ['|',('is_bill', '!=', True), ('is_project', '!=', True)]}"
+                           class="text-center" optional="hide" sum="Total Bill"/>
                 </xpath>
                 <!--                <xpath expr="//field[@name='invoice_payment_term_id']" position="attributes">-->
                 <!--                    <attribute name="string">Due Date</attribute>-->
