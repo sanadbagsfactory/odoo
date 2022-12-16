@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="view_account_form_inherited" model="ir.ui.view">
+            <field name="name">account.account.form.inherited</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='allowed_journal_ids']" position="after">
+                    <field name="is_locked"/>
+                    <field name="is_required"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
