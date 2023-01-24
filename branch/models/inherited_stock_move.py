@@ -80,7 +80,8 @@ class StockMove(models.Model):
             'debit': debit_value if debit_value > 0 else 0,
             'credit': -debit_value if debit_value < 0 else 0,
             'account_id': debit_account_id,
-            'branch_id': self.picking_id.branch_id.id
+            'branch_id': self.picking_id.branch_id.id,
+            'analytic_distribution': {self.picking_id.branch_id.analytic_account_id.id: 100} if self.picking_id.branch_id.analytic_account_id else {},
         }
 
         credit_line_vals = {
@@ -93,7 +94,9 @@ class StockMove(models.Model):
             'credit': credit_value if credit_value > 0 else 0,
             'debit': -credit_value if credit_value < 0 else 0,
             'account_id': credit_account_id,
-            'branch_id': self.picking_id.branch_id.id
+            'branch_id': self.picking_id.branch_id.id,
+            'analytic_distribution': {
+                self.picking_id.branch_id.analytic_account_id.id: 100} if self.picking_id.branch_id.analytic_account_id else {},
         }
 
         rslt = {'credit_line_vals': credit_line_vals, 'debit_line_vals': debit_line_vals}
@@ -119,6 +122,8 @@ class StockMove(models.Model):
                 'credit': diff_amount > 0 and diff_amount or 0,
                 'debit': diff_amount < 0 and -diff_amount or 0,
                 'account_id': price_diff_account.id,
-                'branch_id': self.picking_id.branch_id.id
+                'branch_id': self.picking_id.branch_id.id,
+                'analytic_distribution': {
+                    self.picking_id.branch_id.analytic_account_id.id: 100} if self.picking_id.branch_id.analytic_account_id else {}
             }
         return rslt
