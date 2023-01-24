@@ -13,7 +13,6 @@ class AccountMove(models.Model):
     @api.onchange('branch_id')
     def _onchange_branch_id(self):
         for rec in self:
-
             records = self.env['account.journal'].search(
                 [('is_multi_branch', '=', False), ('id', '=', rec.journal_id.id)])
             if records:
@@ -53,25 +52,25 @@ class AccountMove(models.Model):
         if records:
             for line in res.invoice_line_ids:
                 line.branch_id = res.branch_id
-                line.analytic_distribution = {
-                    res.branch_id.analytic_account_id.id: 100}
+                # line.analytic_distribution = {
+                #     res.branch_id.analytic_account_id.id: 100}
 
             for line in res.line_ids:
                 line.branch_id = res.branch_id
-                line.analytic_distribution = {
-                    res.branch_id.analytic_account_id.id: 100}
+                # line.analytic_distribution = {
+                #     res.branch_id.analytic_account_id.id: 100}
         else:
             print("else create called")
             for line in res.invoice_line_ids:
                 if not res.branch_id:
                     line.branch_id = res.branch_id
-                    line.analytic_distribution = {
-                        res.branch_id.analytic_account_id.id: 100}
+                    # line.analytic_distribution = {
+                    #     res.branch_id.analytic_account_id.id: 100}
             for line in res.line_ids:
                 if not line.branch_id:
                     line.branch_id = res.branch_id.id
-                    line.analytic_distribution = {
-                        res.branch_id.analytic_account_id.id: 100}
+                    # line.analytic_distribution = {
+                    #     res.branch_id.analytic_account_id.id: 100}
         return res
 
     def write(self, values):
@@ -82,24 +81,24 @@ class AccountMove(models.Model):
             if records:
                 for line in self.invoice_line_ids:
                     line.branch_id = self.branch_id.id
-                    line.analytic_distribution = {
-                        self.branch_id.analytic_account_id.id: 100}
+                    # line.analytic_distribution = {
+                    #     self.branch_id.analytic_account_id.id: 100}
                 for line in self.line_ids:
                     line.branch_id = self.branch_id.id
-                    line.analytic_distribution = {
-                        self.branch_id.analytic_account_id.id: 100}
+                    # line.analytic_distribution = {
+                    #     self.branch_id.analytic_account_id.id: 100}
             else:
                 print("else write called")
                 for line in self.invoice_line_ids:
                     if not line.branch_id:
                         line.branch_id = self.branch_id.id
-                        line.analytic_distribution = {
-                            self.branch_id.analytic_account_id.id: 100}
+                        # line.analytic_distribution = {
+                        #     self.branch_id.analytic_account_id.id: 100}
                 for line in self.line_ids:
                     if not line.branch_id:
                         line.branch_id = self.branch_id.id
-                        line.analytic_distribution = {
-                            self.branch_id.analytic_account_id.id: 100}
+                        # line.analytic_distribution = {
+                        #     self.branch_id.analytic_account_id.id: 100}
         return res
 
     def action_register_payment(self):
@@ -130,7 +129,7 @@ class AccountMoveLine(models.Model):
     @api.onchange('branch_id')
     def _on_branch_id_change(self):
         for rec in self:
-            rec.analytic_distribution = {rec.branch_id.analytic_account_id.id: rec.branch_id.analytic_plan_id.id + 93}
+            rec.analytic_distribution = {rec.branch_id.analytic_account_id.id: 100}
             print(rec.analytic_distribution)
 
 
