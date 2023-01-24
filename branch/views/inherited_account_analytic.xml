@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <!--        Analytic Account-->
+        <record id="view_account_analytic_account_form_inherited" model="ir.ui.view">
+            <field name="name">account.analytic.account.form.inherited</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="model">account.analytic.account</field>
+            <field name="priority">100</field>
+            <field type="xml" name="arch">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="branch_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--        Analytic Plan-->
+        <record id="account_analytic_plan_form_view_inherited_branch" model="ir.ui.view">
+            <field name="name">account.analytic.plan.form.inherited</field>
+            <field name="inherit_id" ref="analytic.account_analytic_plan_form_view"/>
+            <field name="model">account.analytic.plan</field>
+            <field name="priority">100</field>
+            <field type="xml" name="arch">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                        <field name="branch_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

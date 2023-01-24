@@ -1,0 +1,72 @@
+<odoo>
+    <data>
+        <!--        Tree View-->
+        <record id="view_department_document_type_tree" model="ir.ui.view">
+            <field name="name">department.document.type.tree</field>
+            <field name="model">department.document.type</field>
+            <field name="arch" type="xml">
+                <tree string="Department Document Type">
+                    <field name="department_type"/>
+                    <field name="dept_short_form"/>
+                    <field name="document_type"/>
+                    <field name="doc_short_form"/>
+                    <field name="doc_no"/>
+                    <field name="approved_on"/>
+                    <field name="revision"/>
+                    <field name="notes" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+        <!--        Form View-->
+        <record id="view_department_document_type_form" model="ir.ui.view">
+            <field name="name">department.document.type.form</field>
+            <field name="model">department.document.type</field>
+            <field name="arch" type="xml">
+                <form string="Department Document Type">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="department_type" required="1"/>
+                                <field name="document_type" required="1"/>
+                                <field name="doc_no"/>
+                            </group>
+                            <group>
+                                <field name="dept_short_form"/>
+                                <field name="doc_short_form"/>
+                            </group>
+                        </group>
+                        <hr/>
+                        <group>
+                            <group>
+                                <field name="approved_on"/>
+                                <field name="notes"/>
+                            </group>
+                            <group>
+                                <field name="revision"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--        Action-->
+        <record id="action_department_document_type_id" model="ir.actions.act_window">
+            <field name="name">Department Document Type</field>
+            <field name="res_model">department.document.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_department_document_type_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No Record Found. Let's Create..........
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_department_document_type_root"
+                  name="Department Document Type"
+                  parent="base.menu_users"
+                  action="action_department_document_type_id"/>
+
+
+    </data>
+</odoo>

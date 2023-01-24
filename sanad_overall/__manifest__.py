@@ -10,7 +10,7 @@
         Long description of module's purpose
     """,
 
-    'author': "My Company",
+    'author': "M.Rizwan",
     'website': "https://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
@@ -20,13 +20,16 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'hr', 'account'],
+    'depends': ['base', 'hr', 'account', 'purchase', 'stock', 'product'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/account_move_view.xml',
         'views/account_account_view.xml',
+        'views/department_document_type_view.xml',
+        'views/hr_department_view.xml',
+        'views/product_product_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
