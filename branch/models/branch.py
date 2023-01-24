@@ -23,6 +23,7 @@ class ResBranch(models.Model):
             {
                 'name': vals.get('name'),
                 'branch_id': res.id,
+                'default_applicability': 'optional'
             })
         print(plan)
         res.analytic_plan_id = plan.id
