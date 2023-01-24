@@ -1,0 +1,168 @@
+<odoo>
+    <data>
+        <template id="report_purchase_quote_temp">
+            <t t-call="web.html_container">
+                <t t-call="sanad_custom_reports.sanad_custom_header_footer"/>
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
+                              rel="stylesheet" type="text/css"/>
+                        <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>
+                        <div class="page" style="margin:8px !important; font-family: 'Times New Roman';">
+                            <div class="oe_structure"/>
+                            <div style="text-align: center; font-size: 13pt;">
+                                <strong t-if="o.state in ['draft','sent']">Request for Quotation</strong>
+                                <strong t-else="">Purchase Order</strong>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="sanad_custom_header_footer">
+            <t t-set="company" t-value="user.company_id"/>
+            <t t-foreach="docs" t-as="o">
+                <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
+                      rel="stylesheet" type="text/css"/>
+                <div class="header first-page row"
+                     style="width:98%; border-top: 1px solid black;border-bottom: 1px solid black;border-collapse: collapse; margin:8px !important; font-size:10pt; font-family: 'Times New Roman'; padding: 5px 0px 5px 0px;">
+                    <table style="text-align:center; width:18%;" class="table-borderless">
+                        <tr>
+                            <td style="padding: 6px 0px 11px 0px;">
+                                <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)"
+                                     alt="Logo" height="50px" width="90px"/>
+                                <br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-top:1px solid black; border-collapse: collapse; padding: 2px 0px 2px 0px;">
+                                <span>
+                                    Sanad Bags Co. Factory
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                    <span height="92px" width="2.5%" style="margin:5px; padding-top:30px;">
+                        <div style="border-left:1px solid black;border-collapse: collapse; height:92px;"/>
+                    </span>
+                    <table style="height:92px; width:79.5%; font-family: 'Tinos', serif;" class="table-borderless">
+                        <tr>
+                            <td width="10%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; padding-top: 2px;">
+                                <span>Title:</span>
+                            </td>
+                            <td width="57%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align:right; padding-top: 2px;">
+                                <span t-if="o.state in ['draft','sent']">Request for Quotation</span>
+                                <span t-else="">Purchase Order</span>
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <td width="13%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; padding-top: 2px;">
+                                <span>Number:</span>
+                            </td>
+                            <td width="18%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align:right; padding-top: 2px;">
+                                <t t-if="header_data.doc_no">
+                                    <span t-esc="header_data.doc_no"/>
+                                </t>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="10%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Type:</span>
+                            </td>
+                            <td width="57%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
+                                <t t-if="header_data.document_type == '4'">
+                                    <span>Forms</span>
+                                </t>
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Approved on:</span>
+                            </td>
+                            <td width="18%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
+                                <t t-if="header_data.approved_on">
+                                    <span t-esc="header_data.approved_on.strftime('%d.%m.%Y')"/>
+                                </t>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="10%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Custodian:</span>
+                            </td>
+                            <td width="57%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
+                                <t t-if="header_data.department_type == 'pur'">
+                                    <span>Procurement</span>
+                                </t>
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Revision:</span>
+                            </td>
+                            <td width="18%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
+                                <span t-esc="header_data.revision"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="10%" style="padding-top: 2px;">
+                                <span>Note:</span>
+                            </td>
+                            <td width="57%" style="text-align:right; padding-top: 2px;">
+                                <span t-esc="header_data.notes"/>
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <td width="13%" style="padding-top: 2px;">
+                                <span>Page:</span>
+                            </td>
+                            <td width="18%" style="text-align:right; padding-top: 2px;">
+                                <div>
+                                    <span class="page"/>
+                                    /
+                                    <span class="topage"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="footer">
+                    <span style="color:red; font-size:11pt; font-family: 'Times New Roman';">Electronically produced
+                        document, thus, doesn't require a signature or
+                        stamp.
+                    </span>
+                    <br/>
+                    <br/>
+                    <div class="text-left"
+                         style="border-top: 1px solid black; border-bottom: 1px solid black;border-collapse: collapse; font-size:11pt; font-family: 'Times New Roman';">
+                        <p style="padding: 10px 0px 0px 0px;">
+                            This document may contain proprietary and confidential information of Sanad Bags Co. Factory
+                            and
+                            may not be exploited, used, copied, duplicated or reproduced in any form or medium without
+                            the
+                            prior permission of management.
+                        </p>
+                    </div>
+                    <table style="width:100%; font-size:10.5pt; font-family: 'Times New Roman';"
+                           class="table-borderless">
+                        <tr>
+                            <td style="text-align:left;">Printed on:
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M:%S')"/>
+                            </td>
+                            <td style="text-align:right;">Printed by:
+                                <span t-field="o.env.user.id"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

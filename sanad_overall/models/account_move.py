@@ -14,3 +14,11 @@ class AccountMoveLine(models.Model):
     employee_id = fields.Char('Employee ID')
     supplier_id = fields.Many2one('res.partner', string='Supplier')
     is_required = fields.Boolean('Is Required', related='account_id.is_required')
+
+    @api.onchange('employee')
+    def on_employee_change(self):
+        for rec in self:
+            if rec.employee:
+                rec.employee_id = rec.employee.barcode
+            else:
+                rec.employee_id = ''

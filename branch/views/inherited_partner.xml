@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--    Form View-->
+    <record id="view_partner_structured_form_branch" model="ir.ui.view">
+        <field name="name">res.partner.form.inh</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="vat" position="after">
+                <field name="branch_id"/>
+            </field>
+        </field>
+    </record>
+    <!--    Tree View-->
+    <record id="view_partner_tree_branch" model="ir.ui.view">
+        <field name="name">res.partner.tree.inh</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <field name="display_name" position="after">
+                <field name="branch_id" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!--    Search View-->
+    <record id="view_res_partner_filter_branch" model="ir.ui.view">
+        <field name="name">res.partner.search.inh</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search"
+                   position="inside">
+                <field name="branch_id"/>
+                <filter string="Branch" name="branch" domain="[]" context="{'group_by':'branch_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

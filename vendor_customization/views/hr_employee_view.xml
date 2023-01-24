@@ -1,0 +1,51 @@
+<odoo>
+    <data>
+        <record id="view_employee_form_inherited" model="ir.ui.view">
+            <field name="name">hr.employee.form.inherited</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook[last()]" position="inside">
+                    <page string="Other Information">
+                        <group>
+                            <group>
+                                <field name="emp_old_id"/>
+                                <field name="id_type"/>
+                                <field name="id_exp_grgn"/>
+                                <field name="iban_no"/>
+                                 <field name="iqama_profession"/>
+                                 <field name="joining_date"/>
+                                 <field name="ot_entitelment"/>
+                                 <field name="subscriber_no_gosi"/>
+                                 <field name="subscription_period_status"/>
+                                 <field name="no_of_mlabor"/>
+                                 <field name="passport_expiry"/>
+                                 <field name="no_for_sponsor"/>
+                                 <field name="emp_border_no"/>
+                                 <field name="driving_license_expiry_date"/>
+                                 <field name="scope_points"/>
+                            </group>
+                            <group>
+                                <field name="religion"/>
+                                <field name="id_number"/>
+                                <field name="id_exp_hijri"/>
+                                <field name="bnk_name"/>
+                                <field name="iqama_profession_arabic"/>
+                                <field name="leaving_date"/>
+                                <field name="ot_rate"/>
+                                <field name="doj_gosi"/>
+                                <field name="no_of_estoffice"/>
+                                <field name="sponsor_name_arabic"/>
+                                <field name="age_employee"/>
+                                <field name="driving_license_no"/>
+                                <field name="grade"/>
+                                <field name="no_of_dependence"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

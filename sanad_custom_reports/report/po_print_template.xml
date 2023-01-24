@@ -1,0 +1,700 @@
+<odoo>
+    <data>
+        <template id="report_po_temp">
+            <t t-call="web.html_container">
+                <t t-call="sanad_custom_reports.sannad_bags_letterhead"/>
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
+                              rel="stylesheet" type="text/css"/>
+                        <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>
+                        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+
+                        <div class="page"
+                             style="margin:8px !important; font-family: 'Times New Roman';  margin:0px 50px 0px 50px !important;">
+                            <div class="oe_structure"/>
+                            <table class="table table-borderless" width="100%">
+                                <tr>
+                                    <td>
+                                        <t t-if="o.company_id">
+                                            <strong>Shipping address:</strong>
+                                            <div t-if="o.company_id">
+                                                <span t-field="o.company_id.name"/>
+                                                <t t-if="o.company_id.street">
+                                                    <br/>
+                                                    <span t-field="o.company_id.street"/>
+                                                </t>
+                                                <t t-if="o.company_id.city">
+                                                    <br/>
+                                                    <span t-field="o.company_id.city"/>
+                                                    <span t-field="o.company_id.state_id.code"/>
+                                                    <span t-field="o.company_id.zip"/>
+                                                </t>
+                                                <t t-if="o.company_id.state_id">
+                                                    <br/>
+                                                    <span t-field="o.company_id.state_id.name"/>
+                                                </t>
+                                                <t t-if="o.company_id.phone">
+                                                    <br/>
+                                                    <span t-field="o.company_id.phone"
+                                                    t-options="{'widget': 'phone'}"/>
+                                                </t>
+                                            </div>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <div t-field="o.partner_id"
+                                             t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!--                            <div style="text-align: center; font-size: 13pt;">-->
+                            <!--                                <strong t-if="o.state in ['draft', 'sent', 'to approve']">Request for Quotation-->
+                            <!--                                </strong>-->
+                            <!--                                <strong t-if="o.state in ['purchase', 'done']">Purchase Order-->
+                            <!--                                </strong>-->
+                            <!--                                <strong t-if="o.state == 'cancel'">Cancelled Purchase Order-->
+                            <!--                                </strong>-->
+                            <!--                            </div>-->
+                            <div class="mt-4">
+                                <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Request for Quotation #
+                                    <span t-field="o.name"/>
+                                </h2>
+                                <h2 t-if="o.state in ['purchase', 'done']">Purchase Order #
+                                    <span t-field="o.name"/>
+                                </h2>
+                                <h2 t-if="o.state == 'cancel'">Cancelled Purchase Order #
+                                    <span t-field="o.name"/>
+                                </h2>
+                            </div>
+
+                            <div id="informations" class="row mt-4 mb32">
+                                <div t-if="o.user_id" class="col-3 bm-2">
+                                    <strong>Purchase Representative:</strong>
+                                    <p t-field="o.user_id" class="m-0"/>
+                                </div>
+                                <div t-if="o.partner_ref" class="col-3 bm-2">
+                                    <strong>Your Order Reference:</strong>
+                                    <p t-field="o.partner_ref" class="m-0"/>
+                                </div>
+                                <div t-if="o.state in ['purchase','done'] and o.date_approve" class="col-3 bm-2">
+                                    <strong>Order Date:</strong>
+                                    <p t-field="o.date_approve" class="m-0"/>
+                                </div>
+                                <div t-elif="o.date_order" class="col-3 bm-2">
+                                    <strong>Order Deadline:</strong>
+                                    <p t-field="o.date_order" class="m-0"/>
+                                </div>
+                            </div>
+
+                            <table class="table table-sm o_main_table mt-4">
+                                <thead>
+                                    <tr>
+                                        <th name="th_description">
+                                            <strong>Description</strong>
+                                        </th>
+                                        <th name="th_taxes">
+                                            <strong>Taxes</strong>
+                                        </th>
+                                        <th name="th_date_req" class="text-center">
+                                            <strong>Date Req.</strong>
+                                        </th>
+                                        <th name="th_quantity" class="text-end">
+                                            <strong>Qty</strong>
+                                        </th>
+                                        <th name="th_price_unit" class="text-end">
+                                            <strong>Unit Price</strong>
+                                        </th>
+                                        <th name="th_amount" class="text-end">
+                                            <strong>Amount</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="current_subtotal" t-value="0"/>
+                                    <t t-foreach="o.order_line" t-as="line">
+                                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"
+                                           groups="account.group_show_line_subtotals_tax_excluded"/>
+                                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_total"
+                                           groups="account.group_show_line_subtotals_tax_included"/>
+
+                                        <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                            <t t-if="not line.display_type">
+                                                <td id="product">
+                                                    <span t-field="line.name"/>
+                                                </td>
+                                                <td name="td_taxes">
+                                                    <span t-esc="', '.join(map(lambda x: x.name, line.taxes_id))"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-field="line.date_planned"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-field="line.product_qty"/>
+                                                    <span t-field="line.product_uom.name" groups="uom.group_uom"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-field="line.price_unit"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-field="line.price_subtotal"
+                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </td>
+                                            </t>
+                                            <t t-if="line.display_type == 'line_section'">
+                                                <td colspan="99" id="section">
+                                                    <span t-field="line.name"/>
+                                                </td>
+                                                <t t-set="current_section" t-value="line"/>
+                                                <t t-set="current_subtotal" t-value="0"/>
+                                            </t>
+                                            <t t-if="line.display_type == 'line_note'">
+                                                <td colspan="99" id="note">
+                                                    <span t-field="line.name"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                        <t t-if="current_section and (line_last or o.order_line[line_index+1].display_type == 'line_section')">
+                                            <tr class="is-subtotal text-end">
+                                                <td colspan="99" id="subtotal">
+                                                    <strong class="mr16">Subtotal</strong>
+                                                    <span
+                                                            t-esc="current_subtotal"
+                                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                    />
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <div id="total" class="row justify-content-end">
+                                <div class="col-4">
+                                    <table class="table table-sm">
+                                        <t t-set="tax_totals" t-value="o.tax_totals"/>
+                                        <t t-call="account.document_tax_totals"/>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <p t-field="o.notes" class="mt-4"/>
+                            <div class="oe_structure"/>
+                            <p style="page-break-before:always;"/>
+                            <table class="table-borderless" width="115%" t-if="o.state in ['purchase', 'done']"
+                                   style="margin:0px -50px 0px -50px !important;">
+                                <tr style="font-size:7pt;">
+                                    <th class="text-center">
+                                        <span>Conditions &amp; Terms Order Purchase</span>
+                                    </th>
+                                    <td width="4%"/>
+                                    <th class="text-center">
+                                        <span>ﺷﺮﻭﻁ ﻭﺃﺣﻜﺎﻡ ﺃﻣـﺮ ﺍﻟﺸﺮﺍﺀ</span>
+                                    </th>
+                                </tr>
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>1- Warranty:</strong>
+                                            Supplier undertakes and warrants to the buyer that all
+                                            products,
+                                            materials, equipment's, services to be performed under the Purchase Order
+                                            are in
+                                            conformity with the specifications under the Purchase Order and meets the
+                                            specifications, drawings or descriptions on the face hereof or on attached
+                                            specification sheets (which are incorporated herein by reference), and are
+                                            of
+                                            good and merchantable quality and will fit the buyer's intended purposes and
+                                            known to
+                                            the Supplier to be, free of defects in material and workmanship. All
+                                            drawings
+                                            provided hereunder shall be the property of Buyer and for his usage free of
+                                            charge
+                                            regardless of any provision or notation to the contrary on such drawings.
+                                            The
+                                            Supplier
+                                            warrants that the product will be produced, sold and delivered in compliance
+                                            with all
+                                            applicable Saudi Laws, rules, and regulations.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>1- ﺗﻌﻬﺪ:</strong>
+                                            ﻳﺘﻌﻬﺪ ﺍﻟﻤـــــــﻮﺭﺩ ﻟﻠﻤﺸﺘﺮﻱ ﺑﺄﻥ ﺍﻟﻤﻨﺘﺠﺎﺕ ﻭﺍﻟﻤﻮﺍﺩ ﻭﺍﻟﻤﻌﺪﺍﺕ ﻭﺍﻟﺨﺪﻣﺎﺕ
+                                            ﺍﻟﺘﻲ ﺳﻴﺘﻢ ﺗﻘﺪﻳﻤﻬﺎ ﺑﻤﻮﺟﺐ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﻣﻄﺎﺑﻘﺔ ﻟﻠﻤﻮﺍﺻﻔﺎﺕ ﺍﻟﻮﺍﺭﺩﺓ ﺑﻪ ﻛﻤﺎ ﻳﺘﻄﺎﺍﺑﻖ
+                                            ﻣﻊ ﻭﺃﻱ ﻣﻮﺍﺻﻔﺎﺕ ﻭﺭﺳﻮﻣﺎﺕ ﻭﺃﻭﺻﺎﻑ ﻣﺮﻓﻘﺔ ﺑﺄﻣﺮ ﺍﻟﺸﺮﺍﺀ ﻛﻤﺎ ﻳﻀﻤﻦ ﺍﻟﻤﻮﺭﺩ ﺟﻮﺩﺗﻬﺎ
+                                            ﺍﻟﻌﺎﻟﻴﺔ ﻭ ﺗﻮﺍﻓﻘﻬﺎ ﻣﻊ ﺍﻷﻏﺮﺍﺽ ﺍﻟﺘﺠﺎﺭﻳﺔ ﺍﻟﻤﺨﺼﺼﺔ ﻟﻬﺎ ﻣﻦ ﻗﺒﻞ ﺍﻟﻤﺸﺘﺮﻱ ﻭﻛﻤﺎ ﻳﻘﺮ
+                                            ﺍﻟﻤﻮﺭﺩ ﺑﺄﻧﻬﺎ ﺧﺎﻟﻴﺔ ﻣﻦ ﻋﻴﻮﺏ ﺍﻟﻤﻮﺍﺩ ﻭ ﺍﻟﺘﺼﻨﻴﻊ . ﻛﻤﺎ ﺗﻜﻮﻥ ﺟﻤﻴﻊ ﺍﻟﺮﺳﻮﻣﺎﺕ ﺍﻟﻤﻘﺪﻣﺔ
+                                            ﺑﻤﻮﺟﺐ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﻫﺬﺍ ﻣﻠﻜﺎ ﻟﻠﻤﺸﺘﺮﻱ ﻹﺳﺘﺨﺪﺍﻣﻬﺎ ﻣﺠﺎﻧﺎ ﺑﺼﺮﻑ ﺍﻟﻨﻈﺮ ﻋﻦ ﺃﻱ ﻧﺺ ﻣﺨﺎﻟﻒ
+                                            ﻟﺬﻟﻚ ﻓﻲ ﺍﻟﺮﺳﻮﻣﺎﺕ ﻭﺍﻟﻤﺴﺘﻨﺪﺍﺕ ﺍﻷﺧﺮﻯ ﻳﻨﺺ ﺧﻼﻓﺎ ﻟﺬﻟﻚ . ﻛﻤﺎ ﻳﺘﻌﻬﺪ ﺍﻟﻤﻮﺭﺩ ﺑﺄﻧﻪ ﺳﻴﺘﻢ
+                                            ﺇﻧﺘﺎﺝ ﻭﺑﻴﻊ ﻭﺗﺴﻠﻴﻢ
+                                            ﺍﻟﺒﻀﺎﻋﺔ ﻭﻓﻘﺎ ﻟﻸﻧﻈﻤﺔ ﻭﺍﻟﻘﻮﺍﻧﻴﻦ ﺍﻟﻤﻄﺒﻘـﺔ ﻭﺍﻟﺴﺎﺭﻳﺔ ﻓﻲ ﺍﻟﻤﻤﻠﻜﺔ ﺍﻟﻌﺮﺑﻴﺔ ﺍﻟﺴﻌﻮﺩﻳﺔ.
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>2- Entire Agreement:</strong>
+                                            This purchase order and the additional product quality
+                                            and performance representations by Supplier, constitutes the entire
+                                            agreement between the parties. The Buyer shall not be bound by any prior or
+                                            future terms and conditions not provided for herein or by a written
+                                            amendment. Any additional or inconsistent terms shown on Supplier's sales
+                                            confirmation, shipping, documents or invoices, and any additions of
+                                            inconsistencies therein with the provisions hereof shall be null and void.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>2- ﺷﻤﻮﻟﻴﺔ ﺍﻻﺗﻔﺎﻗﻴﺔ:</strong>
+                                            ﻳﺸﻜﻞ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﺇﺿﺎﻓﺔ ﺇﻟﻰ ﺷﺮﻭﻁ ﺟﻮﺩﺓ ﺍﻟﻤﻨﺘﺞ ﺍﻹﺿﺎﻓﻴﺔ
+                                            ﻭﺇﻓﺎﺩﺓ ﺍﻟﻤﻮﺭﺩ ﻟﺘﻨﻔﻴﺬ ﺍﻻﺗﻔﺎﻕ ﺍﻟﻜﻠﻲ ﺍﻟﺬﻱ ﺗﻢ ﺑﻴﻦ ﺍﻟﻄﺮﻓﻴﻦ. ﻭﻻ ﻳﻜﻮﻥ ﺍﻟﻤﺸﺘﺮﻱ ﻣﻠﺰﻣﺎ
+                                            ﺑﺄﻱ ﺷﺮﻭﻁ ﺳﺎﺑﻘﺔ ﺃﻭ ﻻﺣﻘﺔ ﻟﻢ ﻳﺘﻢ ﺍﻟﻨﺺ ﻋﻠﻴﻬﺎ ﻓﻲ ﻫﺬﺍ ﺍﻻﺗﻔﺎﻕ ﺃﻭ ﺃﻱ ﺗﻌﺪﻳﻞ ﻛﺘﺎﺑﻲ ﻻﺣﻖ
+                                            ، ﻭﺗﻌﺘﺒﺮ ﺃﻱ ﺷﺮﻭﻁ ﺇﺿﺎﻓﻴﺔ ﺃﻭ ﻣﺘﻨﺎﻗﻀﺔ ﻳﻨﺺ ﻋﻠﻴﻬﺎ ﺍﻟﻤﻮﺭﺩ ﻓﻲ ﺧﻄﺎﺏ ﺍﻟﺘﺄﻛﻴﺪ ﺍﻟﻤﻘﺪﻡ
+                                            ﻣﻨﻪ ﺃﻭ ﻓﻲ ﻭﺛﺎﺋﻖ ﺍﻟﺸﺤﻦ ﺃﻭ
+                                            ﺍﻟﻔﻮﺍﺗﻴﺮ ﺃﻭ ﺃﻱ ﺇﺿﺎﻓﺎﺕ ﺗﺘﻌﺎﺭﺽ ﻣﻊ ﻣﺎ ﻭﺭﺩ ﻓﻲ ﻫﺬﻩ ﺍﻻﺗﻔﺎﻗﻴﺔ ﺑﺎﻃﻠﺔ ﻭﻻ ﺃﺛﺮ ﻟﻬﺎ
+                                            ﻗﺎﻧﻮﻧﺎ.
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>3- Price:</strong>
+                                            <strong>(a)-</strong>
+                                            All prices specified and stipulated in the Purchase Order are net
+                                            prices, unless
+                                            indicated otherwise and agreed upon in writing shall be inclusive of all
+                                            fees, charges,
+                                            expenses of all kinds.
+                                            <br/>
+                                            <strong>(b)-</strong>
+                                            Prices shall be subject to expenses deductions, or losses that may be
+                                            incurred due
+                                            to transport outage, imperfections, or defects in commodity or equipment, or
+                                            noncompliance with samples and /or specifications whether clear or implied,
+                                            or none
+                                            compliance with the delivery date. (All prices shown in the P.O reflect the
+                                            net price
+                                            agreed upon inclusive of all applicable discounts, fees, any charges, custom
+                                            duties and
+                                            transportation charges, to delivery destination specified by the buyer.
+                                            <br/>
+                                            <strong>(c)- Changes:</strong>
+                                            No claims, additional expenses or charges will be allowed by
+                                            Supplier for
+                                            additional work, material, packing service, and no substitution of material
+                                            or changes
+                                            in price will be permitted unless authorized by the buyer in writing.
+                                            <br/>
+                                            <strong>(d)- Taxes and Other Charges:</strong>
+                                            Should any duties, Social Security and/or
+                                            taxes including Zakat and Saudi Income Tax be assessed against or imposed on
+                                            the Supplier by reason of any work, labor, or services performed for the
+                                            buyer the Supplier will be solely responsible for such liabilities.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>3- ﺍﻟﺴﻌﺮ:</strong>
+                                            <strong>ﺃ-</strong>
+                                            ﺗﻌﺘﺒﺮ ﺍﻷﺳﻌﺎﺭ ﺍﻟﻮﺍﺭﺩﺓ ﻓﻲ ﺃﻣـﺮ ﺍﻟﺸﺮﺍﺀ ﺃﺳﻌﺎﺭﺍ ﺷﺎﻣﻠﺔ ﻭﺫﻟﻚ ﻣﺎ ﻟﻢ ﻳﺘﻢ ﺍﻟﻨﺺ
+                                            ﺻﺮﺍﺣﺔ ﻋﻠﻰ ﺧﻼﻑ ﺫﻟﻚ ﻛﻤﺎ ﺗﻌﺘﺒﺮ ﺷﺎﻣﻠﺔ ﻟﻜﻞ
+                                            ﺍﻷﺗﻌﺎﺏ ﻭﺍﻟﺮﺳﻮﻡ ﻭﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﺃﻳﺎ ﻛﺎﻥ ﻧﻮﻋﻬﺎ .
+                                            <br/>
+                                            <strong>ﺏ _</strong>
+                                            ﺗﺨﻀﻊ ﺍﻷﺳﻌﺎﺭ ﻟﺨﺼﻢ ﺍﻟﻤﺼﺎﺭﻳﻒ ﺃﻭ
+                                            ﺍﻟﺨﺴﺎﺋﺮ ﺍﻟﻨﺎﺗﺠﺔ ﺍﺛﻨﺎﺀ ﺍﻟﻨﻘﻞ ﺍﻭ ﺑﺴﺒﺐ ﻋﻴﻮﺏ ﻓﻰ ﺍﻟﺴﻠﻊ ﺃﻭ ﺍﻟﻤﻌﺪﺍﺕ ﺃﻭ ﻋﺪﻡ ﻣﻄﺎﺑﻘﺘﻬﺎ
+                                            ﻟﻠﻌﻴﻨﺎﺕ ﻭ/ ﺃﻭ ﺍﻟﻤﻮﺍﺻﻔﺎﺕ ﺍﻟﻤﻨﺼﻮﺹ ﻋﻨﻬﺎ ﺃﻭ ﺍﻟﻤﻮﺍﺻﻔﺎﺕ ﺍﻟﻀﻤﻨﻴﺔ ﺃﻭ ﺗﺎﺭﻳﺦ ﺍﻟﺘﺴﻠﻴﻢ
+                                            ﻭﺗﻌﻜﺲ ﺍﻷﺳﻌﺎﺭ ﺍﻟﻤﻮﺿﺤﺔ ﻓﻲ ﺃﻣـﺮ ﺍﻟﺸﺮﺍﺀ ﺍﻷﺳﻌﺎﺭ ﺍﻟﺼﺎﻓﻴﺔ ﺍﻟﻤﺘﻔﻖ ﻋﻠﻴﻬﺎ ﺷﺎﻣﻠﺔ ﻛﻞ
+                                            ﺍﻟﺨﺼﻮﻣﺎﺕ ﺍﻟﻤﻄﺒﻘﺔ ﻭﺍﻷﺗﻌﺎﺏ ﻭﺍﻟﻤﺼﺎﺭﻳﻒ ﻭﺭﺳﻮﻡ ﺍﻟﺠﻤﺎﺭﻙ ﻭﺍﻟﻨﻘﻞ ﻣﺎ ﻟﻢ
+                                            ﻳﺘﻔﻖ ﻋﻠﻰ ﺧﻼﻑ ﺫﻟﻚ ﺣﺘﻰ ﻭﺻﻮﻟﻬﺎ ﻟﺠﻬﺔ ﺍﻟﺘﺴﻠﻴﻢ ﺍﻟﺘﻲ ﻳﺤﺪﺩﻫﺎ ﺍﻟﻤﺸﺘﺮﻱ .
+                                            <br/>
+                                            <strong>ﺝ - ﺍﻟﺘﻌﺪﻳـــﻼﺕ:</strong>
+                                            ﻻ ﻳﺤﻖ ﻟﻠﻤﻮﺭﺩ ﺗﻘﺪﻳﻢ ﺃﻱ ﻣﻄﺎﻟﺒﺎﺕ ﺃﻭ ﻣﺼﺮﻭﻓﺎﺕ ﺃﻭ ﺭﺳﻮﻡ ﺇﺿﺎﻓﻴﺔ ﻋﻦ
+                                            ﺍﻷﻋﻤﺎﻝ ﺃﻭ ﺍﻟﻤﻮﺍﺩ ﺍﻹﺿﺎﻓﻴﺔ ﺃﻭ ﻋﻦ ﻣﻮﺍﺩ
+                                            ﺃﻭ ﺃﻋﻤﺎﻝ ﺍﻟﺘﻌﺒﺌﺔ ﻭﻻ ﻳﺠﻮﺯ ﺍﺳﺘﺒﺪﺍﻝ ﺍﻟﻤﻮﺍﺩ ﺃﻭ ﺗﻐﻴﻴﺮ ﺍﻟﺴﻌـﺮ ﺇﻻ ﺑﻤﻮﺍﻓﻘﺔ ﻭﺗﻔﻮﻳﺾ
+                                            ﺍﻟﻤﺸﺘﺮﻱ ﺍﻟﻜﺘﺎﺑـﻴﺔ .
+                                            <br/>
+                                            <strong>ﺩ- ﺍﻟﻀﺮﺍﺋﺐ ﻭﺍﻟﺮﺳﻮﻡ ﺍﻷﺧﺮﻯ :</strong>
+                                            ﻳﻜﻮﻥ ﺍﻟﻤﻮﺭﺩ ﻭﺣﺪﻩ ﻣﺴﺌﻮﻻ ﻋﻦ
+                                            ﺗﺤﻤﻞ ﺃﻱ ﺇﻟﺘﺰﺍﻣﺎﺕ ﻣﺎﻟﻴﺔ ﺑﺴﺒﺐ ﺃﻳﺔ ﻋﻤﺎﻟﺔ ﺃﻭ ﺧﺪﻣﺎﺕ ﻧﻔﺬﻫﺎ ﺃﻭ ﺧﺪﻣﺎﺕ ﺗﻢ ﺗﻘﺪﻳﻤﻬﺎ
+                                            ﻟﻠﻤﺸﺘﺮﻱ. ﺑﻤﺎ ﻓﻲ ﺫﻟﻚ ﺍﻟﺮﺳﻮﻡ ﻭﺃﻱ ﻣﺒﺎﻟﻎ ﻣﻘﺎﺑﻞ ﺍﻟﺘﺄﻣﻴﻨﺎﺕ ﺍﻹﺟﺘﻤﺎﻋﻴﺔ ﺃﻭ ﺍﻟﻀﺮﺍﺋﺐ ﺃﻭ
+                                            ﺯﻛﺎﺓ ﺍﻟﺪﺧﻞ ﻣﻤﺎ ﻳﺘﻢ
+                                            ﻓﺮﺿﻪ ﻋﻠﻲ ﺍﻟﻤﻮﺭﺩ ﻧﺘﻴﺠﺔ ﻷﻳﺔ ﺃﻋﻤﺎﻝ ﺃﻭ ﻋﻤﺎﻟﺔ ﺃﻭ ﺧﺪﻣﺎﺕ ﻣﻘﺪﻣﺔ ﻟﻠﻤﺸﺘﺮﻱ
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>4- Payment:</strong>
+                                            The buyer shall pay to the Supplier for the products, supplies
+                                            or provided services within 60 days from the date of receipt of commercial
+                                            invoice unless otherwise stated in the Purchase Order.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>4- ﺍﻟﺪﻓـﻊ:</strong>
+                                            ﻳﺪﻓﻊ ﺍﻟﻤﺸﺘﺮﻱ ﻟﻠﻤﻮﺭﺩ ﻗﻴﻤﺔ ﺍﻟﻤﻮﺍﺩ ﻭﺍﻟﺘﻮﺭﻳﺪﺍﺕ ﻭﺍﻟﺨﺪﻣﺎﺕ ﺍﻟﻤﻘﺪﻣﺔ ﺑﻤﻮﺟﺐ
+                                            ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﺧﻼﻝ 60 ﻳﻮﻣﺎ ﻣﻦ ﺗﺎﺭﻳﺦ ﺇﺳﺘﻼﻡ ﺍﻟﺒﻀﺎﻋﺔ ﺃﻭ ﺍﻟﺨﺪﻣﺎﺕ ﺃﻭ ﺍﻟﻤﻌﺪﺍﺕ ﻭﻗﺒﻮﻟﻬﺎ
+                                            ﺑﻮﺍﺳﻄﺔ ﺍﻟﻤﺸﺘﺮﻱ ، ﻭﻳﺘﻢ ﺻﺮﻑ ﺍﻟﻤﺒﻠﻎ ﺍﻟﻤﺴﺘﺤﻖ ﺑﻨﺎﺀ ﻋﻠﻰ ﺍﻟﻔﻮﺍﺗﻴﺮ ﺍﻟﻤﻘﺪﻣﺔ
+                                            ﻣﻦ ﺍﻟﺒﺎﺋﻊ ﻭﻣﺎ ﻗﺪ ﻳﻄﻠﺒﻪ ﺍﻟﻤﺸﺘﺮﻱ ﻣﻦ ﻣﺴﺘﻨﺪﺍﺕ ﺃﺧﺮﻯ ﻣﺎﻟﻢ ﻳﺬﻛﺮ ﺧﻼﻑ ﺫﻟﻚ ﺑﺄﻣﺮ ﺍﻟﺸﺮﺍﺀ
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>5-</strong>
+                                            The buyer has the right to reject any supplies, equipment, products or
+                                            services which are not in accordance with the specifications and ask for
+                                            replacement or correction, and in case of the Supplier failure the buyer
+                                            shall replace or correct the same at the Suppliers' expense.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>5-</strong>
+                                            ﻟﻠﻤﺸﺘﺮﻱ ﺍﻟﺤﻖ ﻓﻲ ﺭﻓﺾ ﺃﻱ ﻣﻮﺍﺩ ﺃﻭﻣﻌﺪﺍﺕ ﺃﻭ ﻣﻨﺘﺠﺎﺕ ﺃﻭ ﺧﺪﻣﺎﺕ ﻏﻴﺮ ﻣﻄﺎﺑﻘﺔ
+                                            ﻟﻠﻤﻮﺍﺻﻔﺎﺕ ﻭﻃﻠﺐ ﺇﺳﺘﺒﺪﺍﻟﻬﺎ ﺃﻭ ﺍﻟﺘﺼﺤﻴﺢ،
+                                            ﻭﻟﻠﻤﺸﺘﺮﻱ ﺣﻖ ﺇﺳﺘﺒﺪﺍﻟﻬﺎ ﺃﻭﺍﻟﺘﺼﺤﻴﺢ ﻋﻠﻰ ﺣﺴﺎﺏ ﺍﻟﻤﻮﺭﺩ ﺇﺫﺍ ﻓﺸﻞ ﺍﻟﻤﻮﺭﺩ ﻓﻲ ﺍﻟﻘﻴﺎﻡ
+                                            ﺑﺬﻟﻚ .
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>6- Title:</strong>
+                                            The title and risk of loss and or damage to all sold products or
+                                            services hereunder shall pass to buyer upon receiving and acceptance by the
+                                            buyer. The Supplier warrants that the title is free and clear from any and
+                                            all mortgages and encumbrances whatsoever.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>6- ﺍﻟﻤﻠﻜﻴﺔ:</strong>
+                                            ﺗﻨﺘﻘﻞ ﺍﻟﻤﻠﻜﻴﺔ ﻭﻛﺎﻓﺔ ﻣﺨﺎﻃﺮ ﺍﻟﻔﻘﺪﺍﻥ ﻭ/ﺃﻭ ﺍﻟﺨﺴﺎﺭﺓ ﻟﺠﻤﻴﻊ ﺍﻟﻤﻨﺘﺠﺎﺕ ﺃﻭ
+                                            ﺍﻟﺨﺪﻣﺎﺕ ﺍﻟﻤﺒﺎﻋﺔ ﺑﻤﻮﺟﺐ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﻫﺬﺍ
+                                            ﺇﻟﻰ ﺍﻟﻤﺸﺘﺮﻯ ﻋﻨﺪ ﺇﺳﺘﻼﻡ ﻭﻗﺒﻮﻝ ﺍﻟﻤﺸﺘﺮﻱ ﻟﻬﺎ. ﻭﻳﻀﻤﻦ ﺍﻟﻤﻮﺭﺩ ﺑﺄﻥ ﻣﻠﻜﻴﺘﻪ ﻟﻠﺒﻀﺎﻋﺔ
+                                            ﺧﺎﻟﻴﺔ ﻣﻦ ﺍﻟﺮﻫﻦ ﺃﻭ ﺃﻱ ﺇﻟﺘﺰﺍﻣﺎﺕ ﻗﺎﻧﻮﻧﻴﺔ
+                                            ﺃﺧﺮﻯ.
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>7- Force Majeure:</strong>
+                                            Neither Party shall be liable for failure or delays caused
+                                            by conditions beyond their reasonable control, provided that a written
+                                            notice thereof should be provided to the other party as soon as practicable.
+                                            Any situation preventing performance or execution of the agreement shall be
+                                            remedied as soon as reasonably possible. The Buyer in its sole discretion
+                                            reserves the right to cancel the order if such delay is caused by the
+                                            Supplier as time is essence of the order.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>7-ﺍﻟﻘﻮﺓ ﺍﻟﻘﺎﻫﺮﺓ:</strong>
+                                            ﻻ ﻳﻜﻮﻥ ﺃﻱ ﻣﻦ ﺍﻟﻄﺮﻓﻴﻦ ﻣﺴﺌﻮﻻ ﻋﻦ ﺍﻟﻔﺸﻞ ﺃﻭ ﺍﻟﺘﺄﺧﻴﺮ ﺍﻟﺬﻱ ﻳﺤﺪﺙ
+                                            ﺑﺴﺒﺐ ﺣﺪﻭﺙ ﻇﺮﻭﻑ ﺧﺎﺭﺟﺔ ﻋﻦ ﺇﺭﺍﺩﺓ ﺃﻱ ﻣﻦ ﺍﻟﻄﺮﻓﻴﻦ ﺑﺸﺮﻁ ﺃﻥ ﻳﻘﻮﻡ ﻫﺬﺍ ﺍﻟﻄﺮﻑ ﺑﺘﺰﻭﻳﺪ
+                                            ﺍﻟﻄﺮﻑ ﺍﻵﺧﺮ ﺑﺈﺷﻌﺎﺭ ﺧﻄﻲ ﺑﺄﺳﺮﻉ ﻭﻗﺖ ﻣﻤﻜﻦ ﻣﻊ ﺿﺮﻭﺭﺓ ﺃﻥ ﻳﺘﻢ ﺗﺼﺤﻴﺢ ﺍﻟﻈﺮﻭﻑ ﺍﻟﺘﻲ ﺗﺤﻮﻝ
+                                            ﺩﻭﻥ ﺗﻨﻔﻴﺬ ﺍﻹﺗﻔﺎﻗﻴﺔ ﻭﺗﻮﺭﻳﺪ ﺍﻟﺴﻠﻌﺔ ﺑﺄﺳﺮﻉ ﻭﻗﺖ ﻣﻤﻜﻦ ﻭﻳﺤﺘﻔﻆ ﺍﻟﻤﺸﺘﺮﻯ ﺑﺤﻖ ﺇﻟﻐﺎﺀ
+                                            ﺍﻟﻄﻠﺐ ﻭﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﺇﺫﺍ ﻛﺎﻥ ﺍﻟﺘﺄﺧﻴﺮ ﺑﺴﺒﺐ ﺭﺍﺟﻊ ﻟﻠﻤﻮﺭﺩ ﻭﻭﻓﻘﺎ ﻟﺘﻘﺪﻳﺮﻩ ﺳﻴﺆﺛﺮ ﺳﻠﺒﺎ
+                                            ﻋﻠﻴﻪ ﻧﻈﺮﺍ ﻟﻜﻮﻥ ﻋﻨﺼﺮ ﺍﻟﻮﻗﺖ ﺃﻣﺮ ﺟﻮﻫﺮﻱ ﻓﻲ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>8- Penalties: A.</strong>
+                                            If the Supplier fails to perform his commitments indicated
+                                            in the Purchase Order, the buyer shall be entitled to arrange alternative
+                                            supplier at the Supplier's expense. Under such circumstances the Supplier
+                                            shall be liable for the actual cost of damages suffered by the buyer plus
+                                            other administrative expenses.
+                                            <br/>
+                                            <strong>B.</strong>
+                                            If the Supplier fails to fulfill his obligations in part or in hole under
+                                            the terms of Purchase order , the Supplier shall be liable to pay a penalty
+                                            equal to 1% of the value of the delayed goods or services up to 6%, however
+                                            in case of construction the maximum penalty shall be up to 10% in accordance
+                                            with Purchases laws applicable in the kingdom of Saudi Arabia.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>8- ﺍﻟﺠﺰﺍﺀﺍﺕ:</strong>
+                                            ﺇﺫﺍ ﺃﺧﻔﻖ ﺍﻟﻤﻮﺭﺩ ﻓﻲ ﺗﻨﻔﻴﺬ ﺍﻟﺘﺰﺍﻣﺎﺗﻪ ﺍﻟﻤﺒﻴﻨﺔ ﻓﻲ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﻳﺤﻖ
+                                            ﻟﻠﻤﺸﺘﺮﻱ ﺍﻟﺘﺮﺗﻴﺐ ﻭﺍﻹﺗﻔﺎﻕ ﻣﻊ ﻣﻮﺭﺩﻳﻦ
+                                            ﺁﺧﺮﻳﻦ ﻟﻠﺘﻮﺭﻳﺪ ﻋﻠﻰ ﺣﺴﺎﺏ ﺍﻟﻤﻮﺭﺩ ﺍﻟﻤﺘﻌﺎﻗﺪ ﻭﻓﻲ ﻫﺬﻩ ﺍﻟﺤﺎﻟﺔ ﻳﻜﻮﻥ ﺍﻟﻤﻮﺭﺩ ﻣﻄﺎﻟﺒﺎ
+                                            ﻟﺪﻓﻊ ﺍﻟﺘﻜﺎﻟﻴﻒ ﺍﻟﻔﻌﻠﻴﺔ ﻭﺍﻷﺿﺮﺍﺭ ﺍﻟﺘﻲ
+                                            ﺗﻜﺒﺪﻫﺎ ﺍﻟﻤﺸﺘﺮﻱ ﺑﺎﻹﺿﺎﻓﺔ ﺇﻟﻰ ﺍﻟﻨﻔﻘﺎﺕ ﺍﻹﺩﺍﺭﻳــﺔ ﺍﻷﺧﺮﻯ ﺍﻟﻨﺎﺗﺠﺔ ﻋﻦ ﺫﻟﻚ.
+                                            <br/>
+                                            <strong>ﺏ -</strong>
+                                            ﺇﺫﺍ
+                                            ﻓﺸﻞ ﺍﻟﻤﻮﺭﺩ ﻓﻲ ﺗﻨﻔﻴﺬ ﺇﻟﺘﺰﺍﻣﺎﺗﻪ ﺟﺰﺋﻴﺎ ﺃﻭ ﻛﻠﻴﺎ ﺑﻤﻮﺟﺐ ﺃﺣﻜﺎﻡ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﺃﻭ ﺍﻟﻌﻘﺪ
+                                            ﻓﺈﻧﻪ ﻳﻜﻮﻥ ﻣﻠﺰﻣﺎ ﺑﺪﻓﻊ ﻏﺮﺍﻣﺔ ﺗﺴﺎﻭﻱ %1 ﻣﻦ ﻗﻴﻤﺔ ﺍﻟﺒﻀﺎﺋﻊ ﺃﻭ ﺍﻟﺨﺪﻣﺎﺕ ﺍﻟﻤﺘﺄﺧﺮﺓ ﺑﺤﺪ
+                                            ﺃﻋﻠﻲ ﻳﺒﻠﻎ %6 ﻣﻦ ﺍﻟﻘﻴﻤﺔ ، ﻭﻓﻲ ﺣﺎﻟﺔ ﺍﻹﻧﺸﺎﺀﺍﺕ ﻳﺼﺒﺢ ﺍﻟﺤﺪ
+                                            ﺍﻷﻋﻠﻲ ﻟﻠﻐﺮﺍﻣﺔ ﺣﺘﻰ %10 ﻭﻓﻘﺎ ﻟﻨﻈﺎﻡ ﺍﻟﻤﺸﺘﺮﻳﺎﺕ ﺍﻟﻤﻄﺒﻖ ﺑﺎﻟﻤﻤﻠﻜﺔ ﺍﻟﻌﺮﺑﻴﺔ ﺍﻟﺴﻌﻮﺩﻳﺔ
+                                            .
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>9- Gratuities and commissions:</strong>
+                                            The Supplier understands that the Buyer policy
+                                            prohibits any contracting party from paying a commission or giving a gift to
+                                            anyone to influence the execution terms and performance of the contract,
+                                            Otherwise the Buyer shall be entitled to claim the retrieval of such
+                                            payments or gifts as being excess of his contract. In such case the Buyer
+                                            reserves the right to take disciplinary and/or criminal action under the
+                                            laws and regulations applicable in the kingdom of Saudi Arabia.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>9- ﺍﻟﻤﻨﺢ ﻭﺍﻟﻌﻤﻮﻻﺕ:</strong>
+                                            ﻣﻦ ﺍﻟﻤﻌﻠﻮﻡ ﻟﻠﻤﻮﺭﺩ ﺃﻥ ﺍﻟﻨﻈﺎﻡ ﻭﺍﻟﺴﻴﺎﺳﺔ ﺍﻟﻤﻄﺒﻘﺔ ﻟﺪﻯ
+                                            ﺍﻟﻤﺸﺘﺮﻱ ﻳﻤﻨﻊ ﺟﻤﻴﻊ ﺍﻟﻤﺘﻌﺎﻗﺪﻳﻦ ﻣﻌﻪ ﻣﻦ ﺩﻓﻊ ﻋﻤﻮﻻﺕ ﺃﻭ ﻣﻨﺢ ﺃﻭ ﻫﺪﺍﻳﺎ ﻷﻱ ﺷﺨﺺ ﻟﻠﺘﺄﺛﻴﺮ
+                                            ﺑﻐﺮﺽ ﺍﻟﺤﺼﻮﻝ ﻋﻠﻰ ﺍﻟﻌﻘﺪ ﺃﻭ ﺷﺮﻭﻃﻪ ﻭﻓﻲ ﺣﺎﻟﺔ ﺣﺪﻭﺙ ﺫﻟﻚ ﻓﺈﻥ ﻟﻠﻤﺸﺘﺮﻱ ﺍﻟﺤﻖ ﻓﻲ ﻣﺼﺎﺩﺭﺓ
+                                            ﻣﺜﻞ ﻫﺬﻩ ﺍﻟﻤﺪﻓﻮﻋﺎﺕ ﺃﻭ ﺍﻟﻬﺪﺍﻳﺎ ﻋﻠﻰ ﺇﻋﺘﺒﺎﺭ ﺃﻧﻬﺎ ﺧﺎﺭﺟﺔ ﻋﻦ ﻧﻄﺎﻕ ﻫﺬﺍ ﺍﻟﻌﻘﺪ ، ﻛﻤﺎ
+                                            ﻳﺤﺘﻔﻆ ﺑﺤﻘﻪ ﺑﺈﺗﺨﺎﺫ
+                                            ﺍﻹﺟﺮﺍﺀﺍﺕ ﺍﻟﻨﻈﺎﻣﻴﺔ ﻭﺍﻟﺠﻨﺎﺋﻴﺔ ﻃﺒﻘﺎ ﻟﻸﻧﻈﻤﺔ ﻭﺍﻟﻠﻮﺍﺋﺢ ﺍﻟﺴﺎﺭﻳﺔ ﺑﺎﻟﻤﻤﻠﻜﺔ ﺍﻟﻌﺮﺑﻴﺔ
+                                            ﺍﻟﺴﻌﻮﺩﻳﺔ
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>10- General:</strong>
+                                            The buyer will not be responsible for any injury sustained by the
+                                            Supplier's personnel or any damage occurred to the equipment during the
+                                            performance of his obligations under this Purchase Order. However, the
+                                            Supplier will also be held responsible for injury he may cause to buyer's or
+                                            any third party employees or damage to their property or equipment during
+                                            the performance of his obligations under this Purchase Order.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>10- ﻋﺎﻡ:</strong>
+                                            ﻻ ﻳﻜﻮﻥ ﺍﻟﻤﺸﺘﺮﻱ ﻣﺴﺌﻮﻻ ﻋﻦ ﺃﻳﺔ ﺇﺻﺎﺑﺎﺕ ﻗﺪ ﺗﻠﺤﻖ ﺑﻤﻮﻇﻔﻲ ﺍﻟﻤﻮﺭﺩ ﺃﻭ ﺃﻳﺔ
+                                            ﺃﺿﺮﺍﺭ ﺗﻠﺤﻖ ﺑﻤﻌﺪﺍﺗﻪ ﺃﺛﻨﺎﺀ ﺗﻨﻔﻴﺬ
+                                            ﺇﻟﺘﺰﺍﻣﺎﺗﻪ ﺑﻤﻮﺟﺐ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﺃﻭ ﺍﻟﻌﻘﺪ، ﻛﻤﺎ ﻳﻜﻮﻥ ﺍﻟﻤﻮﺭﺩ ﻣﺴﺌﻮﻻ ﻋﻦ ﺃﻳﺔ ﺇﺻﺎﺑﺎﺕ ﻗﺪ
+                                            ﻳﻠﺤﻘﻬﺎ ﺑﻤﻮﻇﻔﻲ ﻭﻣﻤﺘﻠﻜﺎﺕ ﻭﻣﻌﺪﺍﺕ
+                                            ﺍﻟﻤﺸﺘﺮﻱ ﺃﻭ ﺃﻱ ﺃﻃﺮﺍﻑ ﺃﺧﺮﻱ ﺃﺛﻨﺎﺀ ﺗﻨﻔﻴﺬ ﺇﻟﺘﺰﺍﻣﺎﺗﻪ ﺑﻤﻮﺟﺐ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>11- Indemnity:</strong>
+                                            The Supplier undertakes to indemnify and hold buyer, its
+                                            employees, contractors, agents and Suppliers, harmless from and against any
+                                            all claims, suits, judgments, or expenses, including reasonable attorney's
+                                            fees, which are based in whole or part upon breach of Supplier's warranties,
+                                            or Supplier's negligence, including without limitation, claims, suits or
+                                            judgments for personal injury including death, or property damage arising
+                                            out of or relating directly or indirectly to this purchase order.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>11- ﺍﻟﺘﻌﻮﻳﺾ:</strong>
+                                            ﻋﻠﻰ ﺍﻟﻤﻮﺭﺩ ﺃﻥ ﻳﻘﻮﻡ ﺑﺤﻤﺎﻳﺔ ﻭﺗﻌﻮﻳﺾ ﻭﺇﻋﻔﺎﺀ ﺍﻟﻤﺸﺘﺮﻯ ﻭﻋﻤﻼﺋﻪ
+                                            ﻭﻣﻘﺎﻭﻟﻴﻪ ﻭﻭﻛﻼﺋﻪ ﻭﻣﻮﺯﻋﻴﻪ ﻣﻦ ﺍﻟﻀﺮﺭ ﻭﺍﻟﻤﺴﺌﻮﻟﻴﺔ ﺍﻟﻨﺎﺗﺠﺔ ﻋﻦ ﺟﻤﻴﻊ ﺍﻟﻤﻄﺎﻟﺒﺎﺕ
+                                            ﻭﺍﻟﻘﻀﺎﻳﺎ ﻭﺍﻷﺣﻜﺎﻡ ﻭﻣﺼﺎﺭﻳﻒ ﺍﻟﻤﺤﺎﻛﻢ ﻭﺍﻷﺗﻌﺎﺏ ﺍﻟﻘﺎﻧﻮﻧﻴﺔ ﻭﺟﻤﻴﻊ ﺍﻟﻤﺴﺌﻮﻟﻴﺎﺕ ﻭﺍﻟﻄﻠﺒﺎﺕ
+                                            ﻭﺍﻟﺨﺴﺎﺋﺮ ﺍﻟﻨﺎﺗﺠﺔ ﻛﻠﻴﺎ ﺃﻭ ﺟﺰﺋﻴﺎ ﻣﻦ ﺇﺧﻼﻝ ﺍﻟﻤﻮﺭﺩ ﻟﻀﻤﺎﻧﺎﺗﻪ ﺃﻭ ﺇﻫﻤﺎﻟﻪ ﺷﺎﻣﻠﺔ ﻭﺑﺪﻭﻥ
+                                            ﺣﺪﻭﺩ ﺍﻟﻤﻄﺎﻟﺒﺎﺕ ﻭﺍﻟﺪﻋﺎﻭﻱ
+                                            ﻭﺍﻷﺣﻜﺎﻡ ﺑﺎﻷﺿﺮﺍﺭ ﺍﻟﺸﺨﺼﻴﺔ ﺍﻟﺘﻲ ﺗﺸﻤﻞ ﺍﻟﻤﻮﺕ ﺃﻭ ﺇﺗﻼﻑ ﺍﻟﻤﻤﺘﻠﻜﺎﺕ ﺍﻟﻨﺎﺗﺠﺔ ﻣﻦ ﺃﻣﺮ
+                                            ﺍﻟﺸﺮﺍﺀ ﻭﺍﻟﺘﻲ ﺗﺘﻌﻠﻖ ﺑﻪ ﺑﺼﻮﺭﺓ ﻣﺒﺎﺷﺮﺓ ﺃﻭ
+                                            ﻏﻴﺮ ﻣﺒﺎﺷﺮﺓ
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>12- Notices:</strong>
+                                            All notices hereunder shall be deemed given if delivered in writing
+                                            personally or by courier, or sent by mail, electronic transmission,
+                                            facsimile to buyer or to Supplier at the address set forth in this purchase
+                                            order. Any notice given by mail shall be deemed given at the time such
+                                            notice is transmitted through mail.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>12- ﺍﻹﺧﻄﺎﺭﺍﺕ:</strong>
+                                            ﺗﻌﺘﺒﺮ ﺟﻤﻴﻊ ﺍﻹﺧﻄﺎﺭﺍﺕ ﻗﺪ ﺗﻤﺖ ﺑﺼﻮﺭﺓ ﺻﺤﻴﺤﺔ ﻭﻣﺤﻘﻘﺔ ﻟﻠﻐﺮﺽ ﺍﻟﻤﻄﻠﻮﺏ ﻓﻲ ﺣﺎﻝ
+                                            ﺗﺴﻠﻴﻤﻬﺎ ﺷﺨﺼﻴﺎ
+                                            ﻭﻣﻜﺘﻮﺑﺔ ﺃﻭ ﻋﻦ ﻃﺮﻳﻖ ﺍﻟﺒﺮﻳﺪ ﺍﻟﺴﺮﻳﻊ ﺃﻭ ﺍﻟﻌﺎﺩﻱ ﺃﻭ ﻋﺒﺮ ﺍﻟﺮﺳﺎﻟﺔ ﺍﻹﻟﻜﺘﺮﻭﻧﻴﺔ ﺃﻭ
+                                            ﺍﻟﻔﺎﻛﺲ ﺇﻟﻰ ﺍﻟﻤﺸﺘﺮﻱ ﺃﻭ ﺍﻟﻤـﻮﺭﺩ ﻋﻠﻰ ﻋﻨﻮﺍﻧﻪ
+                                            ﺍﻟﻤﺴﺠﻞ ﻓﻲ ﺃﻣـﺮ ﺍﻟﺸﺮﺍﺀ ﻭﻓﻲ ﺣﺎﻟﺔ ﺇﺭﺳﺎﻟﻬﺎ ﻋﻦ ﻃﺮﻳﻖ ﺍﻟﺒﺮﻳﺪ ﺗﻌﺘﺒﺮ ﺍﻟﺮﺳﺎﻟﺔ ﻗﺪ ﺗﻢ
+                                            ﺗﺴﻠﻴﻤﻬﺎ ﻓﻮﺭ ﺍﻹﺭﺳﺎﻝ ﺑﺎﻟﺒﺮﻳﺪ .
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>13- Assignment:</strong>
+                                            This purchase order shall extend to and be binding upon the
+                                            parties hereto, their successors, and assignees, provided, that the parties
+                                            agreed in writing for such assignment.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>13- ﺍﻟﺘﻨﺎﺯﻝ:</strong>
+                                            ﻳﻤﺘـﺪ ﺍﻷﺛﺮ ﺍﻟﻘﺎﻧﻮﻧﻲ ﻷﻣﺮ ﺍﻟﺸﺮﺍﺀ ﻫﺬﺍ ﺇﻟﻰ ﺍﻟﻄﺮﻓﻴﻦ ﻭﻳﻜﻮﻥ ﻣﻠﺰﻣﺎ
+                                            ﻟﻬﻤﺎ ﻭﻟﺨﻠﻔﺎﺋﻬﻢ ﻭﺍﻟﻤﺘﻨﺎﺯﻝ ﻟﻬﻢ ﻋﻠﻰ ﺃﻥ ﻳﺘﻢ
+                                            ﺍﻹﺗﻔﺎﻕ ﻛﺘﺎﺑـﺔ ﻋﻠﻰ ﻫﺬﺍ ﺍﻟﺘﻨﺎﺯﻝ.
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>14- Patents:</strong>
+                                            The Supplier, its heirs, successors, assignees and legal
+                                            representatives, shall forever protect, indemnify and save harmless the
+                                            buyer, its customers, agents, and (Distributer), against all claims, suits,
+                                            judgments, court costs, attorney's fees and other liabilities demands or
+                                            losses in any manner arising out of alleged infringement of any patent
+                                            copyright or trademark, rights because of their possession, use or sale or
+                                            the subject matter to which this purchase order relates, The Supplier shall
+                                            promptly notify the Buyer of bringing of any suit. Supplier shall have the
+                                            rights to be represented in defense thereof by counsel of its own selection
+                                            and at its own expense. Buyer ,its customers, contractors, agents and
+                                            (Distributers), shall have a free and unrestricted right and licenses to use
+                                            said subject matter in any and all arts and under all patents in or under
+                                            which Buyer may now or in future have an interest.
+                                        </span>
+                                    </td>
+                                    <td width="4%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>14- براءات الاختراع:</strong>
+                                            ﺑﺮﺍﺀﺍﺕ ﺍﻻﺧﺘﺮﺍﻉ: ﻋﻠﻰ ﺍﻟﻤﻮﺭﺩ ﻭﻭﺭﺛﺘﻪ ﺍﻟﺸﺮﻋﻴﻴﻦ ﻭﺧﻠﻔﺎﺋﻬﻢ ﻭﺍﻟﻤﺘﻨﺎﺯﻝ
+                                            ﻟﻬﻢ ﻭﻣﻤﺜﻠﻴﻬﻢ ﺍﻟﺸﺮﻋﻴﻴﻦ ﺃﻥ ﻳﻘﻮﻣﻮﺍ ﺑﺤﻤﺎﻳﺔ ﻭﺗﻌﻮﻳﺾ ﻭﺇﻋﻔﺎﺀ ﺍﻟﻤﺸﺘﺮﻯ ﻭﻋﻤﻼﺋﻪ ﻭﻣﻘﺎﻭﻟﻴﻪ
+                                            ﻭﻭﻛﻼﺋﻪ ﻭﻣﻮﺯﻋﻴﻪ ﻣﻦ ﺍﻟﻀﺮﺭ ﻭﺍﻟﻤﺴﺌﻮﻟﻴﺔ ﺍﻟﻨﺎﺗﺠﺔ ﻋﻦ ﺟﻤﻴﻊ ﺍﻟﻤﻄﺎﻟﺒﺎﺕ ﻭﺍﻟﻘﻀﺎﻳﺎ
+                                            ﻭﺍﻷﺣﻜﺎﻡ
+                                            ﻭﻣﺼﺎﺭﻳﻒ ﺍﻟﻤﺤﺎﻛﻢ ﻭﺍﻷﺗﻌﺎﺏ ﺍﻟﻘﺎﻧﻮﻧﻴﺔ ﻭﺟﻤﻴﻊ ﺍﻟﻤﺴﺌﻮﻟﻴﺎﺕ ﻭﺍﻟﻄﻠﺒﺎﺕ ﻭﺍﻟﺨﺴﺎﺋﺮ ﺃﻳﺎ ﻛﺎﻥ
+                                            ﻧﻮﻋﻬﺎ ﺍﻟﻨﺎﺗﺠﺔ ﻋﻦ ﺍﻹﺧﻼﻝ ﺑﺄﻱ ﻣﻦ ﺑﺮﺍﺀﺍﺕ ﺍﻻﺧﺘﺮﺍﻉ ﺃﻭ ﺣﻘﻮﻕ ﺍﻟﻄﺒﻊ ﺃﻭ ﺍﻟﻌﻼﻣﺎﺕ
+                                            ﺍﻟﺘﺠﺎﺭﻳﺔ ﺑﺴﺒﺐ ﺍﻣﺘﻼﻙ ﺃﻭ ﺍﺳﺘﻌﻤﺎﻝ ﺃﻭ ﺑﻴﻊ ﺍﻟﻤﻮﺿﻮﻉ ﺍﻟﻤﺘﻌﻠﻖ ﺑﺄﻣﺮ ﺍﻟﺸﺮﺍﺀ ﺑﺸﺮﻁ ﺃﻥ
+                                            ﻳﻘﻮﻡ ﺍﻟﻤﻮﺭﺩ ﺑﺈﺷﻌﺎﺭ ﺍﻟﻤﺸﺘﺮﻯ ﻓﻮﺭﺍ ﺑﺮﻓﻊ ﺃﻳﺔ ﺩﻋﺎﻭﻱ ﻭﻳﺤﻖ ﻟﻠﻤﻮﺭﺩ ﺃﻥ ﻳﺘﻢ ﺗﻤﺜﻴﻠﻪ ﻓﻲ
+                                            ﻫﻴﺌﺔ ﺍﻟﺪﻓﺎﻉ ﻋﻦ ﻃﺮﻳﻖ ﺍﻟﻤﺤﺎﻣﻲ ﺍﻟﺬﻱ ﻳﺨﺘﺎﺭﻩ ﺑﻨﻔﺴﻪ ﻭﻋﻠﻰ ﻧﻔﻘﺘﻪ ﺍﻟﺨﺎﺻﺔ، ﻛﻤﺎ ﻳﻜﻮﻥ
+                                            ﻟﻠﻤﺸﺘﺮﻱ ﻭﻋﻤﻼﺋﻪ ﻭﻣﻘﺎﻭﻟﻴﻪ ﻭﻭﻛﻼﺋﻪ ﻭﻣﻮﺯﻋﻴﻪ ﺍﻟﺤﻖ ﺍﻟﻘﺎﻧﻮﻧﻲ ﻏﻴﺮ ﺍﻟﻤﻘﻴﺪ ﻭﺍﻟﺘﺮﺧﻴﺺ
+                                            ﻹﺳﺘﻌﻤﺎﻝ ﺍﻟﻤﻮﺿﻮﻉ ﻣﺤﻞ ﺍﻟﻌﻘﺪ ﻓﻲ ﺟﻤﻴﻊ ﺍﻟﻮﺟﻮﻩ ﺍﻟﻤﺘﻌﻠﻘﺔ ﺑﺠﻤﻴﻊ ﺑﺮﺍﺀﺍﺕ ﺍﻻﺧﺘﺮﺍﻉ ﺃﻭ
+                                            ﺍﻟﺘﻲ ﺗﻜﻮﻥ ﻟﻠﻤﺸﺘﺮﻱ ﻣﺼﻠﺤﺔ
+                                            ﻓﻴﻬﺎ ﻣﺴﺘﻘﺒﻼ.
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--                            <t t-call="purchase.report_purchaseorder_document"/>-->
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="sannad_bags_letterhead">
+            <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
+                  rel="stylesheet" type="text/css"/>
+            <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>
+            <t t-set="company" t-value="user.company_id"/>
+            <div class="header text-center" width="100%"
+                 style="font-family: 'Times New Roman'; margin:0px 50px 0px 50px;">
+                <table class="table-borderless" width="100%">
+                    <tr>
+                        <td style="text-align:left;">
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)"
+                                 alt="Logo" height="40px" width="80px" style="margin-top:20px;"/>
+                        </td>
+                        <td style="text-align:right;" class="border-bottom">
+                            <span style="text-align:center;">
+                                <span>مصنع شـــــــركة سنــــــد الأكيـــــــاس</span>
+                                <br/>
+                                <span>Sanad Bags Company Factory</span>
+                            </span>
+                            <br/>
+                            <br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="border-bottom">
+                        </td>
+                    </tr>
+                </table>
+                <!--                <hr style="border: solid 1px black;" width="100%"/>-->
+                <!--                <img src="sanad_custom_reports/static/description/letterhead_header.png"-->
+                <!--                     height="110px"/>-->
+            </div>
+            <div class="footer text-right border-top border-bottom" width="100%"
+                 style="font-family: 'Times New Roman'; padding:15px 0px 6px 0px; margin:0px 50px 0px 50px;">
+                <!--                <img src="sanad_custom_reports/static/description/letterhead_footer.png"/>-->
+
+                <table class="table-borderless"
+                       style="table-layout: fixed; width: 100%; font-size:6.5pt; height:40px;">
+                    <tr>
+                        <td width="20%">مصنع شـــــــركة سنــــــد الأكيـــــــاس</td>
+                        <td style="text-align:left;" t-options="{'lang': 'ar_SY'}" dir="rtl">
+                            <span>8438 - المـــدينـــــة الصناعيــــة الثالثــــة، الدمــام 34857 - 3037، المملكـة
+                                العربيـة السعوديـــــة
+                            </span>
+                        </td>
+                        <td width="15%">
+                            C.R. 2050112802
+                        </td>
+                        <td style="text-align:right;" class="border-start" width="15%">
+                            www.sanadbags.com
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%">Sanad Bags Company Factory</td>
+                        <td style="text-align:left;">
+                            <span>8438 - 3rd Industrial City, Dammam 34857 - 3037, Kingdom of Saudi Arabia</span>
+                        </td>
+                        <td width="15%">Tel: 966 13 568 0097</td>
+                        <td style="text-align:right;" class="border-start" width="15%">info@sanadbags.com</td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Stock Picking Inherit Form View to Modify it -->
+        <record id="view_picking_form_inherit_branch" model="ir.ui.view">
+            <field name="name">view.picking.form.inherit.branch</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='picking_type_id']"
+                       position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="branch_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Stock Picking Inherit Tree View to Modify it -->
+        <record id="vpicktree_inherit_branch" model="ir.ui.view">
+            <field name="name">view.picking.tree.inherit.branch</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']"
+                       position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="branch_id" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- Stock Picking Inherit Search View to Modify it -->
+        <record id="view_picking_internal_search_inherit_branch" model="ir.ui.view">
+            <field name="name">view.picking.search.inherit.branch</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search"
+                       position="inside">
+                    <!-- Add your fields or attributes here -->
+                    <field name="branch_id"/>
+                    <filter string="Branch" name="branch" domain="[]" context="{'group_by':'branch_id'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
