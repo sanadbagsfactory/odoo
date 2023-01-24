@@ -52,25 +52,25 @@ class AccountMove(models.Model):
         if records:
             for line in res.invoice_line_ids:
                 line.branch_id = res.branch_id
-                # line.analytic_distribution = {
-                #     res.branch_id.analytic_account_id.id: 100}
+                line.analytic_distribution = {
+                    res.branch_id.analytic_account_id.id: 100} if res.branch_id.analytic_account_id else None
 
             for line in res.line_ids:
                 line.branch_id = res.branch_id
-                # line.analytic_distribution = {
-                #     res.branch_id.analytic_account_id.id: 100}
+                line.analytic_distribution = {
+                    res.branch_id.analytic_account_id.id: 100} if res.branch_id.analytic_account_id else None
         else:
             print("else create called")
             for line in res.invoice_line_ids:
                 if not res.branch_id:
                     line.branch_id = res.branch_id
-                    # line.analytic_distribution = {
-                    #     res.branch_id.analytic_account_id.id: 100}
+                    line.analytic_distribution = {
+                        res.branch_id.analytic_account_id.id: 100} if res.branch_id.analytic_account_id else None
             for line in res.line_ids:
                 if not line.branch_id:
                     line.branch_id = res.branch_id.id
-                    # line.analytic_distribution = {
-                    #     res.branch_id.analytic_account_id.id: 100}
+                    line.analytic_distribution = {
+                        res.branch_id.analytic_account_id.id: 100} if res.branch_id.analytic_account_id else None
         return res
 
     def write(self, values):
@@ -81,24 +81,24 @@ class AccountMove(models.Model):
             if records:
                 for line in self.invoice_line_ids:
                     line.branch_id = self.branch_id.id
-                    # line.analytic_distribution = {
-                    #     self.branch_id.analytic_account_id.id: 100}
+                    line.analytic_distribution = {
+                        self.branch_id.analytic_account_id.id: 100} if self.branch_id.analytic_account_id else None
                 for line in self.line_ids:
                     line.branch_id = self.branch_id.id
-                    # line.analytic_distribution = {
-                    #     self.branch_id.analytic_account_id.id: 100}
+                    line.analytic_distribution = {
+                        self.branch_id.analytic_account_id.id: 100} if self.branch_id.analytic_account_id else None
             else:
                 print("else write called")
                 for line in self.invoice_line_ids:
                     if not line.branch_id:
                         line.branch_id = self.branch_id.id
-                        # line.analytic_distribution = {
-                        #     self.branch_id.analytic_account_id.id: 100}
+                        line.analytic_distribution = {
+                            self.branch_id.analytic_account_id.id: 100} if self.branch_id.analytic_account_id else None
                 for line in self.line_ids:
                     if not line.branch_id:
                         line.branch_id = self.branch_id.id
-                        # line.analytic_distribution = {
-                        #     self.branch_id.analytic_account_id.id: 100}
+                        line.analytic_distribution = {
+                            self.branch_id.analytic_account_id.id: 100} if self.branch_id.analytic_account_id else None
         return res
 
     def action_register_payment(self):
