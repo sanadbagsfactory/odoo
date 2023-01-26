@@ -5,13 +5,12 @@
                 <t t-call="sanad_custom_reports.sannad_bags_letterhead"/>
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.basic_layout">
-<!--                        <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"-->
-<!--                              rel="stylesheet" type="text/css"/>-->
-<!--                        <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>-->
+                        <!--                        <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"-->
+                        <!--                              rel="stylesheet" type="text/css"/>-->
+                        <!--                        <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>-->
                         <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
-
                         <div class="page"
-                             style="margin:8px !important; font-family: 'Times New Roman';  margin:0px 50px 0px 50px !important;">
+                             style="margin:8px !important; font-family: 'Times New Roman' !important;  margin:0px 50px 0px 50px !important;">
                             <div class="oe_structure"/>
                             <table class="table table-borderless" width="100%">
                                 <tr>
@@ -182,8 +181,9 @@
                             <p t-field="o.notes" class="mt-4"/>
                             <div class="oe_structure"/>
                             <p style="page-break-before:always;"/>
-                            <table class="table-borderless" width="115%" t-if="o.state in ['purchase', 'done']"
-                                   style="margin:0px -50px 0px -50px !important;">
+                            <table class="table-borderless" width="115%"
+                                   t-if="o.state in ['purchase', 'done']"
+                                   style="margin:0px -50px 0px -50px !important; font-family: 'Times New Roman';">
                                 <tr style="font-size:7pt;">
                                     <th class="text-center">
                                         <span>Conditions &amp; Terms Order Purchase</span>
@@ -634,12 +634,12 @@
         </template>
 
         <template id="sannad_bags_letterhead">
-            <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
-                  rel="stylesheet" type="text/css"/>
-            <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>
+<!--            <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"-->
+<!--                  rel="stylesheet" type="text/css"/>-->
+<!--            <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>-->
             <t t-set="company" t-value="user.company_id"/>
             <div class="header text-center" width="100%"
-                 style="font-family: 'Times New Roman'; margin:0px 50px 0px 50px;">
+                 style="font-family: 'Times New Roman' !important; margin:0px 50px 0px 50px;">
                 <table class="table-borderless" width="100%">
                     <tr>
                         <td style="text-align:left;">
@@ -647,10 +647,10 @@
                                  alt="Logo" height="40px" width="80px" style="margin-top:20px;"/>
                         </td>
                         <td style="text-align:right;" class="border-bottom">
-                            <span style="text-align:center; font-family: 'Times New Roman';">
+                            <span style="text-align:center; font-family: 'Times New Roman' !important;">
                                 <span>مصنع شـــــــركة سنــــــد الأكيـــــــاس</span>
                                 <br/>
-                                <span style="font-family: 'Times New Roman';">Sanad Bags Company Factory</span>
+                                <span style="font-family: 'Times New Roman' !important;">Sanad Bags Company Factory</span>
                             </span>
                             <br/>
                             <br/>
@@ -666,11 +666,11 @@
                 <!--                     height="110px"/>-->
             </div>
             <div class="footer text-right border-top border-bottom" width="100%"
-                 style="font-family: 'Times New Roman'; padding:15px 0px 6px 0px; margin:0px 50px 0px 50px;">
+                 style="font-family: 'Times New Roman' !important; padding:15px 0px 6px 0px; margin:0px 50px 0px 50px;">
                 <!--                <img src="sanad_custom_reports/static/description/letterhead_footer.png"/>-->
 
                 <table class="table-borderless"
-                       style="table-layout: fixed; width: 100%; font-size:6.5pt; height:40px;">
+                       style="table-layout: fixed; width: 100%; font-size:6.5pt; height:40px; font-family: 'Times New Roman';">
                     <tr>
                         <td width="20%">مصنع شـــــــركة سنــــــد الأكيـــــــاس</td>
                         <td style="text-align:left;" t-options="{'lang': 'ar_SY'}" dir="rtl">
