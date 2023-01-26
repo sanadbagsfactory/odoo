@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="purchase_comparison_tree_view" model="ir.ui.view">
+        <field name="name">purchase.comparison.tree.view</field>
+        <field name="model">purchase.comparison</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="ordering_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_purchase_order_view_tree" model="ir.actions.act_window">
+        <field name="name">Purchase Order</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">tree</field>
+        <field name="target">new</field>
+    </record>
+    
+    <record id="purchase_comparison_form_view" model="ir.ui.view">
+        <field name="name">purchase.comparison.form.view</field>
+        <field name="model">purchase.comparison</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Comparison Orders">
+                <header>
+                    <button string="Reset" name="action_set_draft" type="object" class="oe_highlight" states="cancel"/>
+                    <button string="Approve" name="action_set_approve" type="object" class="oe_highlight" states="approve"/>
+                    <button string="Confirm" name="action_set_confirm" type="object" class="oe_highlight" states="approved"/>
+                    <button name="open_purchase_order" type="object" string="Select RFQ"  class="oe_highlight" states="draft"/>
+                    <button string="Cancel" name="action_cancel" type="object" class="oe_highlight" states="draft,approve,approved,inprogress"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_open_dashboard" string="RFQ Comparison" class="oe_stat_button" icon="fa-dashboard" states="approved,inprogress,done"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>     
+                    <group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="company_id"/>
+                        </group>
+                        <group>
+                            <field name="ordering_date"/>
+                            <field name='end_date'/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Comparison Lines">
+                            <field name="comparison_line_ids" readonly='1'>
+                                <tree editable="none">
+                                    <field name="purchase_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="user_id"/>
+                                    <field name="date"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="purchase_comparison_tree_view_new_inherit" model="ir.ui.view">
+        <field name="name">purchase.comparison.tree.view</field>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <tree string="Purchase Order">
+                <header>
+                    <button type="object" name="action_open_dashboard" string="Confirm" class="oe_highlight btn-primary"/>
+                </header>
+                <field name="priority" optional="show" widget="priority" nolabel="1"/>
+                <field name="partner_ref" optional="hide"/>
+                <field name="name" string="Reference" readonly="1" decoration-bf="1"/>
+                <field name="date_approve" invisible="context.get('quotation_only', False)" optional="show"/>
+                <field name="partner_id" readonly="1"/>
+                <field name="company_id" readonly="1" options="{'no_create': True}" groups="base.group_multi_company" optional="show"/>
+                <field name="date_planned" invisible="context.get('quotation_only', False)" optional="show"/>
+                <field name="user_id" optional="show" widget="many2one_avatar_user"/>
+                <field name="date_order" attrs="{'invisible': ['|', '|', ('state', '=', 'purchase'), ('state', '=', 'done'), ('state', '=', 'cancel')]}" invisible="not context.get('quotation_only', False)" widget="remaining_days" optional="show"/>
+                <field name="activity_ids" widget="list_activity" optional="show"/>
+                <field name="origin" optional="show"/>
+                <field name="amount_untaxed" sum="Total Untaxed amount" string="Untaxed" widget="monetary" optional="hide"/>
+                <field name="amount_total" sum="Total amount" widget="monetary" optional="show" decoration-bf="state in ['purchase', 'done']"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="state" optional="show" widget="badge" decoration-success="state == 'purchase' or state == 'done'" decoration-warning="state == 'to approve'" decoration-info="state == 'draft' or state == 'sent'"/>
+                <field name="invoice_status" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- Action -->
+    <record id="action_view_of_purchase_comparison" model="ir.actions.act_window">
+        <field name="name">Purchase Comparison</field>
+        <field name="res_model">purchase.comparison</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_purchase_comparison"
+        name="Purchase Comparison"
+        action="action_view_of_purchase_comparison"
+        parent="purchase.menu_procurement_management"
+        sequence="20"
+        />
+</odoo>

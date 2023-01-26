@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+pways_purchase_comparison.access_purchase_comparison,access_purchase_comparison,pways_quotations_comparison_dashboard.model_purchase_comparison,base.group_user,1,1,1,1
+pways_purchase_comparison.access_purchase_comparison_line,access_purchase_comparison_line,pways_quotations_comparison_dashboard.model_purchase_comparison_line,base.group_user,1,1,1,1
