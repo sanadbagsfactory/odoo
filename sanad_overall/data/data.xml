@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <record id="sequence_invoice_form" model="ir.sequence">
+            <field name="name">RFQ</field>
+            <field name="code">purchase.order.rfq.seq</field>
+            <field name="prefix">%(year)s</field>
+            <field name="padding">6</field>
+            <field name="number_next">1</field>
+        </record>
+    </data>
+</odoo>
