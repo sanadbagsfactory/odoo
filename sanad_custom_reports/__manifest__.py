@@ -36,7 +36,9 @@
     # only loaded in demonstration mode
     'demo': [
     ],
-    'css': [
-        'static/src/css/report_styles.css',
-    ],
+    'assets': {
+        'web.assets_backend': [
+            'sanad_custom_reports/static/src/css/report_styles.css',
+        ]
+    }
 }
