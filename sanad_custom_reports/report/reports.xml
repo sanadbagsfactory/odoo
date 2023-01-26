@@ -31,7 +31,7 @@
         <!--        Purchase Order Letter Head and terms & Conditions Custom-->
         <!--Paper Format for Quotation / Sale Order-->
         <record id="paper_format_po" model="report.paperformat">
-            <field name="name">Quotation / Sale Order</field>
+            <field name="name">Quotation / Purchase Order</field>
             <field name="default" eval="True"/>
             <field name="format">A4</field>
             <field name="page_height">0</field>
@@ -48,7 +48,7 @@
 
         <report
                 id="po_report_pdf_id"
-                string="Quotation / Sale Order"
+                string="Quotation / Purchase Order"
                 model="purchase.order"
                 report_type="qweb-pdf"
                 name="sanad_custom_reports.report_po_temp"
