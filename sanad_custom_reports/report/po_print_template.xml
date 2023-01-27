@@ -183,7 +183,7 @@
                             <p style="page-break-before:always;"/>
                             <table class="table-borderless" width="115%"
                                    t-if="o.state in ['purchase', 'done']"
-                                   style="margin:0px -50px 0px -50px !important; font-family: 'Times New Roman';">
+                                   style="margin:0px -50px 0px -50px !important;">
                                 <tr style="font-size:7pt;">
                                     <th class="text-center">
                                         <span>Conditions &amp; Terms Order Purchase</span>
@@ -647,10 +647,10 @@
                                  alt="Logo" height="40px" width="80px" style="margin-top:20px;"/>
                         </td>
                         <td style="text-align:right;" class="border-bottom">
-                            <span style="text-align:center; font-family: 'Times New Roman' !important;">
+                            <span style="text-align:center;">
                                 <span>مصنع شـــــــركة سنــــــد الأكيـــــــاس</span>
                                 <br/>
-                                <span style="font-family: 'Times New Roman' !important;">Sanad Bags Company Factory</span>
+                                <span>Sanad Bags Company Factory</span>
                             </span>
                             <br/>
                             <br/>
@@ -670,7 +670,7 @@
                 <!--                <img src="sanad_custom_reports/static/description/letterhead_footer.png"/>-->
 
                 <table class="table-borderless"
-                       style="table-layout: fixed; width: 100%; font-size:6.5pt; height:40px; font-family: 'Times New Roman';">
+                       style="table-layout: fixed; width: 100%; font-size:6.5pt; height:40px;">
                     <tr>
                         <td width="20%">مصنع شـــــــركة سنــــــد الأكيـــــــاس</td>
                         <td style="text-align:left;" t-options="{'lang': 'ar_SY'}" dir="rtl">

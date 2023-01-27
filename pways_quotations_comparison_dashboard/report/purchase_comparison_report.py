@@ -3,6 +3,7 @@
 from odoo import api, fields, models, _
 from datetime import date, datetime, timedelta
 
+
 class NewspaperReportDetails(models.AbstractModel):
     _name = 'report.pways_quotations_comparison_dashboard.report_rfq'
     _description = "comparison rfq"
@@ -27,7 +28,7 @@ class NewspaperReportDetails(models.AbstractModel):
                 miminimum_price_id = min_price.get('id')
 
         purchase_line_min_price_ids = self.env['purchase.order.line'].browse(date_id.get('price_order_line_ids'))
-        purchase_line_min_date_ids =  self.env['purchase.order.line'].browse(date_id.get('date_order_line_ids'))
+        purchase_line_min_date_ids = self.env['purchase.order.line'].browse(date_id.get('date_order_line_ids'))
         minimum_price_ll_id = self.env['purchase.order'].browse(miminimum_price_id)
         minimum_date_ll_id = self.env['purchase.order'].browse(miminimum_date_id)
         return {'minimum_price_id': minimum_price_ll_id,
@@ -37,6 +38,5 @@ class NewspaperReportDetails(models.AbstractModel):
                 'end_date': comparison_id.end_date.strftime("%Y-%m-%d") if comparison_id.end_date else '',
                 'name': comparison_id.name,
                 'purchase_line_min_price_ids': purchase_line_min_price_ids,
-                'purchase_line_min_date_ids': purchase_line_min_date_ids, 
-         }
-
+                'purchase_line_min_date_ids': purchase_line_min_date_ids,
+                }

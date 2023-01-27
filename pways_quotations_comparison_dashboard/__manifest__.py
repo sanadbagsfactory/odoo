@@ -3,9 +3,9 @@
 {
     'name': 'RFQ_Comparison Dashboard',
     'version': '16.0.0',
-    'depends': ['purchase'],
+    'depends': ['base','purchase', 'sanad_custom_reports'],
     'category': 'purchases',
-    'author':'Preciseways',
+    'author': 'Preciseways',
     'website': "http://www.preciseways.com",
     'data': [
         'security/ir.model.access.csv',
@@ -18,6 +18,7 @@
     'assets': {
         'web.assets_backend': [
             'pways_quotations_comparison_dashboard/static/src/js/rfq_comp_dashboard.js',
+            'sanad_custom_reports/static/src/css/report_styles.css',
             'pways_quotations_comparison_dashboard/static/src/css/rfq_dashboard.css',
             'pways_quotations_comparison_dashboard/static/src/xml/rfq_comp_dashboard.xml',
         ],
@@ -26,6 +27,6 @@
     'application': True,
     'price': 35.0,
     'currency': 'EUR',
-    'images':['static/description/banner.png'],
+    'images': ['static/description/banner.png'],
     'license': 'OPL-1',
 }
