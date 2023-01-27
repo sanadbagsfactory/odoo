@@ -3,7 +3,7 @@
 {
     'name': 'RFQ_Comparison Dashboard',
     'version': '16.0.0',
-    'depends': ['base','purchase', 'sanad_custom_reports'],
+    'depends': ['base','purchase'],
     'category': 'purchases',
     'author': 'Preciseways',
     'website': "http://www.preciseways.com",
@@ -18,7 +18,6 @@
     'assets': {
         'web.assets_backend': [
             'pways_quotations_comparison_dashboard/static/src/js/rfq_comp_dashboard.js',
-            'sanad_custom_reports/static/src/css/report_styles.css',
             'pways_quotations_comparison_dashboard/static/src/css/rfq_dashboard.css',
             'pways_quotations_comparison_dashboard/static/src/xml/rfq_comp_dashboard.xml',
         ],
