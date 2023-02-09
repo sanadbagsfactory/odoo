@@ -139,3 +139,14 @@ class HrEmployee(models.Model):
         self.loan_count = self.env['hr.loan'].search_count([('employee_id', '=', self.id)])
 
     loan_count = fields.Integer(string="Loan Count", compute='_compute_employee_loans')
+
+    def action_show_loans(self):
+        return {
+            'name': _('Loans'),
+            'view_mode': 'tree,form',
+            'res_model': 'hr.loan',
+            'domain': [('employee_id', '=', self.id)],
+            'context': {
+                'default_employee_id': self.id},
+            'type': 'ir.actions.act_window',
+        }
