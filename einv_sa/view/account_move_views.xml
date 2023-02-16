@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <field name="invoice_date" position="after">
                     <field name="einv_sa_show_delivery_date" invisible="1"/>
-                    <field name="einv_sa_delivery_date" attrs="{'invisible': [('einv_sa_show_delivery_date', '=', False)], 'required': [('einv_sa_show_delivery_date', '=', True)]}"/>
+                    <field name="einv_sa_delivery_date" invisible="1"/>
                 </field>
             </field>
         </record>

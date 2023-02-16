@@ -34,7 +34,7 @@ class AccountMove(models.Model):
     # einv_qr = fields.Char(string="Amount tax total", compute="_compute_total", store='True', help="", readonly=True)
 
     # region odoo standard -------------------------
-    einv_sa_delivery_date = fields.Date(string='Delivery Date', copy=False)
+    einv_sa_delivery_date = fields.Date(string='Delivery Date', compute='_compute_einv_delivery_data')
     einv_sa_show_delivery_date = fields.Boolean(compute='_compute_einv_delivery_data')
 
     einv_sa_qr_code_str = fields.Char(string='Zatka QR Code', compute='_compute_eniv_qr_code_str')
@@ -42,6 +42,7 @@ class AccountMove(models.Model):
 
     einv_sa_confirmed = fields.Boolean(compute='_compute_einv_sa_confirmation_datetime', store=True)
 
+    @api.depends('l10n_sa_show_delivery_date', 'l10n_sa_delivery_date')
     def _compute_einv_delivery_data(self):
         for rec in self:
             if rec.l10n_sa_show_delivery_date:
