@@ -4,7 +4,7 @@
     "name": "e-Invoice KSA | tax invoice | report | qrcode | ZATCA | vat  | electronic | einvoice | e-invoice sa | accounting | tax  | Zakat, Tax and Customs Authority | invoice ",
     "version": "1.4",
     "depends": [
-        'base', 'web', 'account',
+        'base', 'web', 'account','l10n_sa'
     ],
     "author": "Genius Valley",
     "category": "Accounting",
