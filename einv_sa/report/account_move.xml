@@ -287,6 +287,7 @@
 
 
         <template id="einv_sa.inv_total">
+
             <div style="page-break-inside: avoid;">
                 <div class="row p-1 mt-1 bg-light">
                     <div class="col-6">
@@ -344,13 +345,75 @@
             <div class="oe_structure"/>
 
         </template>
+        <template id="sannad_bags_letterhead">
+            <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
+                  rel="stylesheet" type="text/css"/>
+            <link rel="stylesheet" href="einv_sa/static/src/css/report_styles.css"/>
+            <t t-set="company" t-value="user.company_id"/>
+            <div class="header text-center" width="100%"
+                 style="font-family: 'Times New Roman' !important;">
+                <table class="table-borderless" width="100%">
+                    <tr>
+                        <td style="text-align:left;">
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)"
+                                 alt="Logo" height="40px" width="80px" style="margin-top:20px;"/>
+                        </td>
+                        <td style="text-align:right;" class="border-bottom">
+                            <span style="text-align:center;">
+                                <span>مصنع شـــــــركة سنــــــد الأكيـــــــاس</span>
+                                <br/>
+                                <span>Sanad Bags Company Factory</span>
+                            </span>
+                            <br/>
+                            <br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="border-bottom">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="footer text-right border-top border-bottom" width="100%"
+                 style="font-family: 'Times New Roman' !important; padding:15px 0px 6px 0px;">
+
+                <table class="table-borderless"
+                       style="table-layout: fixed; width: 100%; font-size:6.5pt; height:40px;">
+                    <tr>
+                        <td width="20%">مصنع شـــــــركة سنــــــد الأكيـــــــاس</td>
+                        <td style="text-align:left;" t-options="{'lang': 'ar_SY'}" dir="rtl">
+                            <span>8438 - المـــدينـــــة الصناعيــــة الثالثــــة، الدمــام 34857 - 3037، المملكـة
+                                العربيـة السعوديـــــة
+                            </span>
+                        </td>
+                        <td width="15%">
+                            C.R. 2050112802
+                        </td>
+                        <td style="text-align:right;" class="border-start" width="15%">
+                            www.sanadbags.com
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%">Sanad Bags Company Factory</td>
+                        <td style="text-align:left;">
+                            <span>8438 - 3rd Industrial City, Dammam 34857 - 3037, Kingdom of Saudi Arabia</span>
+                        </td>
+                        <td width="15%">Tel: 966 13 568 0097</td>
+                        <td style="text-align:right;" class="border-start" width="15%">info@sanadbags.com</td>
+                    </tr>
+                </table>
+            </div>
+        </template>
 
         <!-- main document template -->
         <template id="einv_sa.account_move_report_document">
-            <t t-debug=""></t>
-            <t t-call="web.external_layout">
+            <t t-call="web.basic_layout">
                 <t t-set="doc" t-value="doc.with_context({'lang': lang})"/>
-                <div class="page">
+                <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
+                      rel="stylesheet" type="text/css"/>
+                <link rel="stylesheet" href="einv_sa/static/src/css/report_styles.css"/>
+                <div class="page"
+                     style="!important; font-family: 'Times New Roman' !important;">
 
                     <!-- Invoice fields-->
                     <t t-call="einv_sa.inv_header"/>
@@ -364,13 +427,13 @@
                     <!-- Invoice total-->
                     <t t-call="einv_sa.inv_total"/>
                 </div>
-
             </t>
         </template>
 
         <!-- main template -->
         <template id="einv_sa.account_move_report">
             <t t-call="web.html_container">
+                <t t-call="einv_sa.sannad_bags_letterhead"/>
                 <t t-foreach="docs" t-as="doc">
                     <t t-set="lang" t-value="doc.create_uid.lang"/>
                     <t t-call="einv_sa.account_move_report_document"/>
