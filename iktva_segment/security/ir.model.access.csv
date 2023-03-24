@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_iktva_segment_user,iktva.segment.user,model_iktva_segment,iktva_segment.group_iktva_user,1,1,0,0
+access_iktva_segment_user_all,iktva.segment.user.all,model_iktva_segment,,1,1,0,0
+access_iktva_segment_manager,iktva.segment.manager,model_iktva_segment,iktva_segment.group_iktva_user_manager,1,1,1,1

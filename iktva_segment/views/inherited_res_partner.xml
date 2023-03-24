@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <record id="view_partner_form_inherited" model="ir.ui.view">
+            <field name="name">res.partner.form.inherited</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook[last()]" position="inside">
+                    <page string="IKTVA" attrs="{'invisible': [('supplier_rank', '=', 0)]}">
+                        <group>
+                            <group>
+                                <field name="supplier_rank" invisible="1"/>
+                                <field name="customer_rank" invisible="1"/>
+                                <field name="iktva_segment_id"
+                                       attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
+                                <field name="iktva_description"
+                                       attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
+                            </group>
+                            <group>
+                                <field name="iktva_scoring" placeholder="If Any"
+                                       attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
