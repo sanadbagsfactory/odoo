@@ -1,61 +1,103 @@
 <odoo>
     <data>
-        <record id="view_partner_form_inherited" model="ir.ui.view">
+        <record id="view_partner_form_inherited_fields" model="ir.ui.view">
             <field name="name">res.partner.form.inherited</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='name']" position="after">
-                        <field name="name_arabic" nolabel="1" placeholder="اسم - عربي"
-                               attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
+                <xpath expr="//page[@name='accounting']//group//group[@name='accounting_entries']" position="inside">
+                    <field name="focus_gl" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
+                    <field name="new_gl" invisible="1"/>
                 </xpath>
-                <xpath expr="//notebook" position="before">
+                <xpath expr="//form//sheet" position="before">
+                    <header attrs="{'invisible': [('supplier_rank', '=', 0)]}">
+                        <button name="cr_expiry_msg" type="object" string="CR Expiry Message"/>
+                        <button name="action_confirm"
+                                type="object"
+                                states="draft"
+                                string="Confirmed"
+                                class="oe_highlight"
+                        />
+                        <button name="action_cancel"
+                                type="object"
+                                states="draft"
+                                string="Cancel"
+                                class="oe_highlight"
+                        />
+                        <button name="action_draft"
+                                type="object"
+                                states="cancel,confirm"
+                                string="Reset to Draft"
+                                class="oe_highlight"
+                        />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel" nolabel="1"
+                               readonly="1"/>
+                    </header>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="name_arabic" nolabel="1" placeholder="اسم - عربي"
+                           attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="after">
                     <!--                    Fields for Vendor-->
-                    <group col="4">
-                        <field name="new_gl" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
-                        <field name="focus_gl" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
-                        <field name="loc" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
-                        <field name="Comm_reg_no" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
-                        <!--                    Fields for Customer-->
-                        <field name="customer_type" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-                        <field name="primary_contact" attrs="{'invisible': [('customer_rank', '=', 0)]}" widget="phone"
-                               options="{'enable_sms': true}"/>
-                        <field name="company_name" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-                        <field name="text_treatment" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-                        <field name="cr_no" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-
-                        <field name="cr_expiry_date"
-                               attrs="{'invisible': [('supplier_rank', '=', 0), ('customer_rank', '=', 0)]}"/>
-                        <field name="trn" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-                        <field name="place_of_supply" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-                        <field name="bsn_leg_info" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-                        <field name="cus_currency_id" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-                        <field name="company_country_id" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-                        <label for="com_street" string="Company Address"
-                               attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-                        <div class="o_address_format" attrs="{'invisible': [('customer_rank', '=', 0)]}">
-                            <field name="com_street" placeholder="Street..." class="o_address_street"/>
-                            <field name="com_street2" placeholder="Street 2..." class="o_address_street"/>
-                            <field name="com_city" placeholder="City" class="o_address_city"/>
-                            <field name="com_state_id" class="o_address_state" placeholder="State"
-                                   options='{"no_open": True}'/>
-                            <field name="com_zip" placeholder="ZIP" class="o_address_zip"/>
-                            <field name="com_country_id" placeholder="Country" class="o_address_country"
-                                   options='{"no_open": True, "no_create": True}'/>
-                        </div>
-                        <!--                    Vendor Fields-->
-                        <field name="supplier_type" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
-                        <field name="iktiva_segment"
-                               attrs="{'invisible': [('supplier_rank', '=', 0), ('customer_rank', '=', 0)]}"/>
-                        <field name="iktiva_scoring" placeholder="If Any"
-                               attrs="{'invisible': [('supplier_rank', '=', 0), ('customer_rank', '=', 0)]}"/>
-                        <field name="supplier_rank" invisible="1"/>
-                        <field name="customer_rank" invisible="1"/>
-                    </group>
+                    <label for="vcode_start" string="Vendor Code"
+                           attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
+                    <div class="o_row vendor-code-fields" attrs="{'invisible': [('supplier_rank', '=', 0)]}">
+                        <group>
+                            <field name="vcode_start" placeholder="5" nolabel="1" readonly="1"/>
+                            <field name="vcode_input" placeholder="XXXX" nolabel="1"/>
+                        </group>
+                        <field name="vendor_code" placeholder="5XXXX" nolabel="1" readonly="1"/>
+                    </div>
+                    <field name="loc" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
+                    <!--                    Fields for Vendor-->
+                    <label for="ccode_start" string="Customer Code"
+                           attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <div class="o_row customer-code-fields" attrs="{'invisible': [('customer_rank', '=', 0)]}">
+                        <group>
+                            <field name="ccode_start" placeholder="3" nolabel="1" readonly="1"/>
+                            <field name="ccode_input" placeholder="XXXX" nolabel="1"/>
+                        </group>
+                        <field name="customer_code" placeholder="3XXXX" nolabel="1" readonly="1"/>
+                    </div>
+                    <!--                    Fields for Customer-->
+                    <field name="customer_type" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <field name="primary_contact" attrs="{'invisible': [('customer_rank', '=', 0)]}" widget="phone"
+                           options="{'enable_sms': true}"/>
+                    <field name="company_name" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <field name="text_treatment" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <field name="cr_no"
+                           attrs="{'invisible': [('customer_rank', '=', 0), ('supplier_rank', '=', 0)]}"/>
+                    <field name="cr_attachment_id" widget="many2many_binary"
+                           string="CR Attachment"
+                           attrs="{'invisible': [('cr_no', '=', False)]}"/>
+                    <field name="cr_expiry_date"
+                           attrs="{'invisible': [('supplier_rank', '=', 0), ('customer_rank', '=', 0)]}"/>
+                    <field name="trn" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <field name="place_of_supply" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <field name="bsn_leg_info" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <field name="cus_currency_id" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <field name="company_country_id" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <label for="com_street" string="Company Address"
+                           attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <div class="o_address_format" attrs="{'invisible': [('customer_rank', '=', 0)]}">
+                        <field name="com_street" placeholder="Street..." class="o_address_street"/>
+                        <field name="com_street2" placeholder="Street 2..." class="o_address_street"/>
+                        <field name="com_city" placeholder="City" class="o_address_city"/>
+                        <field name="com_state_id" class="o_address_state" placeholder="State"
+                               options='{"no_open": True}'/>
+                        <field name="com_zip" placeholder="ZIP" class="o_address_zip"/>
+                        <field name="com_country_id" placeholder="Country" class="o_address_country"
+                               options='{"no_open": True, "no_create": True}'/>
+                    </div>
+                    <!--                    Vendor Fields-->
+                    <field name="supplier_type" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
+                    <field name="supplier_rank" invisible="1"/>
+                    <field name="customer_rank" invisible="1"/>
                 </xpath>
                 <xpath expr="//notebook[last()]" position="inside">
                     <page string="Other Details" name="other_details"
-                          attrs="{'invisible': [('supplier_rank', '=', 0),('customer_rank', '=', 0)]}">
+                          attrs="{'invisible': [('customer_rank', '=', 0)]}">
                         <group>
                             <group>
                                 <field name="facebook_acc" widget="url"
@@ -67,6 +109,58 @@
                             </group>
                         </group>
                     </page>
+                </xpath>
+
+
+                <!--                American Standard Phone Number-->
+                <xpath expr="//field[@name='phone']" position="attributes">
+                    <attribute name="force_save">1</attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='function']" position="before">
+                    <label for="country_code_phone" string="Phone"/>
+                    <div class="o_row phone-number-fields">
+                        <field name="country_code_phone" placeholder="Country Code" nolabel="1"/>
+                        <field name="phone_number" placeholder="Phone Number" nolabel="1"/>
+                    </div>
+                    <!--                    <label for="country_code_mobile" string="Mobile"/>-->
+                    <!--                    <div class="o_row">-->
+                    <!--                        <field name="country_code_mobile" placeholder="Country Code" nolabel="1"/>-->
+                    <!--                        <field name="mobile_number" placeholder="Mobile Number" nolabel="1"/>-->
+                    <!--                    </div>-->
+                </xpath>
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="is_vat"/>
+                    <field name="vat_certificate_id" widget="many2many_binary"
+                           string="VAT Certificate"
+                           attrs="{'invisible': [('is_vat', '!=', True)]}"/>
+                    <field name="ntc_attachment_id" widget="many2many_binary"
+                           string="National TAX Certificate"/>
+                </xpath>
+                <!--                <xpath expr="//field[@name='other_id']" position="attributes">-->
+                <!--                    <attribute name="invisible">1</attribute>-->
+                <!--                </xpath>-->
+            </field>
+        </record>
+
+
+        <!--        Company-->
+        <record id="view_company_form_inherited" model="ir.ui.view">
+            <field name="name">res.company.form.inherited</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <!--                American Standard Phone Number-->
+                <xpath expr="//field[@name='phone']" position="attributes">
+                    <attribute name="force_save">1</attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='phone']" position="before">
+                    <label for="country_code_phone" string="Phone"/>
+                    <div class="o_row phone-number-fields">
+                        <field name="country_code_phone" placeholder="Country Code" nolabel="1"/>
+                        <field name="phone_number" placeholder="Phone Number" nolabel="1"/>
+                    </div>
                 </xpath>
             </field>
         </record>
