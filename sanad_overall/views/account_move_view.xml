@@ -5,6 +5,11 @@
             <field name="model">account.move</field>
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='purchase_vendor_bill_id']" position="attributes">
+                    <attribute name="domain">[('purchase_order_id', '!=', False)]</attribute>
+                    <attribute name="placeholder">Select a purchase order</attribute>
+                </xpath>
+
                 <xpath expr="//field[@name='ref']" position="after">
                     <field name="employee_id" attrs="{'invisible':[('move_type','!=','entry')]}"/>
                 </xpath>

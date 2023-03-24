@@ -14,6 +14,7 @@ class AccountMove(models.Model):
                 for line in rec.line_ids:
                     line.employee = rec.employee_id
 
+
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
@@ -21,4 +22,3 @@ class AccountMoveLine(models.Model):
     employee_id = fields.Char('Employee ID', related='employee.barcode')
     supplier_id = fields.Many2one('res.partner', string='Supplier')
     is_required = fields.Boolean('Is Required', related='account_id.is_required')
-
