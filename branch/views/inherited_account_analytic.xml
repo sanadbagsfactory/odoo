@@ -8,7 +8,7 @@
             <field name="priority">100</field>
             <field type="xml" name="arch">
                 <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="branch_id"/>
+                    <field name="branch_id" required="1"/>
                 </xpath>
             </field>
         </record>
@@ -21,7 +21,7 @@
             <field name="priority">100</field>
             <field type="xml" name="arch">
                 <xpath expr="//field[@name='parent_id']" position="after">
-                        <field name="branch_id"/>
+                        <field name="branch_id" required="1"/>
                 </xpath>
             </field>
         </record>

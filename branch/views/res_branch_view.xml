@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>        
+    <data>
 
         <!-- Form View of branch-->
         <record id="branch_res_branch_view_form" model="ir.ui.view">
@@ -53,7 +53,7 @@
         </record>
 
         <!-- This Menu Item Must have a parent -->
-        <menuitem id="branch_menu_res_branch" name="Branch"  parent="base.menu_users" action="branch_action_res_branch" />
+        <menuitem id="branch_menu_res_branch" name="Branch" parent="base.menu_users" action="branch_action_res_branch"/>
 
     </data>
 </odoo>

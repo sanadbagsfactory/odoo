@@ -18,7 +18,6 @@ class AccountMove(models.Model):
             if rec.branch_id:
                 if records:
                     for line in rec.invoice_line_ids:
-                        # h_percent = 100 - rec.branch_id.analytic_plan_id.id
                         line.branch_id = rec.branch_id.id
                         line.analytic_distribution = {
                             rec.branch_id.analytic_account_id.id: 100}
