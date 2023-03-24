@@ -1,0 +1,141 @@
+<odoo>
+    <data>
+        <record id="snd_petty_cash_tree" model="ir.ui.view">
+            <field name="name">snd.petty.cash.tree</field>
+            <field name="model">snd.petty.cash</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="vendor_id"/>
+                    <field name="branch_id"/>
+                    <field name="move_id"/>
+                    <field name="payment_state"
+                           widget="badge"
+                           decoration-danger="payment_state == 'not_paid'"
+                           decoration-warning="payment_state in ('partial', 'in_payment')"
+                           decoration-success="payment_state in ('paid', 'reversed')"
+                           attrs="{'invisible': [('payment_state', 'in', ('invoicing_legacy'))]}"
+                           optional="show"/>
+                    <field name="bill_state" widget="badge" decoration-info="bill_state == 'draft'"
+                           decoration-success="bill_state == 'posted'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="snd_petty_cash_form" model="ir.ui.view">
+            <field name="name">snd.petty.cash.form</field>
+            <field name="model">snd.petty.cash</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_confirm"
+                                type="object"
+                                states="draft"
+                                string="Confirmed"
+                                class="oe_highlight"
+                        />
+                        <button name="action_cancel"
+                                type="object"
+                                states="draft"
+                                string="Cancel"
+                                class="oe_highlight"
+                        />
+                        <button name="action_draft"
+                                type="object"
+                                states="cancel,confirm"
+                                string="Reset to Draft"
+                                class="oe_highlight"
+                        />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel" nolabel="1"
+                               readonly="1"/>
+                    </header>
+                    <!--                    <header>-->
+                    <!--                        <button name="create_bill" string="Create Bill" type="object"/>-->
+                    <!--                    </header>-->
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object" icon="fa-truck"
+                                    name="show_moves" groups="base.group_user">
+                                <!--                                    attrs="{'invisible': [('moves_count', '=', 0)]}">-->
+                                <field name="moves_count" string="Bill" widget="statinfo"/>
+                            </button>
+
+                            <button class="oe_stat_button" type="object" icon="fa-truck"
+                                    name="show_payments" groups="base.group_user">
+                                <!--                                    attrs="{'invisible': [('moves_count', '=', 0)]}">-->
+                                <field name="payments_count" string="Payment" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                                <br/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="vendor_id" attrs="{'readonly': [('state', '=', 'confirm')]}"/>
+                                <field name="account_id" attrs="{'readonly': [('state', '=', 'confirm')]}"/>
+                                <field name="tax_ids" widget="many2many_tags"
+                                       attrs="{'readonly': [('state', '=', 'confirm')]}"/>
+                                <field name="payment_id" readonly="1"
+                                       attrs="{'invisible': [('payment_id', '=', False)]}"/>
+                                <field name="description" attrs="{'readonly': [('state', '=', 'confirm')]}"/>
+                            </group>
+                            <group>
+                                <field name="journal_id" attrs="{'readonly': [('state', '=', 'confirm')]}"/>
+                                <field name="amount" attrs="{'readonly': [('state', '=', 'confirm')]}"/>
+                                <field name="branch_id" attrs="{'readonly': [('state', '=', 'confirm')]}"/>
+                                <field name="move_id" readonly="1" attrs="{'invisible': [('move_id', '=', False)]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_snd_petty_cash" model="ir.actions.act_window">
+            <field name="name">Petty Cash</field>
+            <field name="res_model">snd.petty.cash</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="snd_petty_cash_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No Record Found. Let's Create..........
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_snd_petty_cash_root" name="Petty Cash"
+                  parent="account.menu_finance_entries_accounting_miscellaneous"
+                  action="action_snd_petty_cash" sequence="150"/>
+
+
+        <!--        Account Move-->
+        <record id="view_move_form_inherited_petty_cash" model="ir.ui.view">
+            <field name="name">account.move.petty.cash.inherited</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="model">account.move</field>
+            <field name="priority">100</field>
+            <field type="xml" name="arch">
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="petty_cash_id"
+                           attrs="{'invisible': ['|', ('move_type','!=','in_invoice'), ('petty_cash_id','=',False)]}"
+                           readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--        Account Move-->
+        <record id="view_account_payment_form_inherited_petty_cash" model="ir.ui.view">
+            <field name="name">account.payment.petty.cash.inherited</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="model">account.payment</field>
+            <field name="priority">100</field>
+            <field type="xml" name="arch">
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="petty_cash_id" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
