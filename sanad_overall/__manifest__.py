@@ -30,7 +30,7 @@
         'views/account_account_view.xml',
         'views/department_document_type_view.xml',
         'views/hr_department_view.xml',
-        'views/product_product_view.xml',
+        'views/inherited_product_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

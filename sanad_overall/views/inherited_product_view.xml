@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+        <record id="product_normal_form_view_inherited" model="ir.ui.view">
+            <field name="name">product.product.view.form.inherited</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='detailed_type']" position="before">
+                    <field name="length"/>
+                    <field name="width"/>
+                </xpath>
+                <xpath expr="//field[@name='barcode']" position="before">
+                    <!--                    <field name="barcode_type"/>-->
+                    <label for="barcode_type" string="Type"/>
+                    <div class="o_row barcode-fields">
+                        <field name="barcode_type" nolabel="1"/>
+                        <field name="barcode_type_value" nolabel="1"/>
+                        <field name="barcode_sequence" placeholder="XXXXXX" nolabel="1" readonly="1" force_save="1"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='barcode']" position="attributes">
+                    <attribute name="string">Item Code</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="product_template_only_form_view_inherited" model="ir.ui.view">
+            <field name="name">product.template.form.inherited</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <field name="detailed_type" position="before">
+                    <field name="length"/>
+                    <field name="width"/>
+                </field>
+                <xpath expr="//field[@name='barcode']" position="before">
+                    <!--                    <field name="barcode_type"/>-->
+                    <label for="barcode_type" string="Type"/>
+                    <div class="o_row barcode-fields">
+                        <field name="barcode_type" nolabel="1"/>
+                        <field name="barcode_type_value" nolabel="1"/>
+                        <field name="barcode_sequence" placeholder="XXXXXX" nolabel="1" readonly="1" force_save="1"/>
+                        <button name="generate_barcode" string="Generate" type="object"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='barcode']" position="attributes">
+                    <attribute name="string">Item Code</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

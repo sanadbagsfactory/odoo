@@ -7,5 +7,29 @@
             <field name="padding">6</field>
             <field name="number_next">1</field>
         </record>
+        <record id="sequence_barcode_type_tools" model="ir.sequence">
+            <field name="name">Type Tools</field>
+            <field name="code">product.template.tools.seq</field>
+            <field name="padding">6</field>
+            <field name="number_next">1</field>
+        </record>
+        <record id="sequence_barcode_type_fg" model="ir.sequence">
+            <field name="name">Type FG</field>
+            <field name="code">product.template.fg.seq</field>
+            <field name="padding">6</field>
+            <field name="number_next">1</field>
+        </record>
+        <record id="sequence_barcode_type_rw" model="ir.sequence">
+            <field name="name">Type RW</field>
+            <field name="code">product.template.rw.seq</field>
+            <field name="padding">6</field>
+            <field name="number_next">1</field>
+        </record>
+        <record id="sequence_barcode_type_wip" model="ir.sequence">
+            <field name="name">Type WIP</field>
+            <field name="code">product.template.wip.seq</field>
+            <field name="padding">6</field>
+            <field name="number_next">1</field>
+        </record>
     </data>
 </odoo>
