@@ -5,57 +5,57 @@
                 <t t-call="sanad_custom_reports.sannad_bags_letterhead"/>
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.basic_layout">
-                        <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
-                              rel="stylesheet" type="text/css"/>
-                        <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>
+                        <!--                        <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"-->
+                        <!--                              rel="stylesheet" type="text/css"/>-->
+                        <!--                        <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>-->
                         <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
                         <div class="page"
                              style="margin:8px !important; font-family: 'Times New Roman' !important;  margin:0px 50px 0px 50px !important;">
                             <div class="oe_structure"/>
-                            <table class="table table-borderless" width="100%">
-                                <tr>
-                                    <td>
-                                        <t t-if="o.company_id">
-                                            <strong>Shipping address:</strong>
-                                            <div t-if="o.company_id">
-                                                <span t-field="o.company_id.name"/>
-                                                <t t-if="o.company_id.street">
-                                                    <br/>
-                                                    <span t-field="o.company_id.street"/>
+                            <div class="oe_row">
+                                <div style="float:left;">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <td>
+                                                <t t-if="o.company_id">
+                                                    <strong>Shipping address:</strong>
+                                                    <div t-if="o.company_id">
+                                                        <span t-field="o.company_id.name"/>
+                                                        <t t-if="o.company_id.street">
+                                                            <br/>
+                                                            <span t-field="o.company_id.street"/>
+                                                        </t>
+                                                        <t t-if="o.company_id.city">
+                                                            <br/>
+                                                            <span t-field="o.company_id.city"/>
+                                                            <span t-field="o.company_id.state_id.code"/>
+                                                            <span t-field="o.company_id.zip"/>
+                                                        </t>
+                                                        <t t-if="o.company_id.state_id">
+                                                            <br/>
+                                                            <span t-field="o.company_id.state_id.name"/>
+                                                        </t>
+                                                        <t t-if="o.company_id.phone">
+                                                            <br/>
+                                                            <span t-field="o.company_id.phone"
+                                                                  t-options="{'widget': 'phone'}"/>
+                                                        </t>
+                                                    </div>
                                                 </t>
-                                                <t t-if="o.company_id.city">
-                                                    <br/>
-                                                    <span t-field="o.company_id.city"/>
-                                                    <span t-field="o.company_id.state_id.code"/>
-                                                    <span t-field="o.company_id.zip"/>
-                                                </t>
-                                                <t t-if="o.company_id.state_id">
-                                                    <br/>
-                                                    <span t-field="o.company_id.state_id.name"/>
-                                                </t>
-                                                <t t-if="o.company_id.phone">
-                                                    <br/>
-                                                    <span t-field="o.company_id.phone"
-                                                          t-options="{'widget': 'phone'}"/>
-                                                </t>
-                                            </div>
-                                        </t>
-                                    </td>
-                                    <td>
-                                        <div t-field="o.partner_id"
-                                             t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
-                                    </td>
-                                </tr>
-                            </table>
+                                            </td>
+                                            <td>
+                                                <div t-field="o.partner_id"
+                                                     t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                                            </td>
 
-                            <!--                            <div style="text-align: center; font-size: 13pt;">-->
-                            <!--                                <strong t-if="o.state in ['draft', 'sent', 'to approve']">Request for Quotation-->
-                            <!--                                </strong>-->
-                            <!--                                <strong t-if="o.state in ['purchase', 'done']">Purchase Order-->
-                            <!--                                </strong>-->
-                            <!--                                <strong t-if="o.state == 'cancel'">Cancelled Purchase Order-->
-                            <!--                                </strong>-->
-                            <!--                            </div>-->
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div style="float:right;">
+                                    <img t-att-src="'/report/barcode/QR/'+o.name" style="height:150px; width:150px;"
+                                         alt="QR Code"/>
+                                </div>
+                            </div>
                             <div class="mt-4">
                                 <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Request for Quotation #
                                     <span t-field="o.name"/>
@@ -181,14 +181,14 @@
                             <p t-field="o.notes" class="mt-4"/>
                             <div class="oe_structure"/>
                             <p style="page-break-before:always;"/>
-                            <table class="table-borderless" width="115%"
-                                   t-if="o.state in ['purchase', 'done']"
-                                   style="margin:0px -50px 0px -50px !important;">
+                            <table class="table-borderless" width="100%"
+                                   t-if="o.state in ['purchase', 'done']">
+<!--                                   style="margin:0px -50px 0px -50px !important;">-->
                                 <tr style="font-size:7pt;">
                                     <th class="text-center">
                                         <span>Conditions &amp; Terms Order Purchase</span>
                                     </th>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <th class="text-center">
                                         <span>ﺷﺮﻭﻁ ﻭﺃﺣﻜﺎﻡ ﺃﻣـﺮ ﺍﻟﺸﺮﺍﺀ</span>
                                     </th>
@@ -219,7 +219,7 @@
                                             applicable Saudi Laws, rules, and regulations.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>1- ﺗﻌﻬﺪ:</strong>
@@ -248,7 +248,7 @@
                                             inconsistencies therein with the provisions hereof shall be null and void.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>2- ﺷﻤﻮﻟﻴﺔ ﺍﻻﺗﻔﺎﻗﻴﺔ:</strong>
@@ -299,7 +299,7 @@
                                             buyer the Supplier will be solely responsible for such liabilities.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>3- ﺍﻟﺴﻌﺮ:</strong>
@@ -340,7 +340,7 @@
                                             invoice unless otherwise stated in the Purchase Order.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>4- ﺍﻟﺪﻓـﻊ:</strong>
@@ -361,7 +361,7 @@
                                             shall replace or correct the same at the Suppliers' expense.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>5-</strong>
@@ -382,7 +382,7 @@
                                             all mortgages and encumbrances whatsoever.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>6- ﺍﻟﻤﻠﻜﻴﺔ:</strong>
@@ -407,7 +407,7 @@
                                             Supplier as time is essence of the order.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>7-ﺍﻟﻘﻮﺓ ﺍﻟﻘﺎﻫﺮﺓ:</strong>
@@ -438,7 +438,7 @@
                                             with Purchases laws applicable in the kingdom of Saudi Arabia.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>8- ﺍﻟﺠﺰﺍﺀﺍﺕ:</strong>
@@ -472,7 +472,7 @@
                                             laws and regulations applicable in the kingdom of Saudi Arabia.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>9- ﺍﻟﻤﻨﺢ ﻭﺍﻟﻌﻤﻮﻻﺕ:</strong>
@@ -499,7 +499,7 @@
                                             the performance of his obligations under this Purchase Order.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>10- ﻋﺎﻡ:</strong>
@@ -525,7 +525,7 @@
                                             out of or relating directly or indirectly to this purchase order.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>11- ﺍﻟﺘﻌﻮﻳﺾ:</strong>
@@ -552,7 +552,7 @@
                                             notice is transmitted through mail.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>12- ﺍﻹﺧﻄﺎﺭﺍﺕ:</strong>
@@ -575,7 +575,7 @@
                                             agreed in writing for such assignment.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>13- ﺍﻟﺘﻨﺎﺯﻝ:</strong>
@@ -605,7 +605,7 @@
                                             which Buyer may now or in future have an interest.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>14- براءات الاختراع:</strong>
@@ -636,7 +636,7 @@
                                             compliance with every term and condition of this purchase order.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>15- ﻋـﺪﻡ ﺍﻟﺘﻨﺎﺯﻝ:</strong>
@@ -659,7 +659,7 @@
                                             the order unless permission is first obtained in writing from buyer.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>16- ﺍﻟﺴﺮﻳﺔ:</strong>
@@ -688,7 +688,7 @@
 
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>17- ﺍﻟﺘﺪﻗﻴﻖ:</strong>
@@ -718,7 +718,7 @@
                                             any such solicitation by any of buyer's employees, agents or any third party
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>18- ﺗﻀﺎﺭﺏ ﺍﻟﻤﺼﺎﻟﺢ:</strong>
@@ -747,7 +747,7 @@
                                             these terms and conditions.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>19- ﺍﻟﻘﺒـﻮﻝ:</strong>
@@ -770,7 +770,7 @@
 
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>20- ﺇﻧﻬﺎﺀ ﻃﻠﺐ ﺍﻟﺸﺮﺍﺀ:</strong>
@@ -792,7 +792,7 @@
                                             Supplier's advertising or promotional materials.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>21- ﻋﺪﻡ ﺍﻹﻋــﻼﻥ:</strong>
@@ -817,7 +817,7 @@
                                             the Kingdom of Saudi Arabia .
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>22- ﺍﻟﻘﺎﻧﻮﻥ ﻭﺍﺟﺐ ﺍﻟﺘﻄﺒﻴﻖ ﻭﺍﻹﺧﺘﺼﺎﺹ:</strong>
@@ -839,9 +839,9 @@
         </template>
 
         <template id="sannad_bags_letterhead">
-            <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
-                  rel="stylesheet" type="text/css"/>
-            <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>
+            <!--            <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"-->
+            <!--                  rel="stylesheet" type="text/css"/>-->
+            <!--            <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>-->
             <t t-set="company" t-value="user.company_id"/>
             <div class="header text-center" width="100%"
                  style="font-family: 'Times New Roman' !important; margin:0px 50px 0px 50px;">
