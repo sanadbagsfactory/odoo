@@ -40,8 +40,8 @@
     """
     ,
     "data": [
-        "view/partner.xml",
-        "report/base_document_layout.xml",
+        # "view/partner.xml",
+        # "report/base_document_layout.xml",
         "report/account_move.xml",
         "view/account_move_views.xml"
 
@@ -52,6 +52,7 @@
     'assets': {
         'web.report_assets_common': [
             'einv_sa/static/css/report_style.css',
+            "einv_sa/static/src/css/report_styles.css"
         ],
     },
 }

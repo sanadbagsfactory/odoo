@@ -44,9 +44,8 @@
 
                 </xpath>
                 <xpath expr="//field[@name='vat']" position="after">
-                    <field name="other_id"></field>
+                    <field name="other_id" invisible="1"/>
                 </xpath>
-
             </field>
         </record>
 

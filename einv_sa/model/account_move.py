@@ -1,10 +1,9 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 import base64
 # from base64 import b64encode
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, Warning
+# from translate import Translator
 
 
 def generate_tlv_hex(*args):
@@ -122,6 +121,20 @@ class AccountMove(models.Model):
 
             # tags = seller_name, vat_no, inv_date, total, vat
             # r.einv_qr = generate_tlv_base64(r.company_id.name, r.company_id.vat, r.invoice_date, r.amount_total, )
+
+    def get_name_wo_year(self):
+        for rec in self:
+            s = rec.name
+            return f"{s.split('/')[0]}/{s.split('/')[-1]}"
+
+    def get_amount_in_words(self):
+        for rec in self:
+            text = rec.currency_id.amount_to_text(rec.amount_total)
+            return text.title()
+
+    # def get_english_to_arabic_amount(self):
+    #     translator = Translator(from_lang="english",to_lang="arabic")
+    #     return translator.translate(self.get_amount_in_words())
 
 
 class AccountMoveLine(models.Model):

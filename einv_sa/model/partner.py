@@ -17,3 +17,11 @@ class Partner(models.Model):
     def test(self):
 
         pass
+
+# from translate import Translator
+# translator = Translator(from_lang="english",to_lang="arabic")
+# translation = translator.translate("Two Hundred And Forty-Three Dollars And Sixty Cents")
+# print(translation)
+
+
+
