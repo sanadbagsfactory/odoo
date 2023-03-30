@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_inherited" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='has_accounting_entries']" position="after">
+                    <h2 style="background-color:#e1e3e6; padding-left:30px">Discount Mapping</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box" title="Discount Mapping">
+                            <div class="o_setting_right_pane">
+                                <group string="Invoice Product">
+                                    <field name="inv_product_id"/>
+                                </group>
+                                <group string="Bill Product">
+                                    <field name="bill_product_id"/>
+                                </group>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+                <!--                <xpath expr="//field[@name='fiscal_localization_setting_container']" position="after">-->
+                <!--&lt;!&ndash;                    <h2 style="background-color:#e1e3e6; padding-left:30px">Discount Accounting</h2>&ndash;&gt;-->
+                <!--                    <h2>Discount Accounting</h2>-->
+                <!--                    <div class="row mt16 o_settings_container">-->
+                <!--                        <div class="col-12 col-lg-6 o_setting_box" title="Discount Adjustment Account">-->
+                <!--                            <div class="o_setting_right_pane">-->
+                <!--                                <group>-->
+                <!--                                    <field name="disinv_account_id"/>-->
+                <!--&lt;!&ndash;                                    <field name="disbill_account_id"/>&ndash;&gt;-->
+                <!--                                </group>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </xpath>-->
+            </field>
+        </record>
+    </data>
+</odoo>
