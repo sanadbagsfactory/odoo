@@ -39,26 +39,18 @@
                            attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='vat']" position="after">
-                    <!--                    Fields for Vendor-->
-                    <label for="vcode_start" string="Vendor Code"
-                           attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
-                    <div class="o_row vendor-code-fields" attrs="{'invisible': [('supplier_rank', '=', 0)]}">
-                        <group>
-                            <field name="vcode_start" placeholder="5" nolabel="1" readonly="1"/>
-                            <field name="vcode_input" placeholder="XXXX" nolabel="1"/>
-                        </group>
-                        <field name="vendor_code" placeholder="5XXXX" nolabel="1" readonly="1"/>
+<!--                    <field name="vendor_code" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>-->
+                    <label for="vendor_code" string="Vendor Code" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
+                    <div class="o_row barcode-fields" attrs="{'invisible': [('supplier_rank', '=', 0)]}">
+                        <field name="vendor_code" placeholder="5XXXXX" nolabel="1" readonly="1" force_save="1"/>
+                        <button name="generate_vendor_code" string="Generate" type="object" attrs="{'invisible': [('vendor_code', '!=', False)]}"/>
                     </div>
                     <field name="loc" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
-                    <!--                    Fields for Vendor-->
-                    <label for="ccode_start" string="Customer Code"
-                           attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-                    <div class="o_row customer-code-fields" attrs="{'invisible': [('customer_rank', '=', 0)]}">
-                        <group>
-                            <field name="ccode_start" placeholder="3" nolabel="1" readonly="1"/>
-                            <field name="ccode_input" placeholder="XXXX" nolabel="1"/>
-                        </group>
-                        <field name="customer_code" placeholder="3XXXX" nolabel="1" readonly="1"/>
+                    <!--                    Fields for Customer-->
+                    <label for="customer_code" string="Vendor Code" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <div class="o_row barcode-fields" attrs="{'invisible': [('customer_rank', '=', 0)]}">
+                        <field name="customer_code" placeholder="5XXXXX" nolabel="1" readonly="1" force_save="1"/>
+                        <button name="generate_customer_code" string="Generate" type="object" attrs="{'invisible': [('customer_code', '!=', False)]}"/>
                     </div>
                     <!--                    Fields for Customer-->
                     <field name="customer_type" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>

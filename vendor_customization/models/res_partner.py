@@ -12,30 +12,24 @@ class ResPartner(models.Model):
 
     #     Vendor Custom Fields
     name_arabic = fields.Char('Arabic Name')
-    vcode_start = fields.Integer('5', default=5)
-    vcode_input = fields.Char(size=4)
-    vendor_code = fields.Char('Vendor Code', compute='_compute_vendor_code')
+    vendor_code = fields.Char('Vendor Code')
 
-    @api.depends('vcode_input')
-    def _compute_vendor_code(self):
+    def generate_vendor_code(self):
         for rec in self:
-            if rec.vcode_input:
-                rec.vendor_code = str(rec.vcode_start) + str(rec.vcode_input)
-            else:
-                rec.vendor_code = f'{str(rec.vcode_start)}XXXX'
+            seq = self.env['ir.sequence'].next_by_code('res.partner.vendor.seq')
+            rec.update({
+                'vendor_code': seq,
+            })
 
     # Customer Fields
-    ccode_start = fields.Integer('3', default=3)
-    ccode_input = fields.Char(size=4)
-    customer_code = fields.Char('Customer Code', compute='_compute_customer_code')
+    customer_code = fields.Char('Customer Code')
 
-    @api.depends('ccode_input')
-    def _compute_customer_code(self):
+    def generate_customer_code(self):
         for rec in self:
-            if rec.ccode_input:
-                rec.customer_code = str(rec.ccode_start) + str(rec.ccode_input)
-            else:
-                rec.customer_code = f'{str(rec.ccode_start)}XXXX'
+            seq = self.env['ir.sequence'].next_by_code('res.partner.customer.seq')
+            rec.update({
+                'customer_code': seq,
+            })
 
     focus_gl = fields.Char('Focus G/L')
     new_gl = fields.Char('new G/L')
@@ -96,25 +90,66 @@ class ResPartner(models.Model):
                     self.env.company.phone_number = str(rec.phone_number)
 
     # CR Expiry Msg Display to Account & Purchase users
-
     def cr_expiry_msg(self):
         print('clicked cr_expiry')
         if (
                 self.env.user.has_group('account.group_account_manager')
                 or self.env.user.has_group('account.group_account_user')
         ):
+            data_dict = {}
             for rec in self.env['res.partner'].search([]):
-                if rec.cr_expiry_date <= datetime.date.today():
-                    return {
-                        'type': 'ir.actions.client',
-                        'tag': 'display_notification',
-                        'params': {
-                            'title': ('CR Date Expired'),
-                            'message': f'CR date has been expired of User\nID: {rec.id}\nName: {rec.name}',
-                            'type': 'danger',  # types: success,warning,danger,info
-                            'sticky': True,  # True/False will display for few seconds if false
-                        },
-                    }
+                if (
+                        rec.cr_expiry_date
+                        and rec.cr_expiry_date <= datetime.date.today()
+                ):
+                    print(f'record found: Id: {rec.id} Name: {rec.name}')
+                    data_dict[rec.id] = rec.name
+            print(f'Last Login time: {self.env.user.login_date.time()}')
+            print(f'Last Login time: {self.env.user.login_date}')
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': ('CR Date Expired'),
+                    'message': f'Following users CR date has been expired:\n {data_dict}',
+                    'type': 'danger',  # types: success,warning,danger,info
+                    'sticky': True,  # True/False will display for few seconds if false
+                },
+            }
+
+    def send_reminder_emails(self):
+        print('send_reminder_emails')
+        today = datetime.now().date()
+        print(today)
+        partners = self.env['res.partner'].search([])
+        if expired_partners := partners.filtered(
+                lambda p: p.cr_expiry_date <= today
+        ):
+            subject = 'Your CR date has expired'
+            print(subject)
+            print(expired_partners)
+            for partner in expired_partners:
+                body = f'Dear {partner.name},\n\nYour CR date has expired. Please renew your CR status as soon as possible.\n\nBest regards,\n\nThe Odoo team'
+                mail_values = {
+                    'subject': subject,
+                    'body_html': body,
+                    'email_to': partner.email,
+                }
+                if mail := self.env['mail.mail'].create(mail_values):
+                    mail.send()
+
+    # def boom_boom(self, id, name):
+    #     print('Boom Boom Called')
+    #     return {
+    #         'type': 'ir.actions.client',
+    #         'tag': 'display_notification',
+    #         'params': {
+    #             'title': ('CR Date Expired'),
+    #             'message': f'CR date has been expired of User\nID: {id}\nName: {name}',
+    #             'type': 'danger',  # types: success,warning,danger,info
+    #             'sticky': True,  # True/False will display for few seconds if false
+    #         },
+    #     }
 
     # new fields
     is_vat = fields.Boolean('VAT', default=False)
@@ -176,4 +211,3 @@ class InheritedResCompany(models.Model):
         for rec in self:
             if rec.phone_number and not rec.phone_number.isdigit():
                 raise ValidationError(_("The Phone Number must be a sequence of digits."))
-
