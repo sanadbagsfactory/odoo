@@ -10,7 +10,7 @@
         Long description of module's purpose
     """,
 
-    'author': "My Company",
+    'author': "M.Rizwan",
     'website': "https://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing

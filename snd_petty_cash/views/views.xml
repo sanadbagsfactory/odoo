@@ -7,8 +7,9 @@
                 <tree>
                     <field name="name"/>
                     <field name="vendor_id"/>
-                    <field name="branch_id"/>
-                    <field name="move_id"/>
+                    <field name="branch_id" optional="show"/>
+                    <field name="move_id"  optional="show"/>
+                    <field name="ref" string="Reference"  optional="show"/>
                     <field name="payment_state"
                            widget="badge"
                            decoration-danger="payment_state == 'not_paid'"
@@ -17,7 +18,7 @@
                            attrs="{'invisible': [('payment_state', 'in', ('invoicing_legacy'))]}"
                            optional="show"/>
                     <field name="bill_state" widget="badge" decoration-info="bill_state == 'draft'"
-                           decoration-success="bill_state == 'posted'"/>
+                           decoration-success="bill_state == 'posted'" optional="show"/>
                 </tree>
             </field>
         </record>
@@ -87,6 +88,7 @@
                                 <field name="amount" attrs="{'readonly': [('state', '=', 'confirm')]}"/>
                                 <field name="branch_id" attrs="{'readonly': [('state', '=', 'confirm')]}"/>
                                 <field name="move_id" readonly="1" attrs="{'invisible': [('move_id', '=', False)]}"/>
+                                <field name="ref" attrs="{'readonly': [('state', '=', 'confirm')]}"/>
                             </group>
                         </group>
                     </sheet>

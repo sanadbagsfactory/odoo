@@ -19,9 +19,9 @@ class SNDPettyCash(models.Model):
     # domain='[("account_type", "=", "expense")]'
     amount = fields.Float(string='Amount')
     tax_ids = fields.Many2many(comodel_name='account.tax', string='Taxes')
-    branch_id = fields.Many2one(comodel_name='res.branch', string='Branch')
     description = fields.Text(string='Description')
     move_id = fields.Many2one('account.move', 'Bill')
+    ref = fields.Char(string='Vendor Invoice Number')
     bill_state = fields.Selection(related='move_id.state', string='Bill Status')
     payment_state = fields.Selection(related='move_id.payment_state', string='Payment State')
     payment_id = fields.Many2one('account.payment', 'Payment')
@@ -30,6 +30,12 @@ class SNDPettyCash(models.Model):
         ('confirm', 'Confirm'),
         ('cancel', 'Cancelled')
     ], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
+
+    def _default_branch_id(self):
+        branch_id = self.env['res.users'].browse(self._uid).branch_id.id
+        return branch_id
+
+    branch_id = fields.Many2one('res.branch', default=_default_branch_id)
 
     def action_confirm(self):
         self.write({
@@ -63,6 +69,7 @@ class SNDPettyCash(models.Model):
         for rec in self:
             bill = {
                 'petty_cash_id': rec.id,
+                'ref': rec.ref,
                 'invoice_line_ids': [(0, 0, {
                     'product_id': False,
                     'name': rec.description,
