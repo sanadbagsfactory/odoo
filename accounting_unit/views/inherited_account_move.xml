@@ -19,7 +19,6 @@
                 <!--                Terms/-->
                 <xpath expr="//group[@id='header_right_group']" position="replace">
                     <group id="header_right_group">
-
                         <!-- Invoice date (only invoices / receipts) -->
                         <label for="invoice_date" string="Invoice Date" style="font-weight:bold;"
                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
@@ -41,7 +40,7 @@
                              attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}">
                             <label for="invoice_date_due" string="Due Date"
                                    attrs="{'invisible': [('invoice_payment_term_id', '!=', False)]}"/>
-                            <label for="invoice_payment_term_id" string="Payment terms"/>
+                            <label for="invoice_payment_term_id" string="Payment terms" invisible="1"/>
                         </div>
                         <div class="d-flex"
                              attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}">
@@ -51,7 +50,6 @@
                                   attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('invoice_payment_term_id', '!=', False)]}"
                                   invisible="1">
                                 or
-
                             </span>
                             <field name="invoice_payment_term_id"
                                    context="{'example_date': invoice_date, 'example_amount': tax_totals['amount_total']}"
