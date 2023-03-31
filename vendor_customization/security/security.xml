@@ -6,13 +6,8 @@
         <field name="description">Helps you handle your Basic needs.</field>
     </record>
 
-    <record id="group_review_partner" model="res.groups">
-        <field name="name">Partner Review</field>
-        <field name="category_id" ref="approval_workflow_root"/>
-    </record>
-
-    <record id="group_approve_partner" model="res.groups">
-        <field name="name">partner Approve</field>
+    <record id="group_confirm_vendor" model="res.groups">
+        <field name="name">Vendor Confirm</field>
         <field name="category_id" ref="approval_workflow_root"/>
     </record>
 

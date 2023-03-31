@@ -138,19 +138,6 @@ class ResPartner(models.Model):
                 if mail := self.env['mail.mail'].create(mail_values):
                     mail.send()
 
-    # def boom_boom(self, id, name):
-    #     print('Boom Boom Called')
-    #     return {
-    #         'type': 'ir.actions.client',
-    #         'tag': 'display_notification',
-    #         'params': {
-    #             'title': ('CR Date Expired'),
-    #             'message': f'CR date has been expired of User\nID: {id}\nName: {name}',
-    #             'type': 'danger',  # types: success,warning,danger,info
-    #             'sticky': True,  # True/False will display for few seconds if false
-    #         },
-    #     }
-
     # new fields
     is_vat = fields.Boolean('VAT', default=False)
     vat_certificate_id = fields.Many2many(comodel_name="ir.attachment",
@@ -163,11 +150,6 @@ class ResPartner(models.Model):
                                         column1="m2m_id",
                                         column2="attachment_id",
                                         )
-    ntc_attachment_id = fields.Many2many(comodel_name="ir.attachment",
-                                         relation="m2m_ir_ntc_attachment_rel",
-                                         column1="m2m_id",
-                                         column2="attachment_id",
-                                         )
 
     # Approvals
     state = fields.Selection(selection=[
@@ -191,10 +173,26 @@ class ResPartner(models.Model):
             'state': 'draft'
         })
 
+    #     Validations
+    @api.constrains('cr_no')
+    def cr_no_uniqueness(self):
+        for rec in self:
+            if self.env['res.partner'].search([('cr_no', '=', rec.cr_no)]):
+                raise UserError("A CR Number is already exists with this number . CR Number must be unique!")
+
+    @api.constrains('vat', 'cr_no', 'phone_number')
+    def vat_uniqueness_and_validations(self):
+        for rec in self:
+            if rec.vat and not rec.vat.isdigit():
+                raise ValidationError(_("The VAT Number must be a sequence of digits."))
+            if rec.cr_no and not rec.cr_no.isdigit():
+                raise ValidationError(_("The CR Number must be a sequence of digits."))
+            if rec.phone_number and not rec.phone_number.isdigit():
+                raise ValidationError(_("The Phone Number must be a sequence of digits."))
+
 
 class InheritedResCompany(models.Model):
     _inherit = 'res.company'
-
     country_code_phone = fields.Char('Country Code', size=3)
     phone_number = fields.Char('Phone Number', size=10)
 
@@ -206,8 +204,12 @@ class InheritedResCompany(models.Model):
                 rec.partner_id.country_code_phone = str(rec.country_code_phone)
                 rec.partner_id.phone_number = str(rec.phone_number)
 
-    @api.constrains('phone_number')
-    def _verify_phone_number(self):
+    @api.constrains('vat', 'company_registry', 'phone_number')
+    def uniqueness_and_validations(self):
         for rec in self:
+            if rec.vat and not rec.vat.isdigit():
+                raise ValidationError(_("The VAT Number must be a sequence of digits."))
+            if rec.company_registry and not rec.company_registry.isdigit():
+                raise ValidationError(_("The Company Registry must be a sequence of digits."))
             if rec.phone_number and not rec.phone_number.isdigit():
                 raise ValidationError(_("The Phone Number must be a sequence of digits."))
