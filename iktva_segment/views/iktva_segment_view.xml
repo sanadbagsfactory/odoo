@@ -1,0 +1,66 @@
+<odoo>
+    <data>
+        <!--Tree view-->
+        <record id="iktva_segment_tree_view" model="ir.ui.view">
+            <field name="name">iktva.segment.tree</field>
+            <field name="model">iktva.segment</field>
+            <field name="arch" type="xml">
+                <tree sample="1">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="score"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Form view-->
+        <record id="iktva_segment_form_view" model="ir.ui.view">
+            <field name="name">iktva.segment.form</field>
+            <field name="model">iktva.segment</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group col="4">
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="score"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--search view-->
+        <record id="iktva_segment_search_view" model="ir.ui.view">
+            <field name="name">iktva.segment.search</field>
+            <field name="model">iktva.segment</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Name"/>
+                    <field name="description" string="Description"/>
+                    <field name="score" string="Score"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_iktva_segment" model="ir.actions.act_window">
+            <field name="name">IKTVA Segment</field>
+            <field name="res_model">iktva.segment</field>
+            <field name="view_mode">tree,form,search</field>
+            <field name="context">{'search_default_myrequest': 1}</field>
+            <field name="search_view_id" ref="iktva_segment_search_view"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    No Record Found. Let's create a new record!
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem name="IKTVA Segment"
+                  parent="contacts.res_partner_menu_config"
+                  id="menu_iktva_segment_id"
+                  sequence="21"
+                  action="action_iktva_segment"/>
+    </data>
+</odoo>

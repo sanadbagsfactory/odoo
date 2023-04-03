@@ -5,58 +5,57 @@
                 <t t-call="sanad_custom_reports.sannad_bags_letterhead"/>
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.basic_layout">
-                        <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
-                              rel="stylesheet" type="text/css"/>
-                        <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>
+                        <!--                        <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"-->
+                        <!--                              rel="stylesheet" type="text/css"/>-->
+                        <!--                        <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>-->
                         <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
-
                         <div class="page"
-                             style="margin:8px !important; font-family: 'Times New Roman';  margin:0px 50px 0px 50px !important;">
+                             style="margin:8px !important; font-family: 'Times New Roman' !important;  margin:0px 50px 0px 50px !important;">
                             <div class="oe_structure"/>
-                            <table class="table table-borderless" width="100%">
-                                <tr>
-                                    <td>
-                                        <t t-if="o.company_id">
-                                            <strong>Shipping address:</strong>
-                                            <div t-if="o.company_id">
-                                                <span t-field="o.company_id.name"/>
-                                                <t t-if="o.company_id.street">
-                                                    <br/>
-                                                    <span t-field="o.company_id.street"/>
+                            <div class="oe_row">
+                                <div style="float:left;">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <td>
+                                                <t t-if="o.company_id">
+                                                    <strong>Shipping address:</strong>
+                                                    <div t-if="o.company_id">
+                                                        <span t-field="o.company_id.name"/>
+                                                        <t t-if="o.company_id.street">
+                                                            <br/>
+                                                            <span t-field="o.company_id.street"/>
+                                                        </t>
+                                                        <t t-if="o.company_id.city">
+                                                            <br/>
+                                                            <span t-field="o.company_id.city"/>
+                                                            <span t-field="o.company_id.state_id.code"/>
+                                                            <span t-field="o.company_id.zip"/>
+                                                        </t>
+                                                        <t t-if="o.company_id.state_id">
+                                                            <br/>
+                                                            <span t-field="o.company_id.state_id.name"/>
+                                                        </t>
+                                                        <t t-if="o.company_id.phone">
+                                                            <br/>
+                                                            <span t-field="o.company_id.phone"
+                                                                  t-options="{'widget': 'phone'}"/>
+                                                        </t>
+                                                    </div>
                                                 </t>
-                                                <t t-if="o.company_id.city">
-                                                    <br/>
-                                                    <span t-field="o.company_id.city"/>
-                                                    <span t-field="o.company_id.state_id.code"/>
-                                                    <span t-field="o.company_id.zip"/>
-                                                </t>
-                                                <t t-if="o.company_id.state_id">
-                                                    <br/>
-                                                    <span t-field="o.company_id.state_id.name"/>
-                                                </t>
-                                                <t t-if="o.company_id.phone">
-                                                    <br/>
-                                                    <span t-field="o.company_id.phone"
-                                                    t-options="{'widget': 'phone'}"/>
-                                                </t>
-                                            </div>
-                                        </t>
-                                    </td>
-                                    <td>
-                                        <div t-field="o.partner_id"
-                                             t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
-                                    </td>
-                                </tr>
-                            </table>
+                                            </td>
+                                            <td>
+                                                <div t-field="o.partner_id"
+                                                     t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                                            </td>
 
-                            <!--                            <div style="text-align: center; font-size: 13pt;">-->
-                            <!--                                <strong t-if="o.state in ['draft', 'sent', 'to approve']">Request for Quotation-->
-                            <!--                                </strong>-->
-                            <!--                                <strong t-if="o.state in ['purchase', 'done']">Purchase Order-->
-                            <!--                                </strong>-->
-                            <!--                                <strong t-if="o.state == 'cancel'">Cancelled Purchase Order-->
-                            <!--                                </strong>-->
-                            <!--                            </div>-->
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div style="float:right;">
+                                    <img t-att-src="'/report/barcode/QR/'+o.name" style="height:150px; width:150px;"
+                                         alt="QR Code"/>
+                                </div>
+                            </div>
                             <div class="mt-4">
                                 <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Request for Quotation #
                                     <span t-field="o.name"/>
@@ -182,13 +181,14 @@
                             <p t-field="o.notes" class="mt-4"/>
                             <div class="oe_structure"/>
                             <p style="page-break-before:always;"/>
-                            <table class="table-borderless" width="115%" t-if="o.state in ['purchase', 'done']"
-                                   style="margin:0px -50px 0px -50px !important;">
+                            <table class="table-borderless" width="100%"
+                                   t-if="o.state in ['purchase', 'done']">
+<!--                                   style="margin:0px -50px 0px -50px !important;">-->
                                 <tr style="font-size:7pt;">
                                     <th class="text-center">
                                         <span>Conditions &amp; Terms Order Purchase</span>
                                     </th>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <th class="text-center">
                                         <span>ﺷﺮﻭﻁ ﻭﺃﺣﻜﺎﻡ ﺃﻣـﺮ ﺍﻟﺸﺮﺍﺀ</span>
                                     </th>
@@ -219,7 +219,7 @@
                                             applicable Saudi Laws, rules, and regulations.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>1- ﺗﻌﻬﺪ:</strong>
@@ -248,7 +248,7 @@
                                             inconsistencies therein with the provisions hereof shall be null and void.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>2- ﺷﻤﻮﻟﻴﺔ ﺍﻻﺗﻔﺎﻗﻴﺔ:</strong>
@@ -299,7 +299,7 @@
                                             buyer the Supplier will be solely responsible for such liabilities.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>3- ﺍﻟﺴﻌﺮ:</strong>
@@ -340,7 +340,7 @@
                                             invoice unless otherwise stated in the Purchase Order.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>4- ﺍﻟﺪﻓـﻊ:</strong>
@@ -361,7 +361,7 @@
                                             shall replace or correct the same at the Suppliers' expense.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>5-</strong>
@@ -382,7 +382,7 @@
                                             all mortgages and encumbrances whatsoever.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>6- ﺍﻟﻤﻠﻜﻴﺔ:</strong>
@@ -407,7 +407,7 @@
                                             Supplier as time is essence of the order.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>7-ﺍﻟﻘﻮﺓ ﺍﻟﻘﺎﻫﺮﺓ:</strong>
@@ -438,7 +438,7 @@
                                             with Purchases laws applicable in the kingdom of Saudi Arabia.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>8- ﺍﻟﺠﺰﺍﺀﺍﺕ:</strong>
@@ -472,7 +472,7 @@
                                             laws and regulations applicable in the kingdom of Saudi Arabia.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>9- ﺍﻟﻤﻨﺢ ﻭﺍﻟﻌﻤﻮﻻﺕ:</strong>
@@ -499,7 +499,7 @@
                                             the performance of his obligations under this Purchase Order.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>10- ﻋﺎﻡ:</strong>
@@ -525,7 +525,7 @@
                                             out of or relating directly or indirectly to this purchase order.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>11- ﺍﻟﺘﻌﻮﻳﺾ:</strong>
@@ -552,7 +552,7 @@
                                             notice is transmitted through mail.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>12- ﺍﻹﺧﻄﺎﺭﺍﺕ:</strong>
@@ -575,7 +575,7 @@
                                             agreed in writing for such assignment.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>13- ﺍﻟﺘﻨﺎﺯﻝ:</strong>
@@ -605,7 +605,7 @@
                                             which Buyer may now or in future have an interest.
                                         </span>
                                     </td>
-                                    <td width="4%"/>
+                                    <td width="2%"/>
                                     <td style="text-align: right;">
                                         <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
                                             <strong>14- براءات الاختراع:</strong>
@@ -625,6 +625,211 @@
                                         </span>
                                     </td>
                                 </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>15- Non-Waiver:</strong>
+                                            Waiver of any breach, failure to enforce any of the terms or
+                                            conditions of this purchase order or course of conduct at any time shall not
+                                            limit or waive either party's rights thereafter to enforce or compel strict
+                                            compliance with every term and condition of this purchase order.
+                                        </span>
+                                    </td>
+                                    <td width="2%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>15- ﻋـﺪﻡ ﺍﻟﺘﻨﺎﺯﻝ:</strong>
+                                            ﻻ ﻳﻌﺘﺒﺮ ﺗﻨﺎﺯﻝ ﺃﻱ ﻣﻦ ﺍﻟﻄﺮﻓﻴﻦ ﻹﺧﻼﻝ ﻣﻦ ﺍﻟﻄﺮﻑ ﺍﻵﺧﺮ ﻷﻱ ﺑﻨﺪ ﺃﻭ ﻋﺪﻡ
+                                            ﻗﺪﺭﺓ ﺃﻱ ﻣﻦ ﺍﻟﻄﺮﻓﻴﻦ ﺇﻧﻔـﺎﺫ ﺃﻱ
+                                            ﻣﻦ ﺍﻟﺸﺮﻭﻁ ﺍﻟﻮﺍﺭﺩﺓ ﻓﻲ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﺃﻭ ﻣﻤﺎﺭﺳﺔ ﺍﻟﺘﺼﺮﻑ ﻓﻲ ﺃﻱ ﻭﻗﺖ ﻣﻦ ﺍﻷﻭﻗﺎﺕ ﻣﺎﻧﻌﺎ
+                                            ﻟﺤﻖ ﺍﻟﻤﺸﺘﺮﻱ ﺃﻭ ﺍﻟﺒﺎﺋﻊ ﻣﻦ ﺇﻧﻔﺎﺫ ﺍﻟﺸﺮﻭﻁ
+                                            ﻭﺍﻷﺣﻜﺎﻡ ﺍﻷﺧﺮﻯ ﺍﻟﻮﺍﺭﺩﺓ ﻓﻲ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>16- Confidentiality:</strong>
+                                            This purchase order, the items ordered, quantity,
+                                            specifications and price shall be deemed confidential and shall not be
+                                            revealed by Supplier to any third party not necessary for the completion of
+                                            the order unless permission is first obtained in writing from buyer.
+                                        </span>
+                                    </td>
+                                    <td width="2%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>16- ﺍﻟﺴﺮﻳﺔ:</strong>
+                                            ﺗﻌﺘﺒﺮ ﺟﻤﻴﻊ ﺍﻟﻤﻌﻠﻮﻣﺎﺕ ﺍﻟﻮﺍﺭﺩﺓ ﻓﻲ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﻭﺍﻟﺒﻀﺎﺋﻊ ﺍﻟﻤﻄﻠﻮﺑﺔ ﺑﻤﻮﺟﺒﻪ
+                                            ﻭﺟﻮﺩﺗﻬﺎ ﻭﺍﻟﻤﻮﺍﺻﻔﺎﺕ ﻭﺍﻷﺳﻌﺎﺭ
+                                            ﻣﻌﻠﻮﻣﺎﺕ ﺳﺮﻳﺔ ﻭﻻ ﻳﺠﻮﺯ ﻟﻠﻤﻮﺭﺩ ﺇﻓﺸﺎﺋﻬﺎ ﻷﻱ ﻃﺮﻑ ﺛﺎﻟﺚ ﻏﻴﺮ ﺿﺮﻭﺭﻱ ﻹﻛﻤﺎﻝ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ
+                                            ﻭﺫﻟﻚ ﻣﺎﻟﻢ ﻳﺤﺼﻞ ﻋﻠﻰ ﻣﻮﺍﻓﻘﺔ
+                                            ﺍﻟﻤﺸﺘﺮﻱ ﺍﻟﺨﻄﻴﺔ ﺍﻟﻤﺴﺒﻘﺔ.
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>17- Audit:</strong>
+                                            Except for firm fixed price orders, Buyer may, upon its request,
+                                            audit a3ny and all records of Supplier relating to material and/ or services
+                                            provided hereunder, provided, however, Supplier shall have the right to
+                                            exclude any trade secrets, formulas, or processes from such inspection.
+                                            Supplier further agrees to maintain its books and records relating to
+                                            material and / or services provided hereunder for a period of two (2) years
+                                            from the date such material and / or services were provided and to make such
+                                            books and records available to buyer at any time or times within the two
+                                            year period.
+
+                                        </span>
+                                    </td>
+                                    <td width="2%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>17- ﺍﻟﺘﺪﻗﻴﻖ:</strong>
+                                            ﺑﺎﺳﺘﺜﻨﺎﺀ ﺃﻭﺍﻣﺮ ﺍﻟﺸﺮﺍﺀ ﺑﺎﻟﺴﻌﺮ ﺍﻟﺜﺎﺑﺖ ﺍﻟﻤﺆﻛﺪ ﻳﺠﻮﺯ ﻟﻠﻤﺸﺘﺮﻯ ﻭﺑﻨﺎﺀ ﻋﻠﻰ
+                                            ﻃﻠﺒﻪ ﻣﺮﺍﺟﻌﺔ ﻭﺗﺪﻗﻴﻖ ﺟﻤﻴﻊ ﺃﻭ ﺃﻱ ﻣﻦ ﺳﺠﻼﺕ ﺍﻟﻤﻮﺭﺩ ﺍﻟﺤﺴﺎﺑﻴﺔ ﺍﻟﻤﺘﻌﻠﻘﺔ ﺑﺎﻟﻤﻮﺍﺩ ﻭ/ﺃﻭ
+                                            ﺍﻟﺨﺪﻣﺎﺕ ﻣﺤﻞ ﺍﻟﻄﻠﺐ ﻋﻠﻰ ﺃﻧﻪ ﻳﺤﻖ ﻟﻠﺒﺎﺋﻊ ﺍﺳﺘﺒﻌﺎﺩ ﺃﻱ ﻣﻦ ﺍﻷﺳﺮﺍﺭ ﺍﻟﺘﺠﺎﺭﻳﺔ ﺃﻭ ﺃﻱ ﻣﻦ
+                                            ﺍﻟﻨﻤﺎﺫﺝ ﺃﻭﺍﻟﻌﻤﻠﻴﺎﺕ ﻋﻦ ﺍﻟﺘﻔﺘﻴﺶ. ﻛﻤﺎ ﻳﻮﺍﻓﻖ ﺍﻟﻤﻮﺭﺩ ﺃﻳﻀﺎ ﻋﻠﻰ ﺍﻻﺣﺘﻔﺎﻅ ﺑﺴﺠﻼﺗﻪ
+                                            ﻭﺩﻓﺎﺗﺮﻩ ﺍﻟﻤﺘﻌﻠﻘﺔ ﺑﺎﻟﻤﻮﺍﺩ ﻭ/ﺃﻭ ﺍﻟﺨﺪﻣﺎﺕ ﻣﺤﻞ ﺍﻟﻄﻠﺐ ﻟﻤﺪﺓ ﺳﻨﺘﻴﻦ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺗﺎﺭﻳﺦ
+                                            ﺗﻘﺪﻳﻢ ﺍﻟﻤﻮﺍﺩ ﻭ/ﺃﻭ ﺍﻟﺨﺪﻣﺎﺕ ﻭﺃﻥ ﺗﻜﻮﻥ ﻫﺬﻩ ﺍﻟﺪﻓﺎﺗﺮ ﻭﺍﻟﺴﺠﻼﺕ ﻣﺘﺎﺣﺔ
+                                            ﻟﻠﻤﺸﺘﺮﻱ ﻓﻲ ﺃﻱ ﻭﻗﺖ ﻣﻦ ﺍﻷﻭﻗﺎﺕ ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻟﺴﻨﺘﻴﻦ.
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>18- Conflict of interest:</strong>
+                                            The Supplier warrants that it has not given or
+                                            received any commissions, payments, gifts, kickbacks, lavish or extensive
+                                            entertainment or other things of value to or from any employees or buyer
+                                            agents or any third party in connection with this purchase order. As well,
+                                            the Supplier acknowledges that the giving or receiving of any such payments,
+                                            gifts, entertainment, or other things of value is strict violation of
+                                            Buyer's corporate policy and may result in the cancellation of this and all
+                                            future purchase orders. Supplier shall notify Buyer's audit department of
+                                            any such solicitation by any of buyer's employees, agents or any third party
+                                        </span>
+                                    </td>
+                                    <td width="2%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>18- ﺗﻀﺎﺭﺏ ﺍﻟﻤﺼﺎﻟﺢ:</strong>
+                                            ﻳﺘﻌﻬﺪ ﺍﻟﻤـﻮﺭﺩ ﺑﺄﻧﻪ ﻟﻢ ﻳﺘﻢ ﺗﻘﺪﻳﻢ ﺃﻭ ﺍﺳﺘﻼﻡ ﺃﻱ ﻋﻤﻮﻻﺕ ﺃﻭ ﻣﺒﺎﻟﻎ
+                                            ﻣﺎﻟﻴﺔ ﺃﻭ ﻫﺪﺍﻳﺎ ﺃﻭ ﺭﺷﺎﻭﻯ ﺃﻭ ﻋﻄﺎﻳﺎ ﺃﻭ ﺧﺪﻣﺎﺕ ﺗﺮﻓﻴﻬﻴﺔ ﻭﺍﺳﻌﺔ ﺃﻭ ﺃﻱ ﻣﻦ ﺍﻷﺷﻴﺎﺀ
+                                            ﺍﻟﻘﻴﻤﺔ ﺇﻟﻰ ﺃﻭ ﻣﻦ ﺃﻱ ﻣﻦ ﻣﻮﻇﻔﻲ ﺃﻭ ﻭﻛﻼﺀ ﺍﻟﻤﺸﺘﺮﻱ ﺃﻭ ﺃﻱ ﻃﺮﻑ ﺁﺧﺮ ﻟﻪ ﻋﻼﻗﺔ ﺑﻄﻠﺐ
+                                            ﺍﻟﺸﺮﺍﺀ ﻭﻳﻘﺮ ﺍﻟﺒﺎﺋﻊ ﺃﻥ ﺗﻘﺪﻳﻢ ﺃﻭ ﺍﺳﺘﻼﻡ ﺍﻟﻌﻤﻮﻻﺕ ﺃﻭ ﺍﻟﻤﺒﺎﻟﻎ ﺍﻟﻤﺎﻟﻴﺔ ﺃﻭ ﺍﻟﻬﺪﺍﻳﺎ
+                                            ﺃﻭ ﺍﻟﺮﺷﺎﻭﻯ ﺃﻭ ﺍﻟﻌﻄﺎﻳﺎ ﺃﻭ ﺍﻟﺨﺪﻣﺎﺕ ﺍﻟﺘﺮﻓﻴﻬﻴﺔ ﺍﻟﻮﺍﺳﻌﺔ ﺃﻭ ﺍﻷﺷﻴﺎﺀ ﺍﻟﻘﻴﻤﺔ ﻳﻌﺪ
+                                            ﻣﺨﺎﻟﻔﺔ ﺻﺮﻳﺤﺔ ﻟﺴﻴﺎﺳﺔ ﻭﺃﻧﻈﻤﺔ ﺍﻟﻤﺸﺘﺮﻱ ﺍﻟﺘﺠﺎﺭﻳﺔ ﻭﻗـﺪ ﺗﺆﺩﻯ ﺇﻟﻰ ﺇﻟﻐﺎﺀ ﺍﻟﻄﻠﺐ ﺍﻟﺤﺎﻟﻲ
+                                            ﻭﻃﻠﺒﺎﺕ ﺍﻟﺸﺮﺍﺀ ﺍﻟﻤﺴﺘﻘﺒﻠﻴﺔ. ﻭﻋﻠﻰ ﺍﻟﻤﻮﺭﺩ ﺃﻥ ﻳﻘﻮﻡ ﺑﺈﺑﻼﻍ ﺇﺩﺍﺭﺓ ﺍﻟﺘﺪﻗﻴﻖ ﻟﺪﻯ
+                                            ﺍﻟﻤﺸﺘﺮﻱ ﺑﻤﺜﻞ ﻫﺬﻩ ﺍﻟﻌﺮﻭﺽ ﺍﻟﺘﻲ ﻳﺘﻠﻘﺎﻫﺎ
+                                            ﻣﻦ ﻣﻮﻇﻔﻲ ﻭﻭﻛﻼﺀ ﺍﻟﻤﺸﺘﺮﻱ ﺃﻭ ﻣﻦ ﺍﻟﻐﻴﺮ
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>19- Acceptance:</strong>
+                                            The Supplier admits it has read and understands the conditions
+                                            of this purchase order and acknowledges that Supplier's written acceptance
+                                            (will be within 10 days from the date of receipt of purchase order otherwise
+                                            it considered as accepted, and the commencement of any work or services
+                                            under this purchase order shall constitute the Supplier's acceptance of
+                                            these terms and conditions.
+                                        </span>
+                                    </td>
+                                    <td width="2%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>19- ﺍﻟﻘﺒـﻮﻝ:</strong>
+                                            ﻳﻘـﺮ ﺍﻟﻤـﻮﺭﺩ ﺑﺄﻧﻪ ﻗـﺮﺃ ﻭﻓﻬﻢ ﺍﻟﺸﺮﻭﻁ ﺍﻟﻮﺍﺭﺩﺓ ﻓﻲ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ﻛﻤﺎ ﻳﻘﺮ
+                                            ﺑﺄﻧﻪ ﺳﻴﻘﻮﻡ ﺑﺎﻟﻤﻮﺍﻓﻘﺔ ﺍﻟﺨﻄﻴﺔ ﻓﻲ ﺧﻼﻝ
+                                            ﻋﺸﺮﺓ ﺃﻳﺎﻡ ﻣﻦ ﺇﺳﺘﻼﻣﻪ ﺃﻣﺮ ﺍﻟﺸﺮﺍﺀ ، ﻭﺇﻻ ﺳﻴﻌﺘﺒﺮ ﺑﺄﻧﻪ ﺗﻢ ﻗﺒﻮﻟﻪ ﻷﻣﺮ ﺍﻟﺸﺮﺍﺀ ، ﻛﻤﺎ
+                                            ﻳﻌﻨﻲ ﻗﻴﺎﻡ ﺍﻟﻤﻮﺭﺩ ﺑﺒﺪﺀ ﺃﻱ ﻣﻦ ﺍﻷﻋﻤﺎﻝ ﺃﻭ
+                                            ﺍﻟﺨﺪﻣﺎﺕ ﺍﻟﻤﺘﻌﻠﻘﺔ ﺑﺄﻣﺮ ﺍﻟﺸﺮﺍﺀ ﻣﻮﺍﻓﻘﺘﻪ ﻋﻠﻰ ﻫﺬﻩ ﺍﻟﺸﺮﻭﻁ .
+
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>20- Termination:</strong>
+                                            The Buyer may terminate this purchase order, with or without cause, upon a
+                                            minimum of fourteen (14) days prior written notice to Supplier.
+
+                                        </span>
+                                    </td>
+                                    <td width="2%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>20- ﺇﻧﻬﺎﺀ ﻃﻠﺐ ﺍﻟﺸﺮﺍﺀ:</strong>
+                                            ﻳﺠﻮﺯ ﻟﻠﻤﺸﺘﺮﻯ ﺇﻧﻬﺎﺀ ﻃﻠﺐ ﺍﻟﺸﺮﺍﺀ ﺑﺴﺒﺐ ﺃﻭ ﺑﺪﻭﻥ ﺳﺒﺐ ﻋﻠﻰ ﺃﻥ
+                                            ﻳﺨﻄﺮ ﺍﻟﻤـﻮﺭﺩ ﻛﺘﺎﺑـﺔ ﺑﺬﻟﻚ ﻗﺒﻞ
+                                            (14) ﺃﺭﺑﻌﺔ ﻋﺸﺮ ﻳﻮﻣﺎ ﻋﻠﻲ ﺍﻷﻗﻞ .
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>21- No Advertising:</strong>
+                                            The Supplier shall not, without first obtaining the written
+                                            consent of buyer in any manner advertise or publish the fact that Supplier
+                                            has contracted to furnish buyer with the goods or services or works covered
+                                            by this purchase order, or use any trademarks or trade names of buyer in
+                                            Supplier's advertising or promotional materials.
+                                        </span>
+                                    </td>
+                                    <td width="2%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>21- ﻋﺪﻡ ﺍﻹﻋــﻼﻥ:</strong>
+                                            ﻻ ﻳﺠﻮﺯ ﻟﻠﻤﻮﺭﺩ ﺩﻭﻥ ﺍﻟﺤﺼﻮﻝ ﻋﻠﻰ ﺍﻟﻤﻮﺍﻓﻘﺔ ﺍﻟﺨﻄﻴﺔ ﺍﻟﻤﺴﺒﻘﺔ ﻣﻦ ﺍﻟﻤﺸﺘﺮﻱ
+                                            ﺇﻋﻼﻥ ﺃﻭ ﻧﺸﺮ ﺗﻌﺎﻗﺪﻩ ﻣﻊ
+                                            ﺍﻟﻤﺸﺘﺮﻱ ﻟﺘﺰﻭﻳﺪﻩ ﺑﺎﻟﺒﻀﺎﻋﺔ ﺃﻭ ﺍﻟﺨﺪﻣﺎﺕ ﺃﻭ ﺍﻷﻋﻤﺎﻝ ﺍﻟﻤﺘﻌﻠﻘﺔ ﺑﻄﻠﺐ ﺍﻟﺸﺮﺍﺀ ﺃﻭ
+                                            ﺍﺳﺘﻌﻤﺎﻝ ﺃﻱ ﻣﻦ ﺍﻟﻌﻼﻣﺎﺕ ﺃﻭ ﺍﻷﺳﻤﺎﺀ ﺍﻟﺘﺠﺎﺭﻳﺔ
+                                            ﻟﻠﻤﺸﺘﺮﻱ ﻓﻲ ﻣﻮﺍﺩ ﺇﻋﻼﻧﻴﺔ ﻭﺗﺮﻭﻳﺠﻴﺔ ﺗﺨﺺ ﺍﻟﻤﻮﺭﺩ
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-size: 6pt;">
+                                    <td class="text-left text-justify">
+                                        <span style="text-align:justify;">
+                                            <strong>22- Applicable Laws and Jurisdiction:</strong>
+                                            This Purchase Order shall be subject to
+                                            the laws, Rules and Regulations applicable in the Kingdom of Saudi Arabia.
+                                            The parties will try to settle any dispute amicably otherwise it will be
+                                            subject to arbitration in accordance with the arbitration law of Saudi
+                                            Arabia, without prejudice to the jurisdictions of the appropriate courts of
+                                            the Kingdom of Saudi Arabia .
+                                        </span>
+                                    </td>
+                                    <td width="2%"/>
+                                    <td style="text-align: right;">
+                                        <span t-options="{'lang': 'ar_SY'}" dir="rtl" style="text-align:justify;">
+                                            <strong>22- ﺍﻟﻘﺎﻧﻮﻥ ﻭﺍﺟﺐ ﺍﻟﺘﻄﺒﻴﻖ ﻭﺍﻹﺧﺘﺼﺎﺹ:</strong>
+                                            ﺗﺨﻀﻊ ﻃﻠﺐ ﺍﻟﺸـﺮﺍﺀ ﻫﺬﺍ ﻭﻳﻔﺴﺮ ﻭﻓﻘﺎ ﻟﻸﻧﻈﻤﺔ
+                                            ﻭﺍﻷﺣﻜﺎﻡ ﺍﻟﺴﺎﺋﺪﺓ ﺑﺎﻟﻤﻤﻠﻜﺔ ﺍﻟﻌﺮﺑﻴﺔ ﺍﻟﺴﻌﻮﺩﻳﺔ، ﻭﻋﻠﻰ ﺍﻷﻃﺮﺍﻑ ﻣﺤﺎﻭﻟﺔ ﺗﺴﻮﻳﺔ ﺃﻱ ﻧﺰﺍﻉ
+                                            ﻳﻨﺸﺄ ﺑﻴﻨﻬﻤﺎ ﺑﺎﻟﻠﺠﻮﺀ ﻟﻠﻄﺮﻕ ﺍﻟﻮﺩﻳﺔ ، ﻭﺇﺫﺍ ﺗﻌﺬﺭ ﺫﻟﻚ ﻳﺤﺎﻝ ﺍﻟﻨﺰﺍﻉ ﻟﻠﺘﺤﻜﻴﻢ ﻭﻓﻘﺎ
+                                            ﻟﻨﻈﺎﻡ ﺍﻟﺘﺤﻜﻴﻢ ﺑﺎﻟﻤﻤﻠﻜﺔ ﺍﻟﻌﺮﺑﻴﺔ ﺍﻟﺴﻌﻮﺩﻳﺔ ﻭﺫﻟﻚ ﺩﻭﻥ ﺍﻟﻤﺴﺎﺱ ﺑﻤﺎ ﻟﻤﺤﺎﻛﻢ ﺍﻟﻤﻤﻠﻜﺔ
+                                            ﺍﻟﻌﺮﺑﻴﺔ ﺍﻟﺴﻌﻮﺩﻳﺔ ﻣﻦ ﺇﺧﺘﺼﺎﺻﺎﺕ
+                                            ﻭﺳﻠﻄﺎﺕ ﻟﻠﻨﻈﺮ ﻓﻲ ﺍﻟﺪﻋﻮﻱ.
+                                        </span>
+                                    </td>
+                                </tr>
                             </table>
                             <!--                            <t t-call="purchase.report_purchaseorder_document"/>-->
                         </div>
@@ -634,12 +839,12 @@
         </template>
 
         <template id="sannad_bags_letterhead">
-            <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
-                  rel="stylesheet" type="text/css"/>
-            <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>
+            <!--            <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"-->
+            <!--                  rel="stylesheet" type="text/css"/>-->
+            <!--            <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>-->
             <t t-set="company" t-value="user.company_id"/>
             <div class="header text-center" width="100%"
-                 style="font-family: 'Times New Roman'; margin:0px 50px 0px 50px;">
+                 style="font-family: 'Times New Roman' !important; margin:0px 50px 0px 50px;">
                 <table class="table-borderless" width="100%">
                     <tr>
                         <td style="text-align:left;">
@@ -666,7 +871,7 @@
                 <!--                     height="110px"/>-->
             </div>
             <div class="footer text-right border-top border-bottom" width="100%"
-                 style="font-family: 'Times New Roman'; padding:15px 0px 6px 0px; margin:0px 50px 0px 50px;">
+                 style="font-family: 'Times New Roman' !important; padding:15px 0px 6px 0px; margin:0px 50px 0px 50px;">
                 <!--                <img src="sanad_custom_reports/static/description/letterhead_footer.png"/>-->
 
                 <table class="table-borderless"

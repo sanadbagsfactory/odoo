@@ -24,19 +24,23 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        # 'views/res_partner_view.xml',
-        # 'views/templates.xml',
         'report/reports.xml',
         # 'report/purchase_quote_print_template.xml',
         'report/po_print_template.xml',
         'report/invoices_print_template.xml',
+        'data/test_template.xml',
+        'views/views.xml',
 
     ],
     # only loaded in demonstration mode
     'demo': [
     ],
-    'css': [
-        'static/src/css/report_styles.css',
-    ],
+    "installable": True,
+    "auto_install": False,
+    "application": True,
+    'assets': {
+        'web.report_assets_common': [
+            "sanad_custom_reports/static/src/css/report_styles.css"
+        ],
+    },
 }

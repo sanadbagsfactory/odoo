@@ -100,7 +100,6 @@ class StockMove(models.Model):
         }
 
         rslt = {'credit_line_vals': credit_line_vals, 'debit_line_vals': debit_line_vals}
-        print(f'_generate_valuation_lines_data: {rslt}')
         if credit_value != debit_value:
             # for supplier returns of product in average costing method, in anglo saxon mode
             diff_amount = debit_value - credit_value

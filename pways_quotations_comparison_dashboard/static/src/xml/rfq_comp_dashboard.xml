@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="RFQDashboard">
+        <div class="o_dashboards" style="background-color: #c7cbce;">
+            <t t-call="rfq_dashboard_header"/>
+            <div class="o_rfq_dashboard"/> 
+        </div>
+    </t>
+    <t t-name="rfq_dashboard_header">
+       <div>
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-2" style="padding-right:0px;">
+                 <div class="form-group">
+                    <label style="font-weight:900;">RFQ Compare Filter</label>
+                    <select class="form-control" id="selection_type" required="1" style="border-radius: 0px;">
+                        <option selected="selected" value="">Over All</option>
+                        <option value="by_price">By Order Minimum Price</option>
+                        <option value="by_date">By Order Delivery Date</option>
+                        <option value="by_line_price">By Line Minimum Price</option>
+                        <option value="by_line_date">By Line Delivery Date</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="back_btton_div" style="text-align: right; width: 80%; margin-top: 18px; margin-left: 38px;">
+                    <button class="btn btn-outline-primary back_button" type="button">Back</button>
+                </div>
+              </div>
+            </div>
+        </div>
+    </t>
+    <t t-name="RFQCompareTable">
+        <div class="row" style="padding-bottom: 13px;">
+            <div style="width:50%;">
+                <h3 style="text-align: right;font-size: 20px;">
+                   RFQ Dashboard For  :
+                </h3>
+            </div>
+            <div style="width:50%;">  
+                <h3 style="text-align: left;font-size: 20px; margin-left: 5px;" t-esc='reqisition_name'/>
+            </div>
+        </div>
+        <div class="table_div" style="overflow-x:auto;">
+            <table t-att-class="length gt 5 ?'table pways-table-highlighted':'table pways-table'" border="1">
+                <thead class="thead-custom">
+                    <tr>
+                        <th class="headcol" scope="col" style="vertical-align: middle; 
+                            width: 220px; 
+                            text-align: center;
+                            position: sticky;
+                            top: 0;
+                            z-index: 1;
+                            background: darkslategrey;">Product Detail</th>
+                        <t t-foreach="partner_ids" t-as="partner_id">
+                            <t t-if="partner_id['option'] == 'by_price'">
+                                <th style="background: ghostwhite; text-align: center; color: black;">
+                                    <span t-esc="partner_id['name']"/>
+                                    <br/><hr style="border-bottom:1px solid #e8f1f1;"/>
+                                    <div class="row" style="display: flex;">
+                                        <div style="width:20%; text-align: center;">PRICE</div>
+                                        <div style="width:20%; text-align: center;">QTY</div>
+                                        <div style="width:30%; text-align: center;">Date</div>
+                                        <div style="width:15%; text-align: left;"></div>
+                                    </div>
+                                </th>
+                            </t>
+                            <t t-elif="partner_id['option'] == 'by_date'">
+                                <th style="background: ghostwhite; text-align: center; color: black;">
+                                    <span t-esc="partner_id['name']"/>
+                                    <br/><hr style="border-bottom:1px solid #e8f1f1;"/>
+                                    <div class="row" style="display: flex;">
+                                        <div style="width:20%; text-align: center;">PRICE</div>
+                                        <div style="width:20%; text-align: center;">QTY</div>
+                                        <div style="width:30%; text-align: center;">Date</div>
+                                        <div style="width:15%; text-align: left;"></div>
+                                    </div>
+                                </th>
+                            </t>
+                            <t t-elif="partner_id['option'] == 'by_line_price'">
+                                <th style="background: ghostwhite; text-align: center; color: black;">
+                                    <span t-esc="partner_id['name']"/>
+                                    <br/><hr style="border-bottom:1px solid #e8f1f1;"/>
+                                    <div class="row" style="display: flex;">
+                                        <div style="width:20%; text-align: center;">PRICE</div>
+                                        <div style="width:20%; text-align: center;">QTY</div>
+                                        <div style="width:30%; text-align: center;">Date</div>
+                                        <div style="width:15%; text-align: left;"></div>
+                                    </div>
+                                </th>
+                            </t>
+                            <t t-elif="partner_id['option'] == 'by_line_date'">
+                                <th style="background: ghostwhite; text-align: center; color: black;">
+                                    <span t-esc="partner_id['name']"/>
+                                    <br/><hr style="border-bottom:1px solid #e8f1f1;"/>
+                                    <div class="row" style="display: flex;">
+                                        <div style="width:20%; text-align: center;">PRICE</div>
+                                        <div style="width:20%; text-align: center;">QTY</div>
+                                        <div style="width:30%; text-align: center;">Date</div>
+                                        <div style="width:15%; text-align: left;"></div>
+                                    </div>
+                                </th>
+                            </t>
+                            <t t-else="">
+                                <th style="text-align: center;">
+                                    <span t-esc="partner_id['name']"/>
+                                    <br/><hr style="border-bottom:1px solid #e8f1f1;"/>
+                                    <div class="row" style="display: flex;">
+                                        <div style="width:20%; text-align: center;">PRICE</div>
+                                        <div style="width:20%; text-align: center;">QTY</div>
+                                        <div style="width:30%; text-align: center;">Date</div>
+                                        <div style="width:15%; text-align: left;"></div>
+                                    </div>
+                                </th>
+                            </t>
+                        </t>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="record_line_ids" t-as="record">
+                        <tr style="text-align: left;">
+                            <td class="headcol" style="vertical-align: middle;">
+                                <div>
+                                    <div class="row">
+                                        <div style="width:72%; text-align: left; margin-left: 18px;">
+                                            <strong><span><t t-esc="record['product_name']"/></span></strong>
+                                        </div>
+                                        <div style="width:10%; text-align: center;">
+                                            <!-- <button type="button" class="fa fa-info show_product" data-toggle="popover"
+                                             t-att-vendor-id="record['min_prize_vendor']"
+                                             t-att-vendor-min-id="record['min_date_vendor']"
+                                             t-att-min-date-id="record['min_date']"
+                                             t-att-product-id="record['product_name']"
+                                             t-att-prize-id="record['min_prize']"
+                                             tabindex="0"/> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <t t-set="price_order_line_ids" t-value="price_order_line_ids"/>
+                            <t t-set="date_order_line_ids" t-value="date_order_line_ids"/>
+                            <t t-foreach="record['record_lines']" t-as="lines">
+                                <t t-if="lines.line_id != 0">
+                                    <t t-if="lines.option == 'by_price'">
+                                        <td style="background: ghostwhite; color: black;" >
+                                            <span data-toggle="tooltip" t-att-title="lines.message">
+                                                <div class="row" style="display: flex;">
+                                                    <div style="width:20%; text-align: center;"><t t-esc="lines.unit_price"/></div>
+                                                    <div style="width:20%; text-align: center;"><span t-esc="lines.qty"/></div>
+                                                    <div style="width:30%; text-align: center;"><span t-esc="lines.delivery_date"/></div>
+                                                    <div style="width:15%; text-align: left; "><button class="fa fa-trash remove_line" t-att-data-id="lines.line_id"/></div>
+                                                </div>
+                                            </span>
+                                        </td>
+                                    </t>
+                                    <t t-elif="lines.option == 'by_date'">
+                                        <td style="background: ghostwhite; color: black;">
+                                            <span data-toggle="tooltip" t-att-title="lines.message">
+                                                <div class="row" style="display: flex;">
+                                                    <div style="width:20%; text-align: center;"><t t-esc="lines.unit_price"/></div>
+                                                    <div style="width:20%; text-align: center;"><span t-esc="lines.qty"/></div>
+                                                    <div style="width:30%; text-align: center;"><span t-esc="lines.delivery_date"/></div>
+                                                    <div style="width:15%; text-align: left; "><button class="fa fa-trash remove_line" t-att-data-id="lines.line_id"/></div>
+                                                </div>
+                                            </span>
+                                        </td>
+                                    </t>
+                                    <t t-elif="lines.option == 'by_line_price'">
+                                        <t t-set="condition" t-value="0"/>
+                                        <t t-foreach="price_order_line_ids" t-as="filter_id">
+                                            <t t-if="lines.line_id == filter_id">
+                                                <t t-set="condition" t-value="1"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="condition == '1'">
+                                            <td style="background: ghostwhite; color: black;">
+                                                <span data-toggle="tooltip" t-att-title="lines.message">
+                                                    <div class="row" style="display: flex;">
+                                                        <div style="width:20%; text-align: center;"><t t-esc="lines.unit_price"/></div>
+                                                        <div style="width:20%; text-align: center;"><span t-esc="lines.qty"/></div>
+                                                        <div style="width:30%; text-align: center;"><span t-esc="lines.delivery_date"/></div>
+                                                        <div style="width:15%; text-align: left;"><button class="fa fa-trash remove_line" t-att-data-id="lines.line_id"/></div>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td style="background: Gray; color: black;">
+                                                <span data-toggle="tooltip" t-att-title="lines.message">
+                                                    <div class="row" style="display: flex;">
+                                                        <div style="width:20%; text-align: center;"><t t-esc="lines.unit_price"/></div>
+                                                        <div style="width:20%; text-align: center;"><span t-esc="lines.qty"/></div>
+                                                        <div style="width:30%; text-align: center;"><span t-esc="lines.delivery_date"/></div>
+                                                        <div style="width:15%; text-align: left; "><button class="fa fa-trash remove_line" t-att-data-id="lines.line_id"/></div>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </t>
+                                    </t>
+                                    <t t-elif="lines.option == 'by_line_date'">
+                                        <t t-set="condition" t-value="0"/>
+                                        <t t-foreach="date_order_line_ids" t-as="filter_id">
+                                            <t t-if="lines.line_id == filter_id">
+                                                <t t-set="condition" t-value="1"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="condition == '1'">
+                                            <td style="background: ghostwhite; color: black;">
+                                                <span data-toggle="tooltip" t-att-title="lines.message">
+                                                    <div class="row" style="display: flex;">
+                                                        <div style="width:20%; text-align: center;"><t t-esc="lines.unit_price"/></div>
+                                                        <div style="width:20%; text-align: center;"><span t-esc="lines.qty"/></div>
+                                                        <div style="width:30%; text-align: center;"><span t-esc="lines.delivery_date"/></div>
+                                                        <div style="width:15%; text-align: left; "><button class="fa fa-trash remove_line" t-att-data-id="lines.line_id"/></div>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td style="background: Gray; color: black;">
+                                                <span data-toggle="tooltip" t-att-title="lines.message">
+                                                    <div class="row" style="display: flex;">
+                                                        <div style="width:20%; text-align: center;"><t t-esc="lines.unit_price"/></div>
+                                                        <div style="width:20%; text-align: center;"><span t-esc="lines.qty"/></div>
+                                                        <div style="width:30%; text-align: center;"><span t-esc="lines.delivery_date"/></div>
+                                                        <div style="width:15%; text-align: left; "><button class="fa fa-trash remove_line" t-att-data-id="lines.line_id"/></div>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </t>
+                                    </t>
+                                    <t t-else="">
+                                        <td>
+                                            <span data-toggle="tooltip" t-att-title="lines.message">
+                                                <div class="row" style="display: flex;">
+                                                    <div style="width:20%; text-align: center;"><t t-esc="lines.unit_price"/></div>
+                                                    <div style="width:20%; text-align: center;"><span t-esc="lines.qty"/></div>
+                                                    <div style="width:30%; text-align: center;"><span t-esc="lines.delivery_date"/></div>
+                                                    <div style="width:15%; text-align: left; "><button class="fa fa-trash remove_line" t-att-data-id="lines.line_id"/></div>
+                                                </div>
+                                            </span>
+                                        </td>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <td>
+                                        <div class="row" style="display: flex;">
+                                            <div style="width:20%; text-align: center;"></div>
+                                            <div style="width:20%; text-align: center;"></div>
+                                            <div style="width:30%; text-align: center;"></div>
+                                            <div style="width:15%; text-align: center;"></div>
+                                        </div>
+                                    </td>
+                                </t>
+                            </t>
+                        </tr>
+                    </t>
+                    <tr>
+                        <td class="headcol" style="height: 68px;"></td>
+                        <t t-foreach="total" t-as="t">
+                            <t t-if="t.option == 'by_price'">
+                                <td class="table_footer" style="background: ghostwhite; color: black; height: 61px;">
+                                    <div class="row"  style="margin-left: -6px;">
+                                        <div class="footer_left_row" style="float:left; text-align:left; margin-left: auto;">
+                                            Total: <span t-esc="t.subtotal"/>
+                                        </div>
+                                        <div class="footer_right_row" style="float:right; text-align:right; margin-right: auto;">
+                                            Delivery Date: <span t-esc="t.delivery_date"/>
+                                        </div>
+                                    </div>
+                                    <div style=" text-align: center; margin-left: 12px;">
+                                        <t t-if="t.state == 'draft' or t.state == 'sent'">
+                                            <input class="conform_order" type="button" value="Confirm" t-att-data-id="t.id"/>
+                                        </t>
+                                        <t t-elif="t.state == 'cancel'">
+                                            <span>Order Canceled...</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span>Order Cofirmed...</span>
+                                        </t>
+                                    </div>
+                                </td>
+                            </t>
+                            <t t-elif="option == 'by_date'">
+                                <td class="table_footer" style="background: ghostwhite; color: black; height: 61px;">
+                                    <div class="row"  style="margin-left: -6px;">
+                                        <div class="footer_left_row" style="float:left; text-align:left; margin-left: auto;">
+                                            Total: <span t-esc="t.subtotal"/>
+                                        </div>
+                                        <div class="footer_right_row" style="float:right; text-align:right; margin-right: auto;">
+                                            Delivery Date: <span t-esc="t.delivery_date"/>
+                                        </div>
+                                    </div>
+                                    <div style=" text-align: center; margin-left: 12px;">
+                                        <t t-if="t.state == 'draft' or t.state == 'sent'">
+                                            <input class="conform_order" type="button" value="Confirm" t-att-data-id="t.id"/>
+                                        </t>
+                                        <t t-elif="t.state == 'cancel'">
+                                            <span>Order Canceled...</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span>Order Cofirmed...</span>
+                                        </t>
+                                    </div>
+                                </td>
+                            </t>
+                            <t t-else="">
+                                <td class="table_footer" style="height: 61px;">
+                                    <div class="row"  style="margin-left: -6px;">
+                                        <div class="footer_left_row" style="float:left; text-align:left; margin-left: auto;">
+                                            Total: <span t-esc="t.subtotal"/>
+                                        </div>
+                                        <div class="footer_right_row" style="float:right; text-align:right; margin-right: auto;">
+                                            Delivery Date: <span t-esc="t.delivery_date"/>
+                                        </div>
+                                    </div>
+                                    <div style=" text-align: center; margin-left: 12px;">
+                                        <t t-if="t.state == 'draft' or t.state == 'sent'">
+                                            <input class="conform_order" type="button" value="Confirm" t-att-data-id="t.id"/>
+                                        </t>
+                                        <t t-elif="t.state == 'cancel'">
+                                            <span>Order Canceled...</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span>Order Cofirmed...</span>
+                                        </t>
+                                    </div>
+                                </td>
+                            </t>
+                        </t>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </t>
+</templates>

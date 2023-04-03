@@ -32,7 +32,7 @@
         'wizard/inherited_account_payment.xml',
         # 'views/inherited_stock_inventory.xml',
         'views/inherited_product.xml',
-        'views/inherited_partner.xml',
+        # 'views/inherited_partner.xml',
         'views/inherited_account_payment_wizard_view.xml',
         'views/inherited_account_journal.xml',
         'views/inherited_account_analytic.xml',

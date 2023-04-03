@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- report action  -->
+        <record id="action_tax_invoice_report" model="ir.actions.report">
+            <field name="name">Tax Invoice - فاتورة ضريبية</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">einv_sa.account_move_report</field>
+            <field name="report_file">einv_sa.account_move_report</field>
+            <field name="print_report_name">'Invoice - %s' % (object.name).replace('/', '')</field>
+            <field name="binding_model_id" ref="model_account_move"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="einv_sa.inv_header">
+            <div class="row my-1" style="font-size:9pt !important;">
+                <div class="col-5">
+                    <div class="row">
+                        <strong>
+                            Sanad Bags Company Factory
+                        </strong>
+                        <br/>
+                        <span style="font-size:9pt;">
+                            8438 - 3rd Industrial City, Dammam 34857 - 3037
+                            <br/>
+                            Kingdom of Saudi Arabia
+                        </span>
+                        <br/>
+                        <strong>
+                            VAT ID:
+                        </strong>
+                        <span t-esc="res_company.vat"/>
+                    </div>
+                </div>
+                <div class="col-2" style="display: flex; justify-content: center;">
+                    <img t-if="doc.einv_sa_qr_code_str"
+                         style="padding-left:20px;"
+                         t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', doc.einv_sa_qr_code_str, 100, 100)"/>
+                </div>
+                <div class="col-5">
+                    <div class="row" dir="rtl">
+                        <strong>
+                            مصنع شـــــــركة سنــــــد الأكيـــــــاس
+                        </strong>
+                        <br/>
+                        <span style="font-size:9pt;">
+                            8438 - المـــدينـــــة الصناعيــــة الثالثــــة، الدمــام 34857 - 3037,
+                            <br/>
+                            المملكـة
+                            العربيـة السعوديـــــة
+                        </span>
+                        <br/>
+                        <strong>
+                            VAT ID:
+                        </strong>
+                        <span t-esc="res_company.vat"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-1 my-2 border-bottom bg-light">
+                <div class="col-12 text-center">
+                    <Strong>Tax Invoice فاتورة ضريبية</Strong>
+                    <span t-if="doc.move_type=='out_refund'">- Credit Note إشعار دائن</span>
+                    <span t-if="doc.move_type=='in_refund'">- Debit Note إشعار مدين</span>
+                </div>
+            </div>
+            <div class="px-2">
+                <div class="row">
+                    <div class="col-3">
+                        <Strong>Invoice Number</Strong>
+                    </div>
+                    <div class="col-5 text-center">
+                        <span t-esc="doc.get_name_wo_year()"/>
+                    </div>
+                    <div class="col-4 text-right" dir="rtl">
+                        <Strong>رقم الفاتورة</Strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <Strong>Invoice Date</Strong>
+                    </div>
+                    <div class="col-5 text-center">
+                        <span t-field="doc.invoice_date"/>
+                    </div>
+                    <div class="col-4 text-right" dir="rtl">
+                        <Strong>تاريخ الفاتورة</Strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <Strong>Date of Supply</Strong>
+                    </div>
+                    <div class="col-5 text-center">
+                        <span t-field="doc.einv_sa_delivery_date"/>
+                    </div>
+                    <div class="col-4 text-right" dir="rtl">
+                        <Strong>تاريخ التوريد</Strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <Strong>PO Reference</Strong>
+                    </div>
+                    <div class="col-5 text-center">
+                        <span t-if="doc.po_number" t-field="doc.po_number"/>
+                    </div>
+                    <div class="col-4 text-right" dir="rtl">
+                        <Strong>مرجع أمر الشراء</Strong>
+                    </div>
+                </div>
+            </div>
+            <div class="oe_structure"/>
+        </template>
+
+        <template id="einv_sa.partner_info">
+            <div class="row p-1 mt-1  bg-light">
+                <div class="col-6">
+                    <Strong>Customer</Strong>
+                </div>
+                <div class="col-6 text-right" dir="rtl">
+                    <Strong>عميل</Strong>
+                </div>
+            </div>
+            <div class="px-2">
+                <div class="row">
+                    <div class="col-3">
+                        <Strong>Name</Strong>
+                    </div>
+                    <div class="col-5 text-center">
+                        <span t-field="doc.partner_id.name"/>
+                    </div>
+                    <div class="col-4 text-right" dir="rtl">
+                        <Strong>الاسم</Strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <Strong>Code</Strong>
+                    </div>
+                    <div class="col-5 text-center">
+                        <span t-field="doc.partner_id.customer_code"/>
+                    </div>
+                    <div class="col-4 text-right" dir="rtl">
+                        <Strong>شفرة</Strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <Strong>Address</Strong>
+                    </div>
+                    <div class="col-5 text-center" style="font-size: 8pt;">
+                        <t t-if="doc.partner_id.street">
+                            <span t-field="doc.partner_id.street"/>,
+                        </t>
+                        <t t-if="doc.partner_id.street2">
+                            <span t-field="doc.partner_id.street2"/>,
+                        </t>
+                        <t t-if="doc.partner_id.city">
+                            <span t-field="doc.partner_id.city"/>,
+                        </t>
+                        <t t-if="doc.partner_id.state_id">
+                            <span t-field="doc.partner_id.state_id"/>,
+                        </t>
+                        <t t-if="doc.partner_id.zip">
+                            <span t-field="doc.partner_id.zip"/>,
+                        </t>
+                        <t t-if="doc.partner_id.country_id">
+                            <span t-field="doc.partner_id.country_id.name"/>
+                        </t>
+                    </div>
+                    <div class="col-4 text-right" dir="rtl">
+                        <Strong>عنوان</Strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <Strong>Vat Number</Strong>
+                    </div>
+                    <div class="col-5 text-center">
+                        <span t-field="doc.partner_id.vat"></span>
+                    </div>
+                    <div class="col-4 text-right" dir="rtl">
+                        <Strong>رقم تسجيل ضريبة القيمة المضافة</Strong>
+                    </div>
+
+                </div>
+                <div class="oe_structure"/>
+            </div>
+            <div class="oe_structure"/>
+        </template>
+
+        <template id="einv_sa.inv_lines">
+            <div class="row p-1 mt-3 bg-light">
+                <div class="col-6">
+                    <Strong>Invoice Lines</Strong>
+                </div>
+                <div class="col-6 text-right" dir="rtl">
+                    <Strong>الاصناف</Strong>
+                </div>
+            </div>
+            <table class="table table-sm o_main_table " name="invoice_line_ids_table">
+                <thead class="bg-light text-center">
+                    <tr>
+                        <td class="text-left">
+                            <div class="mw-100">Material/Description</div>
+                            <div class="mw-100 " dir="rtl">
+                                وصف الصنف
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mw-100">Unit Price</div>
+                            <div class="mw-100 " dir="rtl">سعر الوحدة</div>
+                        </td>
+                        <td>
+                            <div class="mw-100">Quantity</div>
+                            <div class="mw-100 " dir="rtl">الكمية</div>
+                        </td>
+                        <td>
+                            <div class="mw-100">Discount</div>
+                            <div class="mw-100 " dir="rtl">الخصم</div>
+                        </td>
+                        <td>
+                            <div class="mw-100">Taxes</div>
+                            <div class="mw-100 " dir="rtl">نسبة الضريبة</div>
+                        </td>
+                        <td>
+                            <div class="mw-100">Amount tax</div>
+                            <div class="mw-100 " dir="rtl">مبلغ الضريبة</div>
+                        </td>
+                        <td>
+                            <div class="mw-100">Taxable Amount</div>
+                            <div class="mw-100 " dir="rtl">المبلغ الخاضع
+                                للضريبة
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mw-100">Price Total (with Vat)</div>
+                            <div class="mw-100 " dir="rtl">الاجمالي شامل
+                                الضريبة المضافة
+                            </div>
+                        </td>
+
+                    </tr>
+                </thead>
+                <tbody class="invoice_line_ids_tbody text-center">
+                    <!-- foreach-->
+                    <tr t-foreach="doc.invoice_line_ids" t-as="line">
+                        <td class="text-left">
+                            <span t-field="line.name"/>
+                        </td>
+                        <td>
+                            <span t-field="line.price_unit"/>
+                        </td>
+                        <td>
+                            <span t-field="line.quantity"/>
+                        </td>
+                        <td>
+                            <span t-field="line.einv_amount_discount"/>
+                        </td>
+                        <!--                            <td><span t-field="line.tax_ids[0].name"/></td>-->
+                        <td t-attf-class="{{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                            <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_ids))"
+                                  id="line_tax_ids"/>
+                        </td>
+                        <td>
+                            <span t-field="line.einv_amount_tax"/>
+                        </td>
+                        <td>
+                            <span t-field="line.price_subtotal"/>
+                        </td>
+                        <td>
+                            <span t-field="line.price_total"/>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <div class="oe_structure"/>
+        </template>
+
+
+        <template id="einv_sa.inv_total">
+            <div style="page-break-inside: avoid;">
+                <div class="row p-1 mt-1 bg-light">
+                    <div class="col-6">
+                        <Strong>Total Amount:</Strong>
+                    </div>
+                    <div class="col-6 text-right" dir="rtl">
+                        <Strong>الاجمالي:</Strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-10">
+                        <div class="row border border-top-0">
+                            <div class="col-4">Total (Excluding VAT)</div>
+                            <div class="col-6 text-right" dir="rtl">الاجمالي غير شامل ضريبة القيمة المضافة</div>
+                            <div class="col-2 text-center">
+                                <span t-field="doc.einv_amount_sale_total"></span>
+                            </div>
+                        </div>
+                        <div class="row border border-top-0">
+                            <div class="col-4">Discount</div>
+                            <div class="col-6 text-right" dir="rtl">إجمالي الخصومات</div>
+                            <div class="col-2 text-center">
+                                <span
+                                        t-field="doc.einv_amount_discount_total"></span>
+                            </div>
+                        </div>
+                        <div class="row border border-top-0">
+                            <div class="col-4">Total Taxable Amount (Excluding VAT)</div>
+                            <div class="col-6 text-right" dir="rtl">الإجمالي الخاضع للضريبة غير شامل ضريبة القيمة
+                                المضافة
+                            </div>
+                            <div class="col-2 text-center">
+                                <span t-field="doc.amount_untaxed"></span>
+                            </div>
+                        </div>
+                        <div class="row border border-top-0">
+                            <div class="col-4">Total VAT</div>
+                            <div class="col-6 text-right" dir="rtl">إجمالي الضريبة المضافة</div>
+                            <div class="col-2 text-center">
+                                <span t-field="doc.amount_tax"/>
+                            </div>
+                        </div>
+                        <div class="row border border-top-0">
+                            <div class="col-4">Total Amount Due</div>
+                            <div class="col-6 text-right" dir="rtl">الإجمالي المستحق</div>
+                            <div class="col-2 text-center">
+                                <span t-field="doc.amount_total"/>
+                            </div>
+                        </div>
+                        <div class="row border border-top-0">
+                            <div class="col-4">Amount in Word</div>
+                            <div class="col-8 text-left">
+                                <span t-esc="doc.get_amount_in_words()"/>
+                            </div>
+<!--                            <div class="col-2" dir="rtl">-->
+<!--                                <span t-esc="doc.get_english_to_arabic_amount()"/>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="page-break-inside: avoid;" t-if="doc.narration">
+                <div class="row p-1 mt-1 bg-light">
+                    <div class="col-12">
+                        <Strong>Invoice Note:</Strong>
+                    </div>
+                </div>
+                <div class="row p-1 mt-1">
+                    <div class="col-12">
+                        <span t-field="doc.narration"/>
+                    </div>
+                </div>
+            </div>
+            <div style="page-break-inside: avoid;" t-if="doc.partner_bank_id">
+                <div class="row p-1 mt-1 bg-light">
+                    <div class="col-12">
+                        <Strong>Bank Details:</Strong>
+                    </div>
+                </div>
+                <div class="row p-1 mt-1">
+                    <div class="col-6">
+                        <span t-field="doc.partner_bank_id.bank_id.name"/>
+                        <br/>
+                        <span t-field="doc.partner_bank_id.acc_number"/>
+                    </div>
+<!--                    <div class="col-6">-->
+<!--                        <span t-field="doc.narration"/>-->
+<!--                    </div>-->
+                </div>
+            </div>
+<!--            <div t-if="doc.narration">-->
+<!--                <strong>Invoice Note:</strong>-->
+<!--                <span t-field="doc.narration"/>-->
+<!--            </div>-->
+            <div class="oe_structure"/>
+
+        </template>
+        <template id="sannad_bags_letterhead">
+            <t t-foreach="docs" t-as="o">
+                <!--            <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"-->
+                <!--                  rel="stylesheet" type="text/css"/>-->
+                <!--            <link rel="stylesheet" href="einv_sa/static/src/css/report_styles.css"/>-->
+                <t t-set="company" t-value="user.company_id"/>
+                <div class="header text-center" width="100%"
+                     style="font-family: 'Times New Roman' !important;">
+                    <table class="table-borderless" width="100%">
+                        <tr>
+                            <td style="text-align:left;">
+                                <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)"
+                                     alt="Logo" height="40px" width="80px" style="margin-top:20px;"/>
+                            </td>
+                            <td style="text-align:right;" class="border-bottom">
+                                <span style="text-align:center;">
+                                    <span>مصنع شـــــــركة سنــــــد الأكيـــــــاس</span>
+                                    <br/>
+                                    <span>Sanad Bags Company Factory</span>
+                                </span>
+                                <br/>
+                                <br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="border-bottom">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="footer text-right" width="100%"
+                     style="font-family: 'Times New Roman' !important; padding:15px 0px 6px 0px;">
+                    <span style="color:red; font-size:11pt; font-family: 'Times New Roman' !important;">Electronically
+                        produced
+                        document, thus, doesn't require a signature or
+                        stamp.
+                    </span>
+                    <br/>
+                    <br/>
+                    <div class="border-top border-bottom">
+                        <table class="table-borderless"
+                               style="table-layout: fixed; width: 100%; font-size:6.5pt; height:40px;">
+                            <tr>
+                                <td width="20%">مصنع شـــــــركة سنــــــد الأكيـــــــاس</td>
+                                <td style="text-align:left;" t-options="{'lang': 'ar_SY'}" dir="rtl">
+                                    <span>8438 - المـــدينـــــة الصناعيــــة الثالثــــة، الدمــام 34857 - 3037،
+                                        المملكـة
+                                        العربيـة السعوديـــــة
+                                    </span>
+                                </td>
+                                <td width="15%">
+                                    C.R. 2050112802
+                                </td>
+                                <td style="text-align:right;" class="border-start" width="15%">
+                                    www.sanadbags.com
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%">Sanad Bags Company Factory</td>
+                                <td style="text-align:left;">
+                                    <span>8438 - 3rd Industrial City, Dammam 34857 - 3037, Kingdom of Saudi Arabia
+                                    </span>
+                                </td>
+                                <td width="15%">Tel: 966 13 8050880</td>
+                                <td style="text-align:right;" class="border-start" width="15%">info@sanadbags.com</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table style="width:100%; font-size:10.5pt; font-family: 'Times New Roman' !important;"
+                           class="table-borderless">
+                        <tr>
+                            <td style="text-align:left;">Printed on:
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M:%S')"/>
+                            </td>
+                            <td style="text-align:right;">Printed by:
+                                <span t-field="o.env.user.id"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        <!-- main document template -->
+        <template id="einv_sa.account_move_report_document">
+            <t t-call="web.basic_layout">
+                <t t-set="doc" t-value="doc.with_context({'lang': lang})"/>
+                <!--                <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"-->
+                <!--                      rel="stylesheet" type="text/css"/>-->
+                <!--                <link rel="stylesheet" href="einv_sa/static/src/css/report_styles.css"/>-->
+                <div class="page"
+                     style="!important; font-family: 'Times New Roman' !important; font-size: 9pt !important;">
+
+                    <!-- Invoice fields-->
+                    <t t-call="einv_sa.inv_header"/>
+
+                    <!-- partner fields-->
+                    <t t-call="einv_sa.partner_info"/>
+
+                    <!-- Invoice fields-->
+                    <t t-call="einv_sa.inv_lines" t-lang="ar"/>
+
+                    <!-- Invoice total-->
+                    <t t-call="einv_sa.inv_total"/>
+                </div>
+            </t>
+        </template>
+
+        <!-- main template -->
+        <template id="einv_sa.account_move_report">
+            <t t-call="web.html_container">
+                <t t-call="einv_sa.sannad_bags_letterhead"/>
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="lang" t-value="doc.create_uid.lang"/>
+                    <t t-call="einv_sa.account_move_report_document"/>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

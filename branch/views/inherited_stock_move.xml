@@ -11,7 +11,7 @@
                        position="after">
                     <!-- Add your fields or attributes here -->
                     <group name="branch" string="Branch">
-                        <field name="branch_id"/>
+                        <field name="branch_id" required="1"/>
                     </group>
                 </xpath>
             </field>

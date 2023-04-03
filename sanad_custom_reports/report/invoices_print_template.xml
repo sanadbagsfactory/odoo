@@ -3,11 +3,13 @@
         <template id="report_invoices_temp">
             <t t-call="web.html_container">
                 <t t-call="sanad_custom_reports.sannad_bags_letterhead"/>
+<!--                <t t-foreach="docs.filtered(lambda doc: doc.move_type == 'out_invoice')" t-as="o">-->
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.basic_layout">
-                        <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"
-                              rel="stylesheet" type="text/css"/>
-                        <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>
+<!--                        <link href="//db.onlinewebfonts.com/c/32441506567156636049eb850b53f02a?family=Times+New+Roman"-->
+<!--                              rel="stylesheet" type="text/css"/>-->
+<!--                        <link rel="stylesheet" href="sanad_custom_reports/static/src/css/report_styles.css"/>-->
+                        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
                         <div class="page"
                              style="margin:8px !important; font-family: 'Times New Roman' !important;  margin:0px 50px 0px 50px !important;">
                             <div class="oe_structure"/>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_rfq_comparison" model="ir.actions.report">
+            <field name="name">Comparison Report</field>
+            <field name="model">purchase.comparison</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">pways_quotations_comparison_dashboard.report_rfq</field>
+            <field name="report_file">pways_quotations_comparison_dashboard.report_rfq</field>
+            <field name="print_report_name">'Agrrement - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_purchase_comparison"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

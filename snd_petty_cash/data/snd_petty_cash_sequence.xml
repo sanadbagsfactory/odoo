@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="snd_petty_cash_seq" model="ir.sequence">
+            <field name="name">SND Petty Cash Sequence</field>
+            <field name="code">snd.petty.cash.seq</field>
+            <field name="prefix">PC</field>
+            <field name="padding">6</field>
+        </record>
+    </data>
+</odoo>

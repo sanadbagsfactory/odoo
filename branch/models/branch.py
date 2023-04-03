@@ -43,6 +43,7 @@ class ResBranch(models.Model):
             self.analytic_account_id.update({'name': vals.get('name')})
             self.analytic_plan_id.update({'name': vals.get('name')})
             # res.analytic_account_id = result.id
+            
         return res
 
     def unlink(self):

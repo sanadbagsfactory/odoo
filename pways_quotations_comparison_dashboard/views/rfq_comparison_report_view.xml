@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_purchase_requisition_inherit" model="ir.ui.view">
+            <field name="name">purchase.requisition.form.inherit</field>
+             <field name="model">purchase.requisition</field>
+             <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+             <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button type="object" name="action_open_dashboard" string="RFQ Comparison" class="oe_stat_button" icon="fa-dashboard"/>
+                </xpath>                  
+            </field>
+        </record>
+    </data>
+</odoo>

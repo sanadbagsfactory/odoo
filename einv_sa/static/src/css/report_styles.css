@@ -1,0 +1,10 @@
+@font-face {
+font-family: "Times New Roman";
+src: url("//db.onlinewebfonts.com/t/32441506567156636049eb850b53f02a.eot");
+src: url("//db.onlinewebfonts.com/t/32441506567156636049eb850b53f02a.eot?#iefix")
+format("embedded-opentype"),
+url("//db.onlinewebfonts.com/t/32441506567156636049eb850b53f02a.woff2") format("woff2"),
+url("//db.onlinewebfonts.com/t/32441506567156636049eb850b53f02a.woff")
+format("woff"), url("//db.onlinewebfonts.com/t/32441506567156636049eb850b53f02a.ttf")
+format("truetype"), url("//db.onlinewebfonts.com/t/32441506567156636049eb850b53f02a.svg#Times New Roman")
+format("svg"); }

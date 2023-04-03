@@ -1,43 +1,44 @@
 <odoo>
     <data>
-<!--        &lt;!&ndash;        Purchase Order Custom&ndash;&gt;-->
-<!--        <record id="paper_format_purchase_quote" model="report.paperformat">-->
-<!--            <field name="name">Quotation / Purchase Print</field>-->
-<!--            <field name="default" eval="True"/>-->
-<!--            <field name="format">A4</field>-->
-<!--            <field name="page_height">0</field>-->
-<!--            <field name="page_width">0</field>-->
-<!--            <field name="orientation">Portrait</field>-->
-<!--            <field name="margin_top">50</field>-->
-<!--            <field name="margin_bottom">50</field>-->
-<!--            <field name="margin_left">13</field>-->
-<!--            <field name="margin_right">13</field>-->
-<!--            <field name="header_line" eval="False"/>-->
-<!--            <field name="header_spacing">35</field>-->
-<!--            <field name="dpi">90</field>-->
-<!--        </record>-->
+<!--                &lt;!&ndash;        Purchase Order Custom&ndash;&gt;-->
+<!--                <record id="paper_format_purchase_quote" model="report.paperformat">-->
+<!--                    <field name="name">Header/Footer Test</field>-->
+<!--                    <field name="default" eval="True"/>-->
+<!--                    <field name="format">A4</field>-->
+<!--                    <field name="page_height">0</field>-->
+<!--                    <field name="page_width">0</field>-->
+<!--                    <field name="orientation">Portrait</field>-->
+<!--                    <field name="margin_top">50</field>-->
+<!--                    <field name="margin_bottom">50</field>-->
+<!--                    <field name="margin_left">13</field>-->
+<!--                    <field name="margin_right">13</field>-->
+<!--                    <field name="header_line" eval="False"/>-->
+<!--                    <field name="header_spacing">35</field>-->
+<!--                    <field name="dpi">90</field>-->
+<!--                </record>-->
 
-<!--        <report-->
-<!--                id="purchase_quote_report_pdf_id"-->
-<!--                string="Quotation / Purchase Print"-->
-<!--                model="purchase.order"-->
-<!--                report_type="qweb-pdf"-->
-<!--                name="sanad_custom_reports.report_purchase_quote_temp"-->
-<!--                file="sanad_custom_reports.report_purchase_quote_temp"-->
-<!--                paperformat="paper_format_purchase_quote"-->
-<!--        />-->
+<!--                <report-->
+<!--                        id="purchase_quote_report_pdf_id"-->
+<!--                        string="Header/Footer Test"-->
+<!--                        model="purchase.order"-->
+<!--                        report_type="qweb-pdf"-->
+<!--                        name="sanad_custom_reports.report_purchase_quote_temp"-->
+<!--                        file="sanad_custom_reports.report_purchase_quote_temp"-->
+<!--                        paperformat="paper_format_purchase_quote"-->
+<!--                />-->
 
 
         <!--        Purchase Order Letter Head and terms & Conditions Custom-->
+        <!--Paper Format for Quotation / Sale Order-->
         <record id="paper_format_po" model="report.paperformat">
-            <field name="name">Purchase Order Print</field>
+            <field name="name">Quotation / Purchase Order</field>
             <field name="default" eval="True"/>
             <field name="format">A4</field>
             <field name="page_height">0</field>
             <field name="page_width">0</field>
             <field name="orientation">Portrait</field>
             <field name="margin_top">55</field>
-            <field name="margin_bottom">40</field>
+            <field name="margin_bottom">25</field>
             <field name="margin_left">10</field>
             <field name="margin_right">10</field>
             <field name="header_line" eval="False"/>
@@ -47,16 +48,17 @@
 
         <report
                 id="po_report_pdf_id"
-                string="Purchase Order Print"
+                string="Quotation / Purchase Order"
                 model="purchase.order"
                 report_type="qweb-pdf"
                 name="sanad_custom_reports.report_po_temp"
                 file="sanad_custom_reports.report_po_temp"
                 paperformat="paper_format_po"
+                print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Sale Order - %s' % (object.name)"
         />
 
-<!--        Letterhead for invoice-->
-
+        <!--        Letterhead for invoice-->
+        <!--Paper Format for Invoice-->
         <record id="paper_format_invoices" model="report.paperformat">
             <field name="name">Invoices Print</field>
             <field name="default" eval="True"/>
@@ -65,7 +67,7 @@
             <field name="page_width">0</field>
             <field name="orientation">Portrait</field>
             <field name="margin_top">55</field>
-            <field name="margin_bottom">40</field>
+            <field name="margin_bottom">25</field>
             <field name="margin_left">10</field>
             <field name="margin_right">10</field>
             <field name="header_line" eval="False"/>
@@ -81,6 +83,7 @@
                 name="sanad_custom_reports.report_invoices_temp"
                 file="sanad_custom_reports.report_invoices_temp"
                 paperformat="paper_format_invoices"
+                print_report_name="'%s' % (object.name).replace('/', '')"
         />
     </data>
 </odoo>
