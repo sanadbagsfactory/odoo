@@ -177,11 +177,14 @@ class ResPartner(models.Model):
     @api.constrains('cr_no')
     def cr_no_uniqueness(self):
         for rec in self:
-            if rec.cr_no:
-                # print('CR Number')
-                # print(self.env['res.partner'].search([('cr_no', '=', rec.cr_no)]))
-                if self.env['res.partner'].search([('cr_no', '=', rec.cr_no)]):
-                    raise UserError("A CR Number is already exists with this number . CR Number must be unique!")
+            if (
+                    rec.cr_no
+                    and len(
+                self.env['res.partner'].search([('cr_no', '=', rec.cr_no)])
+            )
+                    > 1
+            ):
+                raise UserError("A CR Number is already exists with this number . CR Number must be unique!")
 
     @api.constrains('vat', 'cr_no', 'phone_number')
     def vat_uniqueness_and_validations(self):
