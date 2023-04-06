@@ -16,9 +16,9 @@
                     </div>
                 </xpath>
 
-                <xpath expr="//field[@name='vat']" position="attributes">
+               <!-- <xpath expr="//field[@name='vat']" position="attributes">
                     <attribute name="string">VAT Number</attribute>
-                </xpath>
+                </xpath>-->
                 <xpath expr="//page[@name='accounting']//group//group[@name='accounting_entries']" position="inside">
                     <field name="focus_gl" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
                     <field name="new_gl" invisible="1"/>
@@ -75,8 +75,9 @@
                            options="{'enable_sms': true}"/>
                     <field name="company_name" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
                     <field name="text_treatment" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
+                    <field name="check_vat_cr" invisible="True"/>
                     <field name="cr_no"
-                           attrs="{'invisible': [('customer_rank', '=', 0), ('supplier_rank', '=', 0)]}"/>
+                           attrs="{'invisible': [('customer_rank', '=', 0), ('supplier_rank', '=', 0)],'required': [('check_vat_cr', '=', True)]}"/>
                     <field name="cr_attachment_id" widget="many2many_binary"
                            string="CR Attachment"
                            attrs="{'invisible': [('cr_no', '=', False)]}"/>
@@ -142,7 +143,7 @@
                     <field name="is_vat"/>
                     <field name="vat_certificate_id" widget="many2many_binary"
                            string="VAT Certificate"
-                           attrs="{'invisible': [('is_vat', '!=', True)]}"/>
+                           attrs="{'invisible': [('is_vat', '=', False)], 'required': [('is_vat', '=', True)]}"/>
                 </xpath>
                 <!--                <xpath expr="//field[@name='other_id']" position="attributes">-->
                 <!--                    <attribute name="invisible">1</attribute>-->
