@@ -31,8 +31,10 @@ class RespartnerInheritModel(models.Model):
                 # 'activity_type_id': 4,
                 'date_deadline': datetime.now(),
             }
-            self.env['mail.activity'].sudo().create(todos)
-
+            if self.env.user.search([('login', '=', 'azeem.anwar@sanadbags.com')]).id:
+                self.env['mail.activity'].sudo().create(todos)
+            else:
+                raise ValidationError('This email does not exist (azeem.anwar@sanadbags.com)')
     def action_cancel(self):
         self.state = 'cancel'
         todos = {
@@ -44,6 +46,10 @@ class RespartnerInheritModel(models.Model):
             # 'activity_type_id': 4,
             'date_deadline': datetime.now(),
         }
+        if self.env.user.search([('login', '=', 'baashar.mohammed@sanadbags.com')]).id:
+            self.env['mail.activity'].sudo().create(todos)
+        else:
+            raise ValidationError('This email does not exist (baashar.mohammed@sanadbags.com)')
         self.env['mail.activity'].sudo().create(todos)
 
     def action_approve(self):
@@ -58,8 +64,13 @@ class RespartnerInheritModel(models.Model):
                 # 'activity_type_id': 4,
                 'date_deadline': datetime.now(),
             }
+            if self.env.user.search([('login', '=', 'asif.javaed@sanadbags.com')]).id:
+                self.env['mail.activity'].sudo().create(todos)
+            else:
+                raise ValidationError('This email does not exist (asif.javaed@sanadbags.com)')
 
             self.env['mail.activity'].sudo().create(todos)
+
 
     @api.onchange('country_id')
     def _onchange_country(self):
@@ -99,6 +110,10 @@ class RespartnerInheritModel(models.Model):
                 'note': 'New Vendor is confirmed',
                 'date_deadline': datetime.now(),
             }
+            if self.env.user.search([('login', '=', 'baashar.mohammed@sanadbags.com')]).id:
+                self.env['mail.activity'].sudo().create(todos)
+            else:
+                raise ValidationError('This email does not exist (baashar.mohammed@sanadbags.com)')
 
             self.env['mail.activity'].sudo().create(todos)
         return res
