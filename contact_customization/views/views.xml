@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="vendor_form_inherit_id" model="ir.ui.view">
+            <field name="name">Vendor Form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="check_vat_cr" invisible="True"/>
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="replace">
+                    <field name="vat" string="VAT Number" attrs="{'readonly': [('parent_id','!=',False)], 'required': [('check_vat_cr', '=', True)]}"/>
+                </xpath>
+                <xpath expr="//div[@class='o_address_format']" position="replace">
+                    <div class="o_address_format">
+                        <field name="street" required="True" placeholder="Street..." class="o_address_street"
+                               attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                        <field name="street2" required="True" placeholder="Street 2..." class="o_address_street"
+                               attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                        <field name="city" required="True" placeholder="City" class="o_address_city"
+                               attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                        <field name="state_id" required="True" class="o_address_state" placeholder="State"
+                               options="{'no_open': True, 'no_quick_create': True}"
+                               attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"
+                               context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
+                        <field name="zip" required="True" placeholder="ZIP" class="o_address_zip"
+                               attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                        <div name="partner_address_country" class="d-flex justify-content-between">
+                            <field name="country_id" required="True" placeholder="Country" class="o_address_country"
+                                   options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"
+                                   attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                        </div>
+                    </div>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="iktva_form_id" model="ir.ui.view">
+            <field name="name">Res Partner</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="iktva_segment.view_partner_form_inherited"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='iktva_segment_id']" position="after">
+                    <field name="check_ktva" invisible="True"/>
+                </xpath>
+
+                <xpath expr="//field[@name='iktva_segment_id']" position="replace">
+                     <field name="iktva_segment_id"
+                                       attrs="{'invisible': [('supplier_rank', '=', 0)], 'required': [('check_ktva', '=', True)]}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!-- Inherit Form View to Modify it -->
+        <!--<record id="vendor_cust_form_id" model="ir.ui.view">
+            <field name="name">Vendor Custom Form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="vendor_customization.view_partner_form_inherited_fields"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='cr_no']" position="replace">
+                    <field name="cr_no"
+                           attrs="{'invisible': [('customer_rank', '=', 0), ('supplier_rank', '=', 0)],'required': [('check_vat_cr', '=', True)]}"/>
+                </xpath>
+
+            </field>
+        </record>-->
+
+
+    </data>
+</odoo>
