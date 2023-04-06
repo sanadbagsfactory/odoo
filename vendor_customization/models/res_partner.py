@@ -70,7 +70,7 @@ class ResPartner(models.Model):
 
     # same fields
     Comm_reg_no = fields.Char('CR Number')
-    cr_no = fields.Char('CR Number')
+    cr_no = fields.Integer('CR Number')
     cr_expiry_date = fields.Date('CR Expiry Date')
     # extra------------------------------------------------------
     iktiva_segment = fields.Char('IKTIVA Segment', invisible=1)
@@ -177,13 +177,7 @@ class ResPartner(models.Model):
     @api.constrains('cr_no')
     def cr_no_uniqueness(self):
         for rec in self:
-            if (
-                    rec.cr_no
-                    and len(
-                self.env['res.partner'].search([('cr_no', '=', rec.cr_no)])
-            )
-                    > 1
-            ):
+            if (rec.cr_no and len(self.env['res.partner'].search([('cr_no', '=', rec.cr_no)]))> 1):
                 raise UserError("A CR Number is already exists with this number . CR Number must be unique!")
 
     @api.constrains('vat', 'cr_no', 'phone_number')
@@ -191,8 +185,8 @@ class ResPartner(models.Model):
         for rec in self:
             if rec.vat and not rec.vat.isdigit():
                 raise ValidationError(_("The VAT Number must be a sequence of digits."))
-            if rec.cr_no and not rec.cr_no.isdigit():
-                raise ValidationError(_("The CR Number must be a sequence of digits."))
+            # if rec.cr_no and not rec.cr_no.isdigit():
+            #     raise ValidationError(_("The CR Number must be a sequence of digits."))
             if rec.phone_number and not rec.phone_number.isdigit():
                 raise ValidationError(_("The Phone Number must be a sequence of digits."))
 
@@ -219,3 +213,10 @@ class InheritedResCompany(models.Model):
                 raise ValidationError(_("The Company Registry must be a sequence of digits."))
             if rec.phone_number and not rec.phone_number.isdigit():
                 raise ValidationError(_("The Phone Number must be a sequence of digits."))
+
+    # @api.model
+    # def create(self, vals_list):
+    #     if self.search([('cr_no', '=', vals_list['cr_no'])]):
+    #         raise ValidationError('The CR Number is already exist !')
+    #     res = super().create(vals_list)
+    #     return res
