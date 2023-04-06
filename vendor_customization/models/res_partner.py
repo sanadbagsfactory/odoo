@@ -152,26 +152,26 @@ class ResPartner(models.Model):
                                         )
 
     # Approvals
-    state = fields.Selection(selection=[
-        ('draft', 'Draft'),
-        ('confirm', 'Confirm'),
-        ('cancel', 'Cancelled')
-    ], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
-
-    def action_confirm(self):
-        self.write({
-            'state': 'confirm'
-        })
-
-    def action_cancel(self):
-        self.write({
-            'state': 'cancel'
-        })
-
-    def action_draft(self):
-        self.write({
-            'state': 'draft'
-        })
+    # state = fields.Selection(selection=[
+    #     ('draft', 'Draft'),
+    #     ('confirm', 'Confirm'),
+    #     ('cancel', 'Cancelled')
+    # ], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
+    #
+    # def action_confirm(self):
+    #     self.write({
+    #         'state': 'confirm'
+    #     })
+    #
+    # def action_cancel(self):
+    #     self.write({
+    #         'state': 'cancel'
+    #     })
+    #
+    # def action_draft(self):
+    #     self.write({
+    #         'state': 'draft'
+    #     })
 
     #     Validations
     @api.constrains('cr_no')

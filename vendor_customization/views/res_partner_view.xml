@@ -23,7 +23,7 @@
                     <field name="focus_gl" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
                     <field name="new_gl" invisible="1"/>
                 </xpath>
-                <xpath expr="//form//sheet" position="before">
+                <!--<xpath expr="//form//sheet" position="before">
                     <header attrs="{'invisible': [('supplier_rank', '=', 0)]}">
                         <button name="cr_expiry_msg" type="object" string="CR Expiry Message"/>
                         <button name="action_confirm"
@@ -47,7 +47,7 @@
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel" nolabel="1"
                                readonly="1"/>
                     </header>
-                </xpath>
+                </xpath>-->
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="name_arabic" nolabel="1" placeholder="اسم - عربي"
                            attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
