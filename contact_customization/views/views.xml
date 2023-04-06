@@ -8,11 +8,17 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
+
+                <xpath expr="//page[@name='internal_notes']" position="attributes">
+                    <attribute name="groups">contact_customization.approve_security_group</attribute>
+                </xpath>
+
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="check_vat_cr" invisible="True"/>
                 </xpath>
                 <xpath expr="//field[@name='vat']" position="replace">
-                    <field name="vat" string="VAT Number" attrs="{'readonly': [('parent_id','!=',False)], 'required': [('check_vat_cr', '=', True)]}"/>
+                    <field name="vat" string="VAT Number"
+                           attrs="{'readonly': [('parent_id','!=',False)], 'required': [('check_vat_cr', '=', True)]}"/>
                 </xpath>
                 <xpath expr="//div[@class='o_address_format']" position="replace">
                     <div class="o_address_format">
@@ -50,29 +56,23 @@
                 </xpath>
 
                 <xpath expr="//field[@name='iktva_segment_id']" position="replace">
-                     <field name="iktva_segment_id"
-                                       attrs="{'invisible': [('supplier_rank', '=', 0)], 'required': [('check_ktva', '=', True)]}"/>
+                    <field name="iktva_segment_id"
+                           attrs="{'invisible': [('supplier_rank', '=', 0)], 'required': [('check_ktva', '=', True)]}"/>
+                </xpath>
+                <xpath expr="//form//sheet" position="before">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                        <button name="action_confirm" attrs="{'invisible': [('state','in',('confirm', 'approve'))]}"
+                                groups="contact_customization.confirm_security_group" string="Confirm" type="object"/>
+                        <button name="action_approve" attrs="{'invisible': [('state','in',('cancel', 'approve'))]}"
+                                groups="contact_customization.approve_security_group" string="Approve" type="object"/>
+                        <button name="action_cancel" string="Cancel" attrs="{'invisible': [('state','in',('confirm', 'approve'))]}"
+                                groups="contact_customization.create_security_group" type="object"/>
+                    </header>
                 </xpath>
 
             </field>
         </record>
-
-
-        <!-- Inherit Form View to Modify it -->
-        <!--<record id="vendor_cust_form_id" model="ir.ui.view">
-            <field name="name">Vendor Custom Form</field>
-            <field name="model">res.partner</field>
-            <field name="inherit_id" ref="vendor_customization.view_partner_form_inherited_fields"/>
-            <field name="arch" type="xml">
-
-                <xpath expr="//field[@name='cr_no']" position="replace">
-                    <field name="cr_no"
-                           attrs="{'invisible': [('customer_rank', '=', 0), ('supplier_rank', '=', 0)],'required': [('check_vat_cr', '=', True)]}"/>
-                </xpath>
-
-            </field>
-        </record>-->
-
 
     </data>
 </odoo>
