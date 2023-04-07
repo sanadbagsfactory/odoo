@@ -99,10 +99,10 @@ class RespartnerInheritModel(models.Model):
 
     @api.model
     def create(self, vals_list):
-        if vals_list['loc'] == 'international' and vals_list['company_type'] == 'person':
-            pass
-        else:
-            raise ValidationError('CR NO is required !')
+        if vals_list['loc'] == 'domestic' and vals_list['company_type'] == 'company':
+            if vals_list['cr_no'] == 0:
+                raise ValidationError('CR NO is required !')
+
         res = super().create(vals_list)
         if self.env.user.has_group('contact_customization.view_security_group'):
             raise ValidationError('Your are not allowed to create contact !')
