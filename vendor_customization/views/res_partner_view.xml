@@ -75,7 +75,7 @@
                            options="{'enable_sms': true}"/>
                     <field name="company_name" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
                     <field name="text_treatment" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
-                    <field name="check_vat_cr" invisible="True"/>
+<!--                    <field name="check_vat_cr" invisible="True"/>-->
                     <field name="cr_no"
                            attrs="{'invisible': [('customer_rank', '=', 0), ('supplier_rank', '=', 0)],'required': [('check_vat_cr', '=', True)]}"/>
                     <field name="cr_attachment_id" widget="many2many_binary"
