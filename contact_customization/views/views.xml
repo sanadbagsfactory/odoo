@@ -8,7 +8,7 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                
+
                 <xpath expr="//field[@name='email']" position="attributes">
                     <attribute name="required">True</attribute>
                 </xpath>
@@ -76,7 +76,7 @@
                                 groups="contact_customization.confirm_security_group" string="Confirm" type="object"/>
                         <button name="action_approve" attrs="{'invisible': [('state','in',('cancel', 'approve'))]}"
                                 groups="contact_customization.approve_security_group" string="Approve" type="object"/>
-                        <button name="action_cancel" string="Cancel" attrs="{'invisible': [('state','in',('confirm', 'approve'))]}"
+                        <button name="action_cancel" string="Cancel" attrs="{'invisible': [('state','in',('create''confirm'))]}"
                                 groups="contact_customization.create_security_group" type="object"/>
                     </header>
                 </xpath>

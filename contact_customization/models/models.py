@@ -13,7 +13,7 @@ class RespartnerInheritModel(models.Model):
         ('create', 'Create'),
         ('confirm', 'Confirm'),
         ('approve', 'Approve'),
-        ('cancel', 'Cancel'),
+        ('reject', 'Reject'),
     ], default='create')
 
     def action_create(self):
