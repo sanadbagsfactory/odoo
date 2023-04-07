@@ -1,0 +1,47 @@
+<odoo>
+
+    <record id="view_account_payment_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="is_amount_limit" force_save="1" invisible="1"/>
+            </xpath>
+            <xpath expr="//header/button[@name='action_post']" position="after">
+                <button name="button_approved"
+                        type="object"
+                        states="approve"
+                        string="Approve"
+                        class="oe_highlight"
+                        groups="approval_workflow.group_approve_payment"
+                />
+                <button name="action_rejected"
+                        type="object"
+                        states="approve"
+                        string="Rejected"
+                        class="oe_highlight"
+                        groups="approval_workflow.group_approve_payment"
+                />
+                <button name="action_draft"
+                        type="object"
+                        states="reject"
+                        string="Reset to Draft"
+                        groups="account.group_account_manager"
+                />
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_account_payment_tree_inherit" model="ir.ui.view">
+    <field name="name">account.payment.tree.inherit</field>
+    <field name="model">account.payment</field>
+    <field name="inherit_id" ref="account.view_account_payment_tree"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='state']" position="after">
+            <field name="approval_state" optional="hide"/>
+        </xpath>
+    </field>
+    </record>
+</odoo>
