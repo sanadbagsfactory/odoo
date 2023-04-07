@@ -57,8 +57,8 @@
                     <label for="vendor_code" string="Vendor Code" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
                     <div class="o_row barcode-fields" attrs="{'invisible': [('supplier_rank', '=', 0)]}">
                         <field name="vendor_code" placeholder="5XXXXX" nolabel="1" readonly="1" force_save="1"/>
-                        <button name="generate_vendor_code" string="Generate" type="object"
-                                attrs="{'invisible': [('vendor_code', '!=', False)]}"/>
+                        <!--<button name="generate_vendor_code" string="Generate" type="object"
+                                attrs="{'invisible': [('vendor_code', '!=', False)]}"/>-->
                     </div>
                     <field name="loc" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
                     <!--                    Fields for Customer-->

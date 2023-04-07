@@ -14,12 +14,12 @@ class ResPartner(models.Model):
     name_arabic = fields.Char('Arabic Name')
     vendor_code = fields.Char('Vendor Code')
 
-    def generate_vendor_code(self):
-        for rec in self:
-            seq = self.env['ir.sequence'].next_by_code('res.partner.vendor.seq')
-            rec.update({
-                'vendor_code': seq,
-            })
+    # def generate_vendor_code(self):
+    #     for rec in self:
+    #         seq = self.env['ir.sequence'].next_by_code('res.partner.vendor.seq')
+    #         rec.update({
+    #             'vendor_code': seq,
+    #         })
 
     # Customer Fields
     customer_code = fields.Char('Customer Code')
