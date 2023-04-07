@@ -8,9 +8,19 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
+                
+                <xpath expr="//field[@name='email']" position="attributes">
+                    <attribute name="required">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='mobile']" position="attributes">
+                    <attribute name="required">True</attribute>
+                </xpath>
+                <xpath expr="//page[@name='contact_addresses']" position="attributes">
+                    <attribute name="groups">contact_customization.approve_security_group</attribute>
+                </xpath>
 
                 <xpath expr="//page[@name='internal_notes']" position="attributes">
-                    <attribute name="groups">contact_customization.approve_security_group</attribute>
+                    <attribute name="groups">contact_customization.confirm_security_group</attribute>
                 </xpath>
 
                 <xpath expr="//field[@name='name']" position="after">

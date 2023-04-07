@@ -8,7 +8,7 @@ class RespartnerInheritModel(models.Model):
     _inherit = 'res.partner'
 
     check_ktva = fields.Boolean(default=False)
-    check_vat_cr = fields.Boolean(default=False)
+    check_vat_cr = fields.Boolean(default=True)
     state = fields.Selection([
         ('create', 'Create'),
         ('confirm', 'Confirm'),
@@ -90,7 +90,7 @@ class RespartnerInheritModel(models.Model):
 
     @api.onchange('company_type', 'country_id', 'loc')
     def _onchange_company(self):
-        if self.loc == 'international' and self.company_type == 'person':
+        if self.loc == 'domestic' and self.company_type == 'person':
             self.check_vat_cr = True
         else:
             self.check_vat_cr = False
@@ -98,7 +98,13 @@ class RespartnerInheritModel(models.Model):
 
     @api.model
     def create(self, vals_list):
+        if vals_list['loc'] == 'domestic' and vals_list['company_type'] == 'person':
+            raise ValidationError('CR NO is required !')
+        vals_list['vendor_code'] = self.env['ir.sequence'].next_by_code('res.partner.vendor.seq')
         res = super().create(vals_list)
+        # creating vendor sequence
+
+
         if self.env.user.has_group('contact_customization.view_security_group'):
             raise ValidationError('Your are not allowed to create contact !')
         if res:
