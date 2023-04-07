@@ -35,6 +35,7 @@ class RespartnerInheritModel(models.Model):
                 self.env['mail.activity'].sudo().create(todos)
             else:
                 raise ValidationError('This email does not exist (azeem.anwar@sanadbags.com)')
+
     def action_cancel(self):
         self.state = 'cancel'
         todos = {
@@ -71,7 +72,6 @@ class RespartnerInheritModel(models.Model):
 
             self.env['mail.activity'].sudo().create(todos)
 
-
     @api.onchange('country_id')
     def _onchange_country(self):
         if self.country_id.name == 'Saudi Arabia':
@@ -97,18 +97,13 @@ class RespartnerInheritModel(models.Model):
         else:
             self.check_vat_cr = True
 
-
     @api.model
     def create(self, vals_list):
         if vals_list['loc'] == 'international' and vals_list['company_type'] == 'person':
             pass
         else:
             raise ValidationError('CR NO is required !')
-        vals_list['vendor_code'] = self.env['ir.sequence'].next_by_code('res.partner.vendor.seq')
         res = super().create(vals_list)
-        # creating vendor sequence
-
-
         if self.env.user.has_group('contact_customization.view_security_group'):
             raise ValidationError('Your are not allowed to create contact !')
         if res:
@@ -127,7 +122,6 @@ class RespartnerInheritModel(models.Model):
 
             self.env['mail.activity'].sudo().create(todos)
         return res
-
 
     def write(self, vals_list):
         res = super().write(vals_list)

@@ -24,12 +24,12 @@ class ResPartner(models.Model):
     # Customer Fields
     customer_code = fields.Char('Customer Code')
 
-    def generate_customer_code(self):
-        for rec in self:
-            seq = self.env['ir.sequence'].next_by_code('res.partner.customer.seq')
-            rec.update({
-                'customer_code': seq,
-            })
+    # def generate_customer_code(self):
+    #     for rec in self:
+    #         seq = self.env['ir.sequence'].next_by_code('res.partner.customer.seq')
+    #         rec.update({
+    #             'customer_code': seq,
+    #         })
 
     focus_gl = fields.Char('Focus G/L')
     new_gl = fields.Char('new G/L')
@@ -79,6 +79,9 @@ class ResPartner(models.Model):
     # Phone
     country_code_phone = fields.Char('Country Code', size=3)
     phone_number = fields.Char('Phone Number', size=10)
+    # Mobile
+    country_code_mobile = fields.Char('Country Code', size=3)
+    mobile_number = fields.Char('Mobile Number', size=10)
 
     @api.onchange('country_code_phone', 'phone_number')
     def _on_phone_change(self):
@@ -88,6 +91,15 @@ class ResPartner(models.Model):
                 if rec.name == self.env.company.partner_id.name:
                     self.env.company.country_code_phone = str(rec.country_code_phone)
                     self.env.company.phone_number = str(rec.phone_number)
+
+    @api.onchange('country_code_mobile', 'mobile_number')
+    def _on_mobile_change(self):
+        for rec in self:
+            if rec.country_code_mobile or rec.mobile_number:
+                rec.mobile = str(rec.country_code_mobile) + str(rec.mobile_number)
+                # if rec.name == self.env.company.partner_id.name:
+                    # self.env.company.country_code_mobile = str(rec.country_code_mobile)
+                    # self.env.company.mobile_number = str(rec.mobile_number)
 
     # CR Expiry Msg Display to Account & Purchase users
     def cr_expiry_msg(self):
@@ -172,15 +184,24 @@ class ResPartner(models.Model):
     #     self.write({
     #         'state': 'draft'
     #     })
+    @api.model
+    def create(self, vals_list):
+        res = super(ResPartner, self).create(vals_list)
+        # creating vendor/customer sequence
+        if res.supplier_rank > 0:
+            res.vendor_code = self.env['ir.sequence'].next_by_code('res.partner.vendor.seq')
+        if res.customer_rank > 0:
+            res.vendor_code = self.env['ir.sequence'].next_by_code('res.partner.customer.seq')
+        return res
 
     #     Validations
     @api.constrains('cr_no')
     def cr_no_uniqueness(self):
         for rec in self:
-            if (rec.cr_no and len(self.env['res.partner'].search([('cr_no', '=', rec.cr_no)]))> 1):
+            if (rec.cr_no and len(self.env['res.partner'].search([('cr_no', '=', rec.cr_no)])) > 1):
                 raise UserError("A CR Number is already exists with this number . CR Number must be unique!")
 
-    @api.constrains('vat', 'cr_no', 'phone_number')
+    @api.constrains('vat', 'cr_no', 'phone_number', 'mobile_number')
     def vat_uniqueness_and_validations(self):
         for rec in self:
             if rec.vat and not rec.vat.isdigit():
@@ -189,12 +210,15 @@ class ResPartner(models.Model):
             #     raise ValidationError(_("The CR Number must be a sequence of digits."))
             if rec.phone_number and not rec.phone_number.isdigit():
                 raise ValidationError(_("The Phone Number must be a sequence of digits."))
+            if rec.mobile_number and not rec.mobile_number.isdigit():
+                raise ValidationError(_("The Mobile Number must be a sequence of digits."))
 
 
 class InheritedResCompany(models.Model):
     _inherit = 'res.company'
     country_code_phone = fields.Char('Country Code', size=3)
     phone_number = fields.Char('Phone Number', size=10)
+
 
     @api.onchange('country_code_phone', 'phone_number')
     def _on_phone_change(self):
@@ -211,12 +235,17 @@ class InheritedResCompany(models.Model):
                 raise ValidationError(_("The VAT Number must be a sequence of digits."))
             if rec.company_registry and not rec.company_registry.isdigit():
                 raise ValidationError(_("The Company Registry must be a sequence of digits."))
-            if rec.phone_number and not rec.phone_number.isdigit():
-                raise ValidationError(_("The Phone Number must be a sequence of digits."))
-
-    # @api.model
-    # def create(self, vals_list):
-    #     if self.search([('cr_no', '=', vals_list['cr_no'])]):
-    #         raise ValidationError('The CR Number is already exist !')
-    #     res = super().create(vals_list)
-    #     return res
+            # if rec.phone_number and not rec.phone_number.isdigit():
+            #     raise ValidationError(_("The Phone Number must be a sequence of digits."))
+    #
+    # # Mobile
+    # country_code_mobile = fields.Char('Country Code', size=3)
+    # mobile_number = fields.Char('Mobile Number', size=10)
+    #
+    # @api.onchange('country_code_mobile', 'mobile_number')
+    # def _on_mobile_change(self):
+    #     for rec in self:
+    #         if rec.country_code_mobile or rec.mobile_number:
+    #             rec.mobile = str(rec.country_code_mobile) + str(rec.mobile_number)
+    #             rec.partner_id.country_code_mobile = str(rec.country_code_mobile)
+    #             rec.partner_id.mobile_number = str(rec.mobile_number)
