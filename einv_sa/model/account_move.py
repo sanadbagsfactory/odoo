@@ -3,8 +3,6 @@ import base64
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, Warning
-
-
 # from translate import Translator
 
 
@@ -42,8 +40,6 @@ class AccountMove(models.Model):
     einv_sa_confirmation_datetime = fields.Datetime(string='Confirmation Date', readonly=True, copy=False)
 
     einv_sa_confirmed = fields.Boolean(compute='_compute_einv_sa_confirmation_datetime', store=True)
-
-    bank_info = fields.Many2one('account.journal', string='Bank/Cash', domain=[('type', '=', 'bank')])
 
     @api.depends('l10n_sa_show_delivery_date', 'l10n_sa_delivery_date')
     def _compute_einv_delivery_data(self):

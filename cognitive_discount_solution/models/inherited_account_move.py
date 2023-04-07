@@ -24,9 +24,9 @@ class InheritedAccountMoveDiscount(models.Model):
             print('Btn Clicked')
             print(rec.move_type)
             inv_product_id = int(
-                self.env['ir.config_parameter'].sudo().get_param('cognitive_discount_solution.inv_product_id'))
+                self.env['ir.config_parameter'].get_param('cognitive_discount_solution.inv_product_id'))
             bill_product_id = int(
-                self.env['ir.config_parameter'].sudo().get_param('cognitive_discount_solution.bill_product_id'))
+                self.env['ir.config_parameter'].get_param('cognitive_discount_solution.bill_product_id'))
             for line in self.invoice_line_ids:
                 if line.product_id.id in [inv_product_id, bill_product_id]:
                     line.unlink()

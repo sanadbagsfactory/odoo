@@ -16,14 +16,14 @@
                     </div>
                 </xpath>
 
-                <!-- <xpath expr="//field[@name='vat']" position="attributes">
-                     <attribute name="string">VAT Number</attribute>
-                 </xpath>-->
+               <!-- <xpath expr="//field[@name='vat']" position="attributes">
+                    <attribute name="string">VAT Number</attribute>
+                </xpath>-->
                 <xpath expr="//page[@name='accounting']//group//group[@name='accounting_entries']" position="inside">
                     <field name="focus_gl" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
                     <field name="new_gl" invisible="1"/>
                 </xpath>
-                <!--<xpath expr="//form//sheet" position="before">
+                <xpath expr="//form//sheet" position="before">
                     <header attrs="{'invisible': [('supplier_rank', '=', 0)]}">
                         <button name="cr_expiry_msg" type="object" string="CR Expiry Message"/>
                         <button name="action_confirm"
@@ -47,7 +47,7 @@
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel" nolabel="1"
                                readonly="1"/>
                     </header>
-                </xpath>-->
+                </xpath>
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="name_arabic" nolabel="1" placeholder="اسم - عربي"
                            attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
@@ -57,8 +57,8 @@
                     <label for="vendor_code" string="Vendor Code" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
                     <div class="o_row barcode-fields" attrs="{'invisible': [('supplier_rank', '=', 0)]}">
                         <field name="vendor_code" placeholder="5XXXXX" nolabel="1" readonly="1" force_save="1"/>
-                        <!--<button name="generate_vendor_code" string="Generate" type="object"
-                                attrs="{'invisible': [('vendor_code', '!=', False)]}"/>-->
+                        <button name="generate_vendor_code" string="Generate" type="object"
+                                attrs="{'invisible': [('vendor_code', '!=', False)]}"/>
                     </div>
                     <field name="loc" attrs="{'invisible': [('supplier_rank', '=', 0)]}"/>
                     <!--                    Fields for Customer-->
@@ -66,8 +66,8 @@
                            attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
                     <div class="o_row barcode-fields" attrs="{'invisible': [('customer_rank', '=', 0)]}">
                         <field name="customer_code" placeholder="3XXXXX" nolabel="1" readonly="1" force_save="1"/>
-                        <!--                        <button name="generate_customer_code" string="Generate" type="object"-->
-                        <!--                                attrs="{'invisible': [('customer_code', '!=', False)]}"/>-->
+                        <button name="generate_customer_code" string="Generate" type="object"
+                                attrs="{'invisible': [('customer_code', '!=', False)]}"/>
                     </div>
                     <!--                    Fields for Customer-->
                     <field name="customer_type" attrs="{'invisible': [('customer_rank', '=', 0)]}"/>
@@ -127,21 +127,17 @@
                     <attribute name="force_save">1</attribute>
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                <xpath expr="//field[@name='mobile']" position="attributes">
-                    <attribute name="force_save">1</attribute>
-                    <attribute name="invisible">1</attribute>
-                </xpath>
                 <xpath expr="//field[@name='function']" position="before">
                     <label for="country_code_phone" string="Phone"/>
                     <div class="o_row phone-number-fields">
                         <field name="country_code_phone" placeholder="Country Code" nolabel="1"/>
                         <field name="phone_number" placeholder="Phone Number" nolabel="1"/>
                     </div>
-                    <label for="country_code_mobile" string="Mobile"/>
-                    <div class="o_row">
-                        <field name="country_code_mobile" placeholder="Country Code" nolabel="1"/>
-                        <field name="mobile_number" placeholder="Mobile Number" nolabel="1"/>
-                    </div>
+                    <!--                    <label for="country_code_mobile" string="Mobile"/>-->
+                    <!--                    <div class="o_row">-->
+                    <!--                        <field name="country_code_mobile" placeholder="Country Code" nolabel="1"/>-->
+                    <!--                        <field name="mobile_number" placeholder="Mobile Number" nolabel="1"/>-->
+                    <!--                    </div>-->
                 </xpath>
                 <xpath expr="//field[@name='category_id']" position="after">
                     <field name="is_vat"/>
@@ -167,23 +163,13 @@
                     <attribute name="force_save">1</attribute>
                     <attribute name="invisible">1</attribute>
                 </xpath>
-<!--                <xpath expr="//field[@name='mobile']" position="attributes">-->
-<!--                    <attribute name="force_save">1</attribute>-->
-<!--                    <attribute name="invisible">1</attribute>-->
-<!--                </xpath>-->
                 <xpath expr="//field[@name='phone']" position="before">
                     <label for="country_code_phone" string="Phone"/>
                     <div class="o_row phone-number-fields">
                         <field name="country_code_phone" placeholder="Country Code" nolabel="1"/>
                         <field name="phone_number" placeholder="Phone Number" nolabel="1"/>
                     </div>
-<!--                    <label for="country_code_mobile" string="Mobile"/>-->
-<!--                    <div class="o_row">-->
-<!--                        <field name="country_code_mobile" placeholder="Country Code" nolabel="1"/>-->
-<!--                        <field name="mobile_number" placeholder="Mobile Number" nolabel="1"/>-->
-<!--                    </div>-->
                 </xpath>
-
             </field>
         </record>
     </data>
