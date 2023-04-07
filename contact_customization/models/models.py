@@ -92,6 +92,8 @@ class RespartnerInheritModel(models.Model):
     def _onchange_company(self):
         if self.loc == 'international' and self.company_type == 'person':
             self.check_vat_cr = False
+        elif self.loc == 'international' and self.company_type == 'company':
+            self.check_vat_cr = False
         else:
             self.check_vat_cr = True
 
