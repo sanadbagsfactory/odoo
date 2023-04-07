@@ -10,11 +10,30 @@ from odoo.tools import float_is_zero, float_compare
 class AccountPaymentInh(models.Model):
     _inherit = 'account.payment'
 
+    approval_state = fields.Selection([
+        ('draft', 'Draft'),
+        ('approve', 'Waiting For Approval'),
+        ('posted', 'Approved'),
+        ('reject', 'Rejected'),
+    ], string='Approval Status', default='draft', compute='_compute_approval_state')
+
+    def _compute_approval_state(self):
+        for rec in self:
+            if rec.state == 'approve':
+                rec.approval_state = 'approve'
+            elif rec.state == 'reject':
+                rec.approval_state = 'reject'
+            elif rec.state == 'posted':
+                rec.approval_state = 'posted'
+            else:
+                rec.approval_state = 'draft'
+
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
         ('approve', 'Waiting For Approved'),
         ('posted', 'Posted'),
         ('cancel', 'Cancelled'),
+        ('reject', 'Rejected'),
     ], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
     is_amount_limit = fields.Boolean(default=False)
 
@@ -63,6 +82,30 @@ class AccountPaymentInh(models.Model):
             'state': 'draft'
         })
         return super(AccountPaymentInh, self).action_draft()
+
+    def action_rejected(self):
+        self.write({
+            'state': 'reject'
+        })
+        todos = {
+            'res_id': self.id,
+            'res_model_id': self.env['ir.model'].sudo().search([('model', '=', 'account.payment')]).id,
+            'user_id': self.env.user.search([('login', '=', 'baashar.mohammed@sanadbags.com')]).id,
+            'summary': f'Your Payment has been Rejected',
+            'note': self.ref,
+            'date_deadline': datetime.now(),
+        }
+        if self.env.user.search([('login', '=', 'baashar.mohammed@sanadbags.com')]).id:
+            activity = self.env['mail.activity'].sudo().create(todos)
+        else:
+            raise ValidationError(f'This email does not exist (baashar.mohammed@sanadbags.com)')
+
+    def action_draft(self):
+        self.write({
+            'state': 'draft'
+        })
+        rec = super(AccountPaymentInh, self).action_draft()
+        return rec
 
     @api.model
     def create(self, vals):

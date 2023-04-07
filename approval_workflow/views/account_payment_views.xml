@@ -16,14 +16,32 @@
                         class="oe_highlight"
                         groups="approval_workflow.group_approve_payment"
                 />
-<!--                <button name="action_draft"-->
-<!--                        type="object"-->
-<!--                        states="approve, posted"-->
-<!--                        string="Reset to Draft"-->
-<!--                        groups="account.group_account_manager"-->
-<!--                />-->
+                <button name="action_rejected"
+                        type="object"
+                        states="approve"
+                        string="Rejected"
+                        class="oe_highlight"
+                        groups="approval_workflow.group_approve_payment"
+                />
+                <button name="action_draft"
+                        type="object"
+                        states="reject"
+                        string="Reset to Draft"
+                        groups="account.group_account_manager"
+                />
             </xpath>
         </field>
     </record>
 
+
+    <record id="view_account_payment_tree_inherit" model="ir.ui.view">
+    <field name="name">account.payment.tree.inherit</field>
+    <field name="model">account.payment</field>
+    <field name="inherit_id" ref="account.view_account_payment_tree"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='state']" position="after">
+            <field name="approval_state" optional="hide"/>
+        </xpath>
+    </field>
+    </record>
 </odoo>
