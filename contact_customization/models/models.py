@@ -90,15 +90,17 @@ class RespartnerInheritModel(models.Model):
 
     @api.onchange('company_type', 'country_id', 'loc')
     def _onchange_company(self):
-        if self.loc == 'domestic' and self.company_type == 'person':
-            self.check_vat_cr = True
-        else:
+        if self.loc == 'international' and self.company_type == 'person':
             self.check_vat_cr = False
+        else:
+            self.check_vat_cr = True
 
 
     @api.model
     def create(self, vals_list):
-        if vals_list['loc'] == 'domestic' and vals_list['company_type'] == 'person':
+        if vals_list['loc'] == 'international' and vals_list['company_type'] == 'person':
+            pass
+        else:
             raise ValidationError('CR NO is required !')
         vals_list['vendor_code'] = self.env['ir.sequence'].next_by_code('res.partner.vendor.seq')
         res = super().create(vals_list)
