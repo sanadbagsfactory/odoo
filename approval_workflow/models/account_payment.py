@@ -75,6 +75,18 @@ class AccountPaymentInh(models.Model):
             'state': 'posted'
         })
         self.mark_activity_done(self.env.user.id)
+        todos = {
+            'res_id': self.id,
+            'res_model_id': self.env['ir.model'].sudo().search([('model', '=', 'account.payment')]).id,
+            'user_id': self.env.user.search([('login', '=', 'baashar.mohammed@sanadbags.com')]).id,
+            'summary': f'Your Payment has been Approved',
+            'note': self.ref,
+            'date_deadline': datetime.now(),
+        }
+        if self.env.user.search([('login', '=', 'baashar.mohammed@sanadbags.com')]).id:
+            activity = self.env['mail.activity'].sudo().create(todos)
+        else:
+            raise ValidationError(f'This email does not exist (baashar.mohammed@sanadbags.com)')
         return super(AccountPaymentInh, self).action_post()
 
     def action_draft(self):
