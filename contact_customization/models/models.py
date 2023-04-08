@@ -2,6 +2,7 @@ from datetime import datetime
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+from lxml import etree
 
 
 class RespartnerInheritModel(models.Model):
@@ -14,6 +15,7 @@ class RespartnerInheritModel(models.Model):
         ('confirm', 'Confirm'),
         ('approve', 'Approve'),
         ('reject', 'Reject'),
+        ('cancel', 'Cancel'),
     ], default='create')
 
     def action_create(self):
