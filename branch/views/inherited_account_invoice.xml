@@ -80,7 +80,7 @@
                 <xpath expr="//field[@name='partner_id']"
                        position="after">
                     <!-- Add your fields or attributes here -->
-                    <field name="branch_id" required="1"/>
+                    <field name="branch_id" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                 </xpath>
                 <!--Branch on lines -->
                 <xpath expr="//field[@name='invoice_line_ids']//tree//field[@name='name']" position="after">

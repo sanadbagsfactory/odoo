@@ -35,8 +35,8 @@ class AccountMove(models.Model):
     # einv_qr = fields.Char(string="Amount tax total", compute="_compute_total", store='True', help="", readonly=True)
 
     # region odoo standard -------------------------
-    einv_sa_delivery_date = fields.Date(string='Delivery Date', compute='_compute_einv_delivery_data')
-    einv_sa_show_delivery_date = fields.Boolean(compute='_compute_einv_delivery_data')
+    # einv_sa_delivery_date = fields.Date(string='Delivery Date', compute='_compute_einv_delivery_data')
+    # einv_sa_show_delivery_date = fields.Boolean(compute='_compute_einv_delivery_data')
 
     einv_sa_qr_code_str = fields.Char(string='Zatka QR Code', compute='_compute_eniv_qr_code_str')
     einv_sa_confirmation_datetime = fields.Datetime(string='Confirmation Date', readonly=True, copy=False)
@@ -45,17 +45,17 @@ class AccountMove(models.Model):
 
     bank_info = fields.Many2one('account.journal', string='Bank/Cash', domain=[('type', '=', 'bank')])
 
-    @api.depends('l10n_sa_show_delivery_date', 'l10n_sa_delivery_date')
-    def _compute_einv_delivery_data(self):
-        for rec in self:
-            if rec.l10n_sa_show_delivery_date:
-                rec.einv_sa_show_delivery_date = rec.l10n_sa_show_delivery_date
-            else:
-                rec.einv_sa_show_delivery_date = False
-            if rec.l10n_sa_delivery_date:
-                rec.einv_sa_delivery_date = rec.l10n_sa_delivery_date
-            else:
-                rec.einv_sa_delivery_date = False
+    # @api.depends('l10n_sa_show_delivery_date', 'l10n_sa_delivery_date')
+    # def _compute_einv_delivery_data(self):
+    #     for rec in self:
+    #         if rec.l10n_sa_show_delivery_date:
+    #             rec.einv_sa_show_delivery_date = rec.l10n_sa_show_delivery_date
+    #         else:
+    #             rec.einv_sa_show_delivery_date = False
+    #         if rec.l10n_sa_delivery_date:
+    #             rec.einv_sa_delivery_date = rec.l10n_sa_delivery_date
+    #         else:
+    #             rec.einv_sa_delivery_date = False
 
     def _compute_einv_sa_confirmation_datetime(self):
         for move in self:
@@ -101,18 +101,18 @@ class AccountMove(models.Model):
                 qr_code_str = base64.b64encode(str_to_encode).decode('UTF-8')
             record.einv_sa_qr_code_str = qr_code_str
 
-    def _post(self, soft=True):
-        res = super()._post(soft)
-        for record in self:
-            if record.country_code == 'SA' and record.move_type in ('out_invoice', 'out_refund'):
-                if not record.einv_sa_show_delivery_date:
-                    raise UserError(_('Delivery Date cannot be empty'))
-                if record.einv_sa_delivery_date < record.invoice_date:
-                    raise UserError(_('Delivery Date cannot be before Invoice Date'))
-                self.write({
-                    'einv_sa_confirmation_datetime': fields.Datetime.now()
-                })
-        return res
+    # def _post(self, soft=True):
+    #     res = super()._post(soft)
+    #     for record in self:
+    #         if record.country_code == 'SA' and record.move_type in ('out_invoice', 'out_refund'):
+    #             if not record.einv_sa_show_delivery_date:
+    #                 raise UserError(_('Delivery Date cannot be empty'))
+    #             if record.einv_sa_delivery_date < record.invoice_date:
+    #                 raise UserError(_('Delivery Date cannot be before Invoice Date'))
+    #             self.write({
+    #                 'einv_sa_confirmation_datetime': fields.Datetime.now()
+    #             })
+    #     return res
 
     # endregion
 

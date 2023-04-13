@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <record id="view_move_form_inherited" model="ir.ui.view">
+        <record id="view_move_form_inherited_fields" model="ir.ui.view">
             <field name="name">account.move.form.inherited</field>
             <field name="model">account.move</field>
             <field name="inherit_id" ref="account.view_move_form"/>
@@ -26,7 +26,9 @@
                                attrs="{'invisible': [('move_type', 'not in', ('in_invoice', 'in_refund', 'in_receipt'))]}"/>
                         <field name="invoice_date" nolabel="1" options="{'datepicker': {'warn_future': true}}"
                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
-
+                        <!--                        Custom Field    -->
+                        <field name="supply_date"/>
+                        <!--                     Custom      -->
                         <field name="date" string="Accounting Date"
                                attrs="{                                             'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt')), ('quick_edit_mode', '=', False)],                                             'readonly': [('state', '!=', 'draft')],                                        }"/>
                         <field name="payment_reference"
@@ -84,6 +86,12 @@
                 <!--                Account Move Lines Changes-->
                 <!-- Change Label into Description-->
 
+<!--                <xpath expr='//field[@name="amount_tax"]' position="attributes">-->
+<!--                    <attribute name="string">VAT</attribute>-->
+<!--                </xpath>-->
+                <xpath expr='//field[@name="invoice_line_ids"]//tree//field[@name="tax_ids"]' position="attributes">
+                    <attribute name="string">VAT</attribute>
+                </xpath>
                 <xpath expr='//field[@name="invoice_line_ids"]//tree//field[@name="name"]' position="attributes">
                     <attribute name="string">Description</attribute>
                 </xpath>

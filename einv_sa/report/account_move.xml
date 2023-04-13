@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+        <!-- report Paper Format  -->
+        <record id="paper_format_invoices_tax" model="report.paperformat">
+            <field name="name">Invoices Print</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">35</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">25</field>
+            <field name="dpi">90</field>
+        </record>
         <!-- report action  -->
         <record id="action_tax_invoice_report" model="ir.actions.report">
             <field name="name">Tax Invoice - فاتورة ضريبية</field>
@@ -8,6 +25,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">einv_sa.account_move_report</field>
             <field name="report_file">einv_sa.account_move_report</field>
+            <field name="paperformat_id" ref="einv_sa.paper_format_invoices_tax"/>
             <field name="print_report_name">'Invoice - %s' % (object.name).replace('/', '')</field>
             <field name="binding_model_id" ref="model_account_move"/>
             <field name="binding_type">report</field>
@@ -90,7 +108,7 @@
                         <Strong>Date of Supply</Strong>
                     </div>
                     <div class="col-6 text-center">
-                        <span t-field="doc.einv_sa_delivery_date"/>
+                        <span t-field="doc.supply_date"/>
                     </div>
                     <div class="col-3 text-right" dir="rtl">
                         <Strong>تاريخ التوريد</Strong>
@@ -98,13 +116,13 @@
                 </div>
                 <div class="row">
                     <div class="col-3">
-                        <Strong>Customer Reference</Strong>
+                        <Strong>Invoice Due Date</Strong>
                     </div>
                     <div class="col-6 text-center">
-                        <span t-if="doc.po_number" t-field="doc.po_number"/>
+                        <span t-field="doc.invoice_date_due"/>
                     </div>
                     <div class="col-3 text-right" dir="rtl">
-                        <Strong>إشارة العملاء</Strong>
+                        <Strong>تاريخ الاستحقاق</Strong>
                     </div>
                 </div>
             </div>
@@ -115,10 +133,10 @@
         <template id="einv_sa.partner_info">
             <div class="row p-1 my-1 border-bottom bg-light">
                 <div class="col-6">
-                    <Strong>Customer</Strong>
+                    <Strong>Customer Details</Strong>
                 </div>
                 <div class="col-6 text-right" dir="rtl">
-                    <Strong>عميل</Strong>
+                    <Strong>معلومات العميل</Strong>
                 </div>
             </div>
             <div class="px-2">
@@ -130,23 +148,23 @@
                         <span t-field="doc.partner_id.name"/>
                     </div>
                     <div class="col-3 text-right" dir="rtl">
-                        <Strong>اسم الزبون</Strong>
+                        <Strong>اسم العميل</Strong>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-3">
-                        <Strong>Code</Strong>
+                        <Strong>Customer Code</Strong>
                     </div>
                     <div class="col-6 text-center">
                         <span t-field="doc.partner_id.customer_code"/>
                     </div>
                     <div class="col-3 text-right" dir="rtl">
-                        <Strong>شفرة</Strong>
+                        <Strong>رمز العميل</Strong>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-3">
-                        <Strong>Address</Strong>
+                        <Strong>Customer Address</Strong>
                     </div>
                     <div class="col-6 text-center" style="font-size: 8pt;">
                         <t t-if="doc.partner_id.street">
@@ -169,18 +187,18 @@
                         </t>
                     </div>
                     <div class="col-3 text-right" dir="rtl">
-                        <Strong>عنوان</Strong>
+                        <Strong>عنوان العميل</Strong>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-3">
-                        <Strong>Vat Number</Strong>
+                        <Strong>VAT Number</Strong>
                     </div>
                     <div class="col-6 text-center">
                         <span t-field="doc.partner_id.vat"></span>
                     </div>
                     <div class="col-3 text-right" dir="rtl">
-                        <Strong>رقم تسجيل ضريبة القيمة المضافة</Strong>
+                        <Strong>الرقم الضريبي للعميل</Strong>
                     </div>
                 </div>
                 <div class="oe_structure"/>
@@ -189,7 +207,7 @@
         </template>
 
         <template id="einv_sa.inv_lines">
-            <table class="table table-sm o_main_table " name="invoice_line_ids_table">
+            <table class="table table-sm o_main_table" name="invoice_line_ids_table">
                 <thead class="bg-light text-center">
                     <tr>
                         <td class="text-left">
@@ -206,7 +224,7 @@
                             <div class="mw-100">Quantity</div>
                             <div class="mw-100 " dir="rtl">الكمية</div>
                         </td>
-                        <td>
+                        <td t-if="doc.einv_amount_discount_total">
                             <div class="mw-100">Discount</div>
                             <div class="mw-100 " dir="rtl">الخصم</div>
                         </td>
@@ -234,19 +252,19 @@
                     <td style="text-align:left;">
                         <span t-field="line.name"/>
                     </td>
-                    <td style="text-align: right;">
+                    <td style="text-align: center;">
                         <span t-field="line.price_unit"/>
                     </td>
-                    <td style="text-align: right;">
+                    <td style="text-align: center;">
                         <span t-field="line.quantity"/>
                     </td>
-                    <td style="text-align: right;">
+                    <td style="text-align: center;" t-if="doc.einv_amount_discount_total">
                         <span t-field="line.einv_amount_discount"/>
                     </td>
-                    <td style="text-align: right;">
+                    <td style="text-align: center;">
                         <span t-field="line.einv_amount_tax"/>
                     </td>
-                    <td style="text-align: right;">
+                    <td style="text-align: center;">
                         <span t-field="line.price_subtotal"/>
                     </td>
                     <td style="text-align: right;">
@@ -260,31 +278,31 @@
 
 
         <template id="einv_sa.inv_total">
-            <div class="row p-1 my-1 border-bottom bg-light">
-                <div class="col-6">
-                    <Strong>Total Amount:</Strong>
-                </div>
-                <div class="col-6 text-right" dir="rtl">
-                    <Strong>الاجمالي:</Strong>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="row border">
+                    <div class="row p-1 bg-light border-bottom">
+                        <div class="col-6">
+                            <Strong>Total Amount:</Strong>
+                        </div>
+                        <div class="col-6 text-right" dir="rtl">
+                            <Strong>الاجمالي:</Strong>
+                        </div>
+                    </div>
+                    <div class="row border-bottom" t-if="doc.einv_amount_sale_total" style="padding-top:6px;padding-bottom:2px;">
                         <div class="col-5">Total (Excluding VAT)</div>
                         <div class="col-5 text-right" dir="rtl">الاجمالي غير شامل ضريبة القيمة المضافة</div>
                         <div class="col-2" style="text-align: right;">
                             <span t-field="doc.einv_amount_sale_total"/>
                         </div>
                     </div>
-                    <div class="row border">
+                    <div class="row border-bottom" t-if="doc.einv_amount_discount_total" style="padding-top:6px;padding-bottom:2px;">
                         <div class="col-5">Discount</div>
                         <div class="col-5 text-right" dir="rtl">إجمالي الخصومات</div>
                         <div class="col-2" style="text-align: right;">
                             <span t-field="doc.einv_amount_discount_total"/>
                         </div>
                     </div>
-                    <div class="row border">
+                    <div class="row border-bottom" t-if="doc.amount_untaxed" style="padding-top:6px;padding-bottom:2px;">
                         <div class="col-5">Total Taxable Amount (Excluding VAT)</div>
                         <div class="col-5 text-right" dir="rtl">الإجمالي الخاضع للضريبة غير شامل ضريبة القيمة
                             المضافة
@@ -293,14 +311,14 @@
                             <span t-field="doc.amount_untaxed"/>
                         </div>
                     </div>
-                    <div class="row border">
+                    <div class="row border-bottom" t-if="doc.amount_tax" style="padding-top:6px;padding-bottom:2px;">
                         <div class="col-5">Total VAT</div>
                         <div class="col-5 text-right" dir="rtl">إجمالي الضريبة المضافة</div>
                         <div class="col-2" style="text-align: right;">
                             <span t-field="doc.amount_tax"/>
                         </div>
                     </div>
-                    <div class="row border">
+                    <div class="row border-bottom" t-if="doc.amount_total" style="padding-top:6px;padding-bottom:2px;">
                         <div class="col-5">Total Amount Due</div>
                         <div class="col-5 text-right" dir="rtl">الإجمالي المستحق</div>
                         <div class="col-2" style="text-align: right;">
@@ -331,11 +349,23 @@
                 </div>
                 <div class="row">
                     <div class="col-6">
-                        <span t-field="doc.bank_info.bank_account_id"/>
+                        Bank Name:
+                        <span t-field="doc.bank_info.bank_id.name"/>
                         <br/>
-                        <span t-field="doc.bank_info.bank_id"/>
+                        Account Number:
+                        <span t-field="doc.bank_info.bank_account_id.acc_number"/>
                         <br/>
-                        <span t-field="doc.bank_info.currency_id"/>
+                        IBAN Number:
+                        <br/>
+                        Account Currency:
+                        <t t-if="doc.bank_info.currency_id.name in ['USD']">
+                            United States Dollars (<span t-field="doc.bank_info.currency_id"/>)
+                        </t>
+                        <t t-if="doc.bank_info.currency_id.name in ['SAR']">
+                            <span t-field="doc.bank_info.currency_id"/>
+                        </t>
+                        <br/>
+                        <span>for </span><strong t-field="doc.bank_info.bank_account_id.partner_id"/>
                     </div>
                 </div>
             </div>
@@ -376,36 +406,37 @@
                      style="font-family: 'Times New Roman' !important; padding:15px 0px 6px 0px;">
                     <span style="color:red; font-size:9pt; font-family: 'Times New Roman' !important;">Electronically
                         produced
-                        document, thus, doesn't require a signature or
+                        document, doesn't require a signature or
                         stamp.
                     </span>
                     <br/>
-                    <div class="border-top border-bottom">
+                    <br/>
+                    <div class="border-top border-bottom" style="padding:15px 0px 15px 0px;">
                         <table class="table-borderless"
-                               style="table-layout: fixed; width: 100%; font-size:6.5pt; height:40px;">
+                               style="table-layout: fixed; width: 100%; font-size:6.5pt; height:30px;">
                             <tr>
-                                <td width="20%">مصنع شـــــــركة سنــــــد الأكيـــــــاس</td>
-                                <td style="text-align:left;" t-options="{'lang': 'ar_SY'}" dir="rtl">
+                                <td width="20%" style="padding-bottom: 3px;">مصنع شـــــــركة سنــــــد الأكيـــــــاس</td>
+                                <td style="text-align:left; padding-bottom: 3px;" t-options="{'lang': 'ar_SY'}" dir="rtl">
                                     <span>8438 - المـــدينـــــة الصناعيــــة الثالثــــة، الدمــام 34857 - 3037،
                                         المملكـة
                                         العربيـة السعوديـــــة
                                     </span>
                                 </td>
-                                <td width="15%">
+                                <td width="15%" style="padding-bottom: 3px;">
                                     C.R. 2050112802
                                 </td>
-                                <td style="text-align:right;" class="border-start" width="15%">
+                                <td style="text-align:right; padding-bottom: 3px;" class="border-start" width="15%">
                                     www.sanadbags.com
                                 </td>
                             </tr>
                             <tr>
-                                <td width="20%">Sanad Bags Company Factory</td>
-                                <td style="text-align:left;">
+                                <td width="20%" style="padding-top: 3px;">Sanad Bags Company Factory</td>
+                                <td style="text-align:left;padding: padding-top: 3px;">
                                     <span>8438 - 3rd Industrial City, Dammam 34857 - 3037, Kingdom of Saudi Arabia
                                     </span>
                                 </td>
-                                <td width="15%">Tel: 966 13 805 0880</td>
-                                <td style="text-align:right;" class="border-start" width="15%">info@sanadbags.com</td>
+                                <td width="15%" style="padding-top: 3px;">Tel: 966 13 805 0880</td>
+                                <td style="text-align:right;padding-top: 3px;" class="border-start" width="15%">info@sanadbags.com</td>
                             </tr>
                         </table>
                     </div>

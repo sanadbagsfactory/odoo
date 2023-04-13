@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='ref']" position="after">
                     <!-- Add your fields or attributes here -->
-                    <field name="branch_id" invisible="0"/>
+                    <field name="branch_id" invisible="0" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                 </xpath>
             </field>
         </record>

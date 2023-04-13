@@ -119,6 +119,13 @@ class AccountPaymentInh(models.Model):
         rec = super(AccountPaymentInh, self).action_draft()
         return rec
 
+    def action_cancel(self):
+        self.write({
+            'state': 'cancel'
+        })
+        rec = super(AccountPaymentInh, self).action_cancel()
+        return rec
+
     @api.model
     def create(self, vals):
         res = super(AccountPaymentInh, self).create(vals)

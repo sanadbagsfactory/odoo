@@ -11,6 +11,7 @@ class AccountMove(models.Model):
     po_number = fields.Char(string='PO Number')
     pa_number = fields.Char(string='PA Number')
     pl_number = fields.Char(string='PL Number')
+    supply_date = fields.Date(string='Date of Supply')
 
     @api.depends('partner_id')
     def _compute_partner_ids(self):
