@@ -356,6 +356,7 @@
                         <span t-field="doc.bank_info.bank_account_id.acc_number"/>
                         <br/>
                         IBAN Number:
+                        <span t-field="doc.bank_info.bank_account_id.iban_number"/>
                         <br/>
                         Account Currency:
                         <t t-if="doc.bank_info.currency_id.name in ['USD']">

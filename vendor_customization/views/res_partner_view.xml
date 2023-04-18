@@ -146,9 +146,6 @@
                            string="VAT Certificate"
                            attrs="{'invisible': [('is_vat', '=', False)], 'required': [('is_vat', '=', True)]}"/>
                 </xpath>
-                <!--                <xpath expr="//field[@name='other_id']" position="attributes">-->
-                <!--                    <attribute name="invisible">1</attribute>-->
-                <!--                </xpath>-->
             </field>
         </record>
 
@@ -164,21 +161,12 @@
                     <attribute name="force_save">1</attribute>
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                <!--                <xpath expr="//field[@name='mobile']" position="attributes">-->
-                <!--                    <attribute name="force_save">1</attribute>-->
-                <!--                    <attribute name="invisible">1</attribute>-->
-                <!--                </xpath>-->
                 <xpath expr="//field[@name='phone']" position="before">
                     <label for="country_code_phone" string="Phone"/>
                     <div class="o_row phone-number-fields">
                         <field name="country_code_phone" placeholder="Country Code" nolabel="1"/>
                         <field name="phone_number" placeholder="Phone Number" nolabel="1"/>
                     </div>
-                    <!--                    <label for="country_code_mobile" string="Mobile"/>-->
-                    <!--                    <div class="o_row">-->
-                    <!--                        <field name="country_code_mobile" placeholder="Country Code" nolabel="1"/>-->
-                    <!--                        <field name="mobile_number" placeholder="Mobile Number" nolabel="1"/>-->
-                    <!--                    </div>-->
                 </xpath>
 
             </field>

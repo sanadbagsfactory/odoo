@@ -219,7 +219,7 @@ class ResPartner(models.Model):
                 raise ValidationError(_("The VAT Number must be a sequence of digits."))
             if rec.cr_no and not rec.cr_no.isdigit():
                 raise ValidationError(_("The CR Number must be a sequence of digits."))
-            if len(rec.cr_no) != 10:
+            if rec.cr_no and len(rec.cr_no) != 10:
                 raise ValidationError(_("The CR Number should be 10 digits"))
             if rec.phone_number and not rec.phone_number.isdigit():
                 raise ValidationError(_("The Phone Number must be a sequence of digits."))
