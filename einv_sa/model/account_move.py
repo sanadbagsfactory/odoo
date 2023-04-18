@@ -65,12 +65,12 @@ class AccountMove(models.Model):
                 move.einv_sa_confirmed = True
                 move.einv_sa_confirmation_datetime = move.create_date
 
-    @api.depends('country_code', 'move_type')
-    def _compute_einv_show_delivery_date(self):
-        for move in self:
-            # move.einv_sa_show_delivery_date = False
-            move.einv_sa_show_delivery_date = move.country_code == 'SA' and move.move_type in (
-                'out_invoice', 'out_refund')
+    # @api.depends('country_code', 'move_type')
+    # def _compute_einv_show_delivery_date(self):
+    #     for move in self:
+    #         # move.einv_sa_show_delivery_date = False
+    #         move.einv_sa_show_delivery_date = move.country_code == 'SA' and move.move_type in (
+    #             'out_invoice', 'out_refund')
 
     @api.depends('amount_total', 'amount_untaxed', 'einv_sa_confirmation_datetime', 'company_id', 'company_id.vat')
     def _compute_eniv_qr_code_str(self):
@@ -87,6 +87,7 @@ class AccountMove(models.Model):
 
         for record in self:
             qr_code_str = ''
+            print(record.einv_sa_confirmation_datetime)
             if record.einv_sa_confirmation_datetime and record.company_id.vat:
                 seller_name_enc = get_qr_encoding(1, record.company_id.display_name)
                 company_vat_enc = get_qr_encoding(2, record.company_id.vat)
@@ -101,18 +102,14 @@ class AccountMove(models.Model):
                 qr_code_str = base64.b64encode(str_to_encode).decode('UTF-8')
             record.einv_sa_qr_code_str = qr_code_str
 
-    # def _post(self, soft=True):
-    #     res = super()._post(soft)
-    #     for record in self:
-    #         if record.country_code == 'SA' and record.move_type in ('out_invoice', 'out_refund'):
-    #             if not record.einv_sa_show_delivery_date:
-    #                 raise UserError(_('Delivery Date cannot be empty'))
-    #             if record.einv_sa_delivery_date < record.invoice_date:
-    #                 raise UserError(_('Delivery Date cannot be before Invoice Date'))
-    #             self.write({
-    #                 'einv_sa_confirmation_datetime': fields.Datetime.now()
-    #             })
-    #     return res
+    def _post(self, soft=True):
+        res = super()._post(soft)
+        for record in self:
+            if record.move_type in ('out_invoice', 'out_refund'):
+                self.write({
+                    'einv_sa_confirmation_datetime': fields.Datetime.now()
+                })
+        return res
 
     # endregion
 
