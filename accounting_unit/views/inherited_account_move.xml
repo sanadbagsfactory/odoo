@@ -82,13 +82,29 @@
                 <xpath expr="//label[@for='ref']" position="attributes">
                     <attribute name="string">Vendor Invoice Number</attribute>
                 </xpath>
-
+                <xpath expr="//field[@name='ref']" position="attributes">
+                    <attribute name="attrs">{'required':[('move_type', 'in', ('in_invoice', 'in_receipt',
+                        'in_refund'))]}
+                    </attribute>
+                </xpath>
+                <!--Recipient Bank-->
+                <xpath expr="//field[@name='partner_bank_id']" position="attributes">
+                    <attribute name="invisible">1
+                    </attribute>
+                </xpath>
+                <!--Customer Reference-->
+                <xpath expr="//group[@name='sale_info_group']/field[@name='ref']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//group[@name='sale_info_group']/label[@for='ref']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <!--                Account Move Lines Changes-->
                 <!-- Change Label into Description-->
 
-<!--                <xpath expr='//field[@name="amount_tax"]' position="attributes">-->
-<!--                    <attribute name="string">VAT</attribute>-->
-<!--                </xpath>-->
+                <!--                <xpath expr='//field[@name="amount_tax"]' position="attributes">-->
+                <!--                    <attribute name="string">VAT</attribute>-->
+                <!--                </xpath>-->
                 <xpath expr='//field[@name="invoice_line_ids"]//tree//field[@name="tax_ids"]' position="attributes">
                     <attribute name="string">VAT</attribute>
                 </xpath>
