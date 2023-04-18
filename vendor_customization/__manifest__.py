@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'contacts', 'hr', 'account', 'contact_customization'],
+    'depends': ['base', 'contacts', 'hr', 'account'],
 
     # always loaded
     'data': [

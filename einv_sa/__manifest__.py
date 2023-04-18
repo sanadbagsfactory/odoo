@@ -40,11 +40,11 @@
     """
     ,
     "data": [
-        # "view/partner.xml",
         # "report/base_document_layout.xml",
         "report/account_move.xml",
-        "view/account_move_views.xml"
-
+        "view/account_move_views.xml",
+        "view/res_partner_bank_inherited_view.xml",
+        "view/partner.xml",
     ],
     "installable": True,
     "auto_install": False,
