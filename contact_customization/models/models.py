@@ -11,11 +11,11 @@ class RespartnerInheritModel(models.Model):
     check_ktva = fields.Boolean(default=False)
     check_vat_cr = fields.Boolean(default=True)
     state = fields.Selection([
-        ('create', 'Create'),
-        ('confirm', 'Confirm'),
-        ('approve', 'Approve'),
-        ('reject', 'Reject'),
-        ('cancel', 'Cancel'),
+        ('create', 'Created'),
+        ('confirm', 'Confirmed'),
+        ('approve', 'Approved'),
+        ('reject', 'Rejected'),
+        ('cancel', 'Canceled'),
     ], default='create')
 
     def action_create(self):
@@ -39,12 +39,12 @@ class RespartnerInheritModel(models.Model):
                 raise ValidationError('This email does not exist (azeem.anwar@sanadbags.com)')
 
     def action_cancel(self):
-        self.state = 'cancel'
+        self.state = 'reject'
         todos = {
             'res_id': self.id,
             'res_model_id': self.env['ir.model'].sudo().search([('model', '=', 'res.partner')]).id,
             'user_id': self.env.user.search([('login', '=', 'baashar.mohammed@sanadbags.com')]).id,
-            'summary': f'New vendor approval is rejected {self.name}',
+            'summary': f'New vendor approval is Rejected {self.name}',
             'note': 'New vendor approval is Rejected',
             # 'activity_type_id': 4,
             'date_deadline': datetime.now(),
@@ -102,12 +102,12 @@ class RespartnerInheritModel(models.Model):
     @api.model
     def create(self, vals_list):
         res = super().create(vals_list)
-        if (
-            res.loc == 'domestic'
-            and res.company_type == 'company'
-            and res.cr_no == 0
-        ):
-            raise ValidationError('CR NO is required !')
+        # if (
+        #     res.loc == 'domestic'
+        #     and res.company_type == 'company'
+        #     and res.cr_no == 0
+        # ):
+        #     raise ValidationError('CR NO is required !')
         if self.env.user.has_group('contact_customization.view_security_group'):
             raise ValidationError('Your are not allowed to create contact !')
         if res:

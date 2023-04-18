@@ -4,13 +4,13 @@
         <field name="code">res.partner.vendor.seq</field>
         <field name="prefix">5</field>
         <field name="padding">5</field>
-        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
     </record>
     <record id="sequence_customer_code" model="ir.sequence">
         <field name="name">Customer Code</field>
         <field name="code">res.partner.customer.seq</field>
         <field name="prefix">3</field>
         <field name="padding">5</field>
-        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
     </record>
 </odoo>

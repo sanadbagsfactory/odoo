@@ -14,22 +14,20 @@ class ResPartner(models.Model):
     name_arabic = fields.Char('Arabic Name')
     vendor_code = fields.Char('Vendor Code')
 
-    # def generate_vendor_code(self):
-    #     for rec in self:
-    #         seq = self.env['ir.sequence'].next_by_code('res.partner.vendor.seq')
-    #         rec.update({
-    #             'vendor_code': seq,
-    #         })
-
     # Customer Fields
     customer_code = fields.Char('Customer Code')
 
-    # def generate_customer_code(self):
-    #     for rec in self:
-    #         seq = self.env['ir.sequence'].next_by_code('res.partner.customer.seq')
-    #         rec.update({
-    #             'customer_code': seq,
-    #         })
+    custom_code = fields.Char(string="Code", compute="_compute_vendor_customer_code", )
+
+    @api.depends('customer_code', 'vendor_code')
+    def _compute_vendor_customer_code(self):
+        for rec in self:
+            if rec.supplier_rank > 0:
+                rec.custom_code = rec.vendor_code
+            elif rec.customer_rank > 0:
+                rec.custom_code = rec.customer_code
+            else:
+                rec.custom_code = False
 
     focus_gl = fields.Char('Focus G/L')
     new_gl = fields.Char('new G/L')
@@ -70,7 +68,7 @@ class ResPartner(models.Model):
 
     # same fields
     Comm_reg_no = fields.Char('CR Number')
-    cr_no = fields.Integer('CR Number')
+    cr_no = fields.Char('CR Number')
     cr_expiry_date = fields.Date('CR Expiry Date')
     # extra------------------------------------------------------
     iktiva_segment = fields.Char('IKTIVA Segment', invisible=1)
@@ -82,6 +80,17 @@ class ResPartner(models.Model):
     # Mobile
     country_code_mobile = fields.Char('Country Code', size=3)
     mobile_number = fields.Char('Mobile Number', size=10)
+
+    # @api.onchange('cr_no')
+    # def _onchange_cr_no(self):
+    #     punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
+    #     for rec in self:
+    #         new_cr_no = ''
+    #         for punc in str(rec.cr_no):
+    #             if punc not in punctuations:
+    #                 new_cr_no += punc
+    #         rec.cr_no = new_cr_no
+    #         print(rec.cr_no, "Cr No in loop")
 
     @api.onchange('country_code_phone', 'phone_number')
     def _on_phone_change(self):
@@ -98,8 +107,8 @@ class ResPartner(models.Model):
             if rec.country_code_mobile or rec.mobile_number:
                 rec.mobile = str(rec.country_code_mobile) + str(rec.mobile_number)
                 # if rec.name == self.env.company.partner_id.name:
-                    # self.env.company.country_code_mobile = str(rec.country_code_mobile)
-                    # self.env.company.mobile_number = str(rec.mobile_number)
+                # self.env.company.country_code_mobile = str(rec.country_code_mobile)
+                # self.env.company.mobile_number = str(rec.mobile_number)
 
     # CR Expiry Msg Display to Account & Purchase users
     def cr_expiry_msg(self):
@@ -184,14 +193,16 @@ class ResPartner(models.Model):
     #     self.write({
     #         'state': 'draft'
     #     })
-    @api.model
-    def create(self, vals_list):
-        res = super(ResPartner, self).create(vals_list)
-        # creating vendor/customer sequence
-        if res.supplier_rank > 0:
-            res.vendor_code = self.env['ir.sequence'].next_by_code('res.partner.vendor.seq')
-        if res.customer_rank > 0:
-            res.vendor_code = self.env['ir.sequence'].next_by_code('res.partner.customer.seq')
+    # @api.model
+    # def create(self, vals_list):
+    #     res = super(ResPartner, self).create(vals_list)
+    # creating vendor/customer sequence
+    def action_approve(self):
+        res = super(ResPartner, self).action_approve()
+        if self.supplier_rank > 0:
+            self.vendor_code = self.env['ir.sequence'].next_by_code('res.partner.vendor.seq')
+        if self.customer_rank > 0:
+            self.customer_code = self.env['ir.sequence'].next_by_code('res.partner.customer.seq')
         return res
 
     #     Validations
@@ -206,8 +217,8 @@ class ResPartner(models.Model):
         for rec in self:
             if rec.vat and not rec.vat.isdigit():
                 raise ValidationError(_("The VAT Number must be a sequence of digits."))
-            # if rec.cr_no and not rec.cr_no.isdigit():
-            #     raise ValidationError(_("The CR Number must be a sequence of digits."))
+            if rec.cr_no and not rec.cr_no.isdigit():
+                raise ValidationError(_("The CR Number must be a sequence of digits."))
             if rec.phone_number and not rec.phone_number.isdigit():
                 raise ValidationError(_("The Phone Number must be a sequence of digits."))
             if rec.mobile_number and not rec.mobile_number.isdigit():
@@ -218,7 +229,6 @@ class InheritedResCompany(models.Model):
     _inherit = 'res.company'
     country_code_phone = fields.Char('Country Code', size=3)
     phone_number = fields.Char('Phone Number', size=10)
-
 
     @api.onchange('country_code_phone', 'phone_number')
     def _on_phone_change(self):
@@ -249,3 +259,14 @@ class InheritedResCompany(models.Model):
     #             rec.mobile = str(rec.country_code_mobile) + str(rec.mobile_number)
     #             rec.partner_id.country_code_mobile = str(rec.country_code_mobile)
     #             rec.partner_id.mobile_number = str(rec.mobile_number)
+
+
+class AccountPayment(models.Model):
+    _inherit = "account.payment"
+
+    ref = fields.Char(string="Payment Reference")
+
+# class AccountMove(models.Model):
+#     _inherit = "account.move"
+#
+#     payment_reference = fields.Char(required=True)
