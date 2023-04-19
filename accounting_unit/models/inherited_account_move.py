@@ -13,6 +13,12 @@ class AccountMove(models.Model):
     pl_number = fields.Char(string='PL Number')
     supply_date = fields.Date(string='Date of Supply')
 
+    @api.constrains('ref')
+    def ref_required_on_in_invoice(self):
+        for rec in self:
+            if rec.move_type == 'in_invoice' and not rec.ref:
+                raise UserError('Vendor Invoice Number is required')
+
     @api.depends('partner_id')
     def _compute_partner_ids(self):
         for rec in self:
@@ -33,8 +39,6 @@ class AccountMove(models.Model):
 
     def unlink(self):
         for rec in self:
-            print(rec.partner_id.supplier_rank)
-            print(rec.partner_id.customer_rank)
             if rec.move_type == 'out_invoice' and rec.state == 'posted':
                 raise UserError("Post entry can't be deleted!")
         rec = super(AccountMove, self).unlink()
