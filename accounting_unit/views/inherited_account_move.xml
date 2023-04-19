@@ -83,9 +83,9 @@
                     <attribute name="string">Vendor Invoice Number</attribute>
                 </xpath>
                 <xpath expr="//field[@name='ref']" position="attributes">
-                    <attribute name="attrs">{'required':[('move_type', 'in', ('in_invoice', 'in_receipt',
-                        'in_refund'))]}
-                    </attribute>
+                    <attribute name="attrs">{'required': [('move_type', '=', 'in_invoice')]}</attribute>
+<!--                    <attribute name="attrs">{'required':[('move_type', 'in', ('in_invoice', 'in_receipt',-->
+<!--                        'in_refund'))]}</attribute>-->
                 </xpath>
                 <!--Recipient Bank-->
                 <xpath expr="//field[@name='partner_bank_id']" position="attributes">
