@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+        <report
+                id="rfq_report_tender_id"
+                string="RFQ Report"
+                model="purchase.requisition"
+                report_type="qweb-pdf"
+                name="purchase_tender_management.rfq_custom_report_id"
+                file="purchase_tender_management.rfq_custom_report_id"
+                print_report_name="('RFQ - %s' % (object.name))"
+        />
+    </data>
+</odoo>

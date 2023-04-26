@@ -1,0 +1,60 @@
+<odoo>
+    <data>
+        <!--Tree view-->
+        <record id="purchase_tender_type_tree_view" model="ir.ui.view">
+            <field name="name">purchase.tender.type.tree</field>
+            <field name="model">purchase.tender.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Form view-->
+        <record id="purchase_tender_type_form_view" model="ir.ui.view">
+            <field name="name">purchase.tender.type.form</field>
+            <field name="model">purchase.tender.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group col="4">
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--search view-->
+        <record id="purchase_tender_type_search_view" model="ir.ui.view">
+            <field name="name">purchase.tender.type.search</field>
+            <field name="model">purchase.tender.type</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_purchase_tender_type" model="ir.actions.act_window">
+            <field name="name">Purchase Tender Type</field>
+            <field name="res_model">purchase.tender.type</field>
+            <field name="view_mode">tree,form,search</field>
+            <field name="context">{'search_default_myrequest': 1}</field>
+            <field name="search_view_id" ref="purchase_tender_type_search_view"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a new Type.
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem name="Purchase Tender Type"
+                  parent="purchase.menu_purchase_config"
+                  id="menu_purchase_tender_type_id"
+                  sequence="21"
+                  action="action_purchase_tender_type"/>
+    </data>
+</odoo>

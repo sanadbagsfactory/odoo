@@ -1,0 +1,107 @@
+<odoo>
+    <data>
+        <record id="purchase_order_form_inherited" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherited</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <!--                <xpath expr="//button[@name='print_quotation']" position="attributes">-->
+                <!--                    <attribute name="string">Print Quotation</attribute>-->
+                <!--                </xpath>-->
+                <xpath expr="//header" position="replace">
+                    <header>
+                        <button name="action_rfq_send" states="draft" string="Send by Email" type="object"
+                                context="{'send_rfq':True}" class="oe_highlight" data-hotkey="g"/>
+                        <button name="print_quotation" string="Print Quotation" type="object" states="draft"
+                                class="oe_highlight"
+                                groups="base.group_user" data-hotkey="k"/>
+                        <button name="button_confirm" type="object" states="sent" string="Confirm Order"
+                                context="{'validate_analytic': True}" class="oe_highlight" id="bid_confirm"
+                                data-hotkey="v"/>
+                        <button name="button_approve" type="object" states="to approve" string="Approve Order"
+                                class="oe_highlight" groups="purchase.group_purchase_manager" data-hotkey="z"/>
+                        <button name="action_create_invoice" string="Create Bill" type="object" class="oe_highlight"
+                                context="{'create_bill':True}"
+                                attrs="{'invisible': ['|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'in', ('no', 'invoiced'))]}"
+                                data-hotkey="w"/>
+                        <button name="action_rfq_send" states="sent" string="Re-Send by Email" type="object"
+                                context="{'send_rfq':True}" data-hotkey="g"/>
+                        <button name="print_quotation" string="Print Quotation" type="object" states="sent"
+                                groups="base.group_user" data-hotkey="k"/>
+                        <button name="button_confirm" type="object" states="draft" context="{'validate_analytic': True}"
+                                string="Confirm Order" id="draft_confirm"/>
+                        <button name="action_rfq_send" states="purchase" string="Send PO by Email" type="object"
+                                context="{'send_rfq':False}" data-hotkey="g"/>
+                        <button name="confirm_reminder_mail" string="Confirm Receipt Date" type="object"
+                                attrs="{'invisible': ['|','|', ('state', 'not in', ('purchase', 'done')), ('mail_reminder_confirmed', '=', True), ('date_planned', '=', False)]}"
+                                groups="base.group_no_one" data-hotkey="o"/>
+                        <button name="action_create_invoice" string="Create Bill" type="object"
+                                context="{'create_bill':True}"
+                                attrs="{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}"
+                                data-hotkey="w"/>
+                        <button name="button_draft" states="cancel" string="Set to Draft" type="object"
+                                data-hotkey="o"/>
+                        <button name="button_cancel" states="draft,to approve,sent,purchase" string="Cancel"
+                                type="object"
+                                data-hotkey="x"/>
+                        <button name="button_done" type="object" string="Lock" states="purchase" data-hotkey="l"/>
+                        <button name="button_unlock" type="object" string="Unlock" states="done"
+                                groups="purchase.group_purchase_manager" data-hotkey="l"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,purchase" readonly="1"/>
+                    </header>
+                </xpath>
+
+                <!-- Purchase Requisition -->
+                <xpath expr="//page[@name='alternative_pos']" position="replace">
+                    <page string="Alternatives" name="alternative_pos">
+                        <group>
+                            <group>
+                                <p colspan="2">Create a call for tender by adding alternative request for quotations to
+                                    different vendors.
+                                    Make your choice by selecting the best combination of lead time, OTD and/or total
+                                    amount.
+                                    By comparing product lines you can also decide to order some products from one
+                                    vendor and others from another vendor.
+                                </p>
+                            </group>
+                            <group>
+                                <p colspan="2">
+                                    <button name="action_create_alternative" type="object" class="btn-link d-block"
+                                            string="Create Alternative" icon="fa-copy"/>
+                                    <button name="action_compare_alternative_lines" type="object"
+                                            class="btn-link d-block" string="Compare Product Lines" icon="fa-bar-chart"
+                                            attrs="{'invisible': [('alternative_po_ids', '=', [])]}"/>
+                                </p>
+                            </group>
+                        </group>
+                        <field name="alternative_po_ids" attrs="{'readonly': [('id', '=', False)]}"
+                               widget="many2many_alt_pos" context="{'quotation_only': True}">
+                            <tree string="Alternative Purchase Order"
+                                  decoration-muted="state in ['cancel', 'purchase', 'done']"
+                                  decoration-bf="id == parent.id">
+                                <control>
+                                    <create string="Link to Existing Quotation"/>
+                                </control>
+                                <field name="partner_id"/>
+                                <field name="name" string="Reference"/>
+                                <field name="date_planned"/>
+                                <field name="amount_total"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!--        Change Tree/form view string-->
+        <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+            <field name="name">Quotation</field>
+        </record>
+        <!--        Change Menu Item string-->
+        <record id="purchase.menu_purchase_rfq" model="ir.ui.menu">
+            <field name="name">Quotation</field>
+        </record>
+    </data>
+</odoo>

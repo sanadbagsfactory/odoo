@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <template id="rfq_custom_report_id">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+
+                            <h2 class="mt-4">Request for Quotation
+                                <span t-esc="o.name"/>
+                            </h2>
+
+                            <table class="table table-sm mt-4">
+                                <thead style="display: table-row-group">
+                                    <tr>
+                                        <th name="th_description">
+                                            <strong>Product</strong>
+                                        </th>
+                                        <th name="th_quantity" class="text-center">
+                                            <strong>Qty</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.line_ids" t-as="order_line">
+                                        <tr>
+                                            <td id="product">
+                                                <span t-field="order_line.product_id.name"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="order_line.product_qty"/>
+                                                <span t-field="order_line.product_uom_id"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

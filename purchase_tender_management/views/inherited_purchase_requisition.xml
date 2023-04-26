@@ -1,0 +1,60 @@
+<odoo>
+    <data>
+        <record id="view_move_form_inherited" model="ir.ui.view">
+            <field name="name">purchase.requisition.form.inherited</field>
+            <field name="model">purchase.requisition</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vendor_id']" position="after">
+                    <field name="vendor_ids" widget="many2many_tags"/>
+                    <field name="tender_type"/>
+                </xpath>
+                <!--Change Smart Button String-->
+                <xpath expr="//field[@name='order_count']" position="attributes">
+                    <attribute name="string">Quotation</attribute>
+                </xpath>
+                <!--Invisible Fields-->
+                <xpath expr="//field[@name='type_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='vendor_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree//field[@name='price_unit']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree//field[@name='qty_ordered']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree//field[@name='schedule_date']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree//field[@name='analytic_distribution']"
+                       position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!--      Add Send Email button on Header          -->
+                <xpath expr="//header" position="inside">
+                    <button string="Send Email" name="send_email_btn" type="object"
+                            class="btn btn-secondary btn-block"/>
+                </xpath>
+
+            </field>
+        </record>
+        <!--        Change Tree/form view string-->
+        <record model="ir.actions.act_window" id="purchase_requisition.action_purchase_requisition">
+            <field name="name">RFQ</field>
+        </record>
+        <!--        Change Menu Item string-->
+        <record model="ir.ui.menu" id="purchase_requisition.menu_purchase_requisition_pro_mgt">
+            <field name="name">RFQ</field>
+        </record>
+        <!--    Smart Button Actions    -->
+        <!--        <record model="ir.actions.act_window" id="purchase_requisition.action_purchase_requisition_to_so">-->
+        <!--            <field name="domain">[('requisition_id','=',active_id)]</field>-->
+        <!--        </record>-->
+        <!--        <record model="ir.actions.act_window" id="purchase_requisition.action_purchase_requisition_list">-->
+        <!--            <field name="domain">[('requisition_id','=',active_id)]</field>-->
+        <!--        </record>-->
+    </data>
+</odoo>
