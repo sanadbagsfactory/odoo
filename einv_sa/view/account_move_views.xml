@@ -9,7 +9,7 @@
 <!--                <field name="einv_sa_delivery_date" invisible="1" "/>-->
 <!--            </field>-->
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="bank_info"/>
+                <field name="bank_info" attrs="{'invisible': [('move_type', '!=', 'out_invoice')]}"/>
             </xpath>
         </field>
     </record>
