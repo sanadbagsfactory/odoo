@@ -1,0 +1,86 @@
+<odoo>
+    <data>
+        <record id="view_move_form_auditor_approvals" model="ir.ui.view">
+            <field name="name">account.move.form.auditor</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <!--                <xpath expr="//header" position="replace">-->
+                <!--                    <header>-->
+                <!--                        &lt;!&ndash; Post &ndash;&gt;-->
+                <!--                        <button name="action_post" string="Post" class="oe_highlight" type="object"-->
+                <!--                                groups="account.group_account_invoice" data-hotkey="v"-->
+                <!--                                context="{'validate_analytic': True}"-->
+                <!--                                attrs="{'invisible': ['|', ('hide_post_button', '=', True), ('move_type', '!=', 'entry')]}"/>-->
+                <!--                        <button name="action_post" string="Confirm" class="oe_highlight" type="object"-->
+                <!--                                groups="account.group_account_invoice" data-hotkey="v"-->
+                <!--                                context="{'validate_analytic': True}"-->
+                <!--                                attrs="{'invisible': ['|', '|', ('hide_post_button', '=', True), ('move_type', '=', 'entry'), ('display_inactive_currency_warning','=',True)]}"/>-->
+                <!--                        &lt;!&ndash; Send (only invoices) &ndash;&gt;-->
+                <!--                        <button name="action_invoice_sent" type="object" string="Send &amp; Print"-->
+                <!--                                attrs="{'invisible':['|', '|', ('state', '!=', 'posted'), ('is_move_sent', '=', True), ('move_type', 'not in', ('out_invoice', 'out_refund'))]}"-->
+                <!--                                class="oe_highlight" data-hotkey="y"/>-->
+                <!--                        <button name="action_invoice_sent" type="object" string="Send &amp; Print"-->
+                <!--                                attrs="{'invisible':['|', '|', ('state', '!=', 'posted'), ('is_move_sent', '=', False), ('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))]}"-->
+                <!--                                data-hotkey="y"/>-->
+                <!--                        &lt;!&ndash; Register Payment (only invoices / receipts) &ndash;&gt;-->
+                <!--                        <button name="action_register_payment" id="account_invoice_payment_btn" type="object"-->
+                <!--                                class="oe_highlight"-->
+                <!--                                attrs="{'invisible': ['|', '|', ('state', '!=', 'posted'), ('payment_state', 'not in', ('not_paid', 'partial')), ('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"-->
+                <!--                                context="{'dont_redirect_to_payments': True}" string="Register Payment" data-hotkey="g"-->
+                <!--                                groups="account.group_account_invoice"/>-->
+                <!--                        &lt;!&ndash; Preview (only customer invoices) &ndash;&gt;-->
+                <!--                        <button name="preview_invoice" type="object" string="Preview" data-hotkey="o"-->
+                <!--                                title="Preview invoice"-->
+                <!--                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>-->
+                <!--                        &lt;!&ndash; Reverse &ndash;&gt;-->
+                <!--                        <button name="487" string="Reverse Entry" type="action" groups="account.group_account_invoice"-->
+                <!--                                data-hotkey="z"-->
+                <!--                                attrs="{'invisible': ['|', ('move_type', '!=', 'entry'), '|', ('state', '!=', 'posted'), ('payment_state', '=', 'reversed')]}"/>-->
+                <!--                        <button name="action_reverse" string="Add Credit Note" type="object"-->
+                <!--                                groups="account.group_account_invoice"-->
+                <!--                                attrs="{'invisible': ['|', ('move_type', 'not in', ('out_invoice', 'in_invoice')), ('state', '!=', 'posted')]}"/>-->
+                <!--                        &lt;!&ndash; Cancel &ndash;&gt;-->
+                <!--                        <button name="button_cancel" string="Cancel Entry" type="object"-->
+                <!--                                groups="account.group_account_invoice" data-hotkey="w"-->
+                <!--                                attrs="{'invisible' : ['|', '|', ('id', '=', False), ('state', '!=', 'draft'),('move_type', '!=', 'entry')]}"/>-->
+                <!--                        <button name="button_cancel" string="Cancel" type="object"-->
+                <!--                                groups="account.group_account_invoice" data-hotkey="w"-->
+                <!--                                attrs="{'invisible' : ['|', '|', ('id', '=', False), ('state', 'not in', ['draft', 'approve', 'reject']),('move_type', '==', 'entry')]}"/>-->
+                <!--                        <button name="button_draft" string="Reset to Draft" type="object"-->
+                <!--                                groups="account.group_account_invoice"-->
+                <!--                                attrs="{'invisible' : [('show_reset_to_draft_button', '=', False)]}" data-hotkey="q"/>-->
+                <!--                        &lt;!&ndash; Set as Checked &ndash;&gt;-->
+                <!--                        <button name="button_set_checked" string="Set as Checked" type="object"-->
+                <!--                                groups="account.group_account_invoice"-->
+                <!--                                attrs="{'invisible' : [('to_check', '=', False)]}" data-hotkey="k"/>-->
+                <!--                        <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>-->
+                <!--                    </header>-->
+                <!--                </xpath>-->
+                <xpath expr="//header" position="inside">
+                    <button type="object" string="Approve" name="action_approve"
+                            attrs="{'invisible': ['|', ('is_auditor', '!=', True), ('is_bill_jv', '=', True)]}"
+                    />
+
+                    <button type="object" string="Reject" name="action_reject"
+                            attrs="{'invisible': ['|', ('is_auditor', '!=', True), ('is_bill_jv', '=', True)]}"
+                    />
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="bill_id" invisible="1"/>
+                    <field name="is_auditor" invisible="1"/>
+                    <field name="is_bill_jv" invisible="1"/>
+                </xpath>
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button name="go_to_jv"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-bars"
+                            string="Journal Entries"
+                            attrs="{'invisible': [('is_auditor', '!=', True)]}">
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

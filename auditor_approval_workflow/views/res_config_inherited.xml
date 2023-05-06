@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_auditor" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.auditor</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='has_accounting_entries']" position="after">
+                    <h2 style="background-color:#e1e3e6; padding-left:30px">Auditor Workflow Mapping</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box" title="Auditor Workflow Mapping">
+                            <div class="o_setting_right_pane">
+                                <group string="Accounts">
+                                    <field name="clearing_account_id"/>
+                                    <field name="expense_account_id"/>
+                                    <field name="vat_account_id"/>
+                                </group>
+                                <group string="Type of JV">
+                                    <field name="journal_id" domain="[('type','=','general')]"/>
+                                </group>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
