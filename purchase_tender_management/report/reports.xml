@@ -9,5 +9,29 @@
                 file="purchase_tender_management.rfq_custom_report_id"
                 print_report_name="('RFQ - %s' % (object.name))"
         />
+        <record id="purchase.action_report_purchase_order" model="ir.actions.report">
+            <field name="print_report_name">
+                (object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))
+            </field>
+        </record>
+        <record id="purchase.report_purchase_quotation" model="ir.actions.report">
+            <field name="name">Quotation</field>
+            <field name="print_report_name">'Quotation - %s' % (object.name)</field>
+        </record>
+        <template id="purcasequotaion_report_inherited" inherit_id="purchase.report_purchasequotation_document">
+            <xpath expr="//h2" position="replace">
+                <h2 class="mt-4">Quotation <span t-field="o.name"/></h2>
+            </xpath>
+        </template>
+        <template id="report_purchaseorder_document_inherited" inherit_id="purchase.report_purchaseorder_document">
+            <xpath expr="//div[hasclass('page')]/div[2]" position="replace">
+                <div class="mt-4">
+                    <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Quotation #<span t-field="o.name"/></h2>
+                    <h2 t-if="o.state in ['purchase', 'done']">Purchase Order #<span t-field="o.name"/></h2>
+                    <h2 t-if="o.state == 'cancel'">Cancelled Purchase Order #<span t-field="o.name"/></h2>
+                </div>
+            </xpath>
+        </template>
     </data>
 </odoo>

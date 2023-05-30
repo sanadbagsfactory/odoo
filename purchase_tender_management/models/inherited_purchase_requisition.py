@@ -8,8 +8,16 @@ class PurchaseRequisition(models.Model):
     _description = 'RFQ'
 
     vendor_ids = fields.Many2many('res.partner', string='Vendors')
-    tender_type = fields.Many2one('purchase.tender.type', string='Tender Type')
+    rfq_type = fields.Many2one('purchase.tender.type', string='RFQ Type')
     email_ids = fields.Char('Email Ids', compute='_compute_email_ids')
+    ref = fields.Char()
+    sequence = fields.Char('Sequence')
+
+    @api.onchange('rfq_type')
+    def _onchange_rfq_type(self):
+        for rec in self:
+            if rec.name:
+                print(rec.name[-6:])
 
     @api.depends('vendor_ids')
     def _compute_email_ids(self):
@@ -76,5 +84,11 @@ class PurchaseRequisition(models.Model):
 
     def action_in_progress(self):
         sup = super(PurchaseRequisition, self).action_in_progress()
-        self.name = self.env['ir.sequence'].next_by_code('purchase.requisition.rfq')
+        if 'RFQ' not in self.name or 'New' in self.name:
+            if self.ref:
+                self.name = self.ref
+            else:
+               self.name = self.env['ir.sequence'].next_by_code('purchase.requisition.rfq')
+               self.ref = self.name
+            self.sequence = self.name[-6:]
         return sup

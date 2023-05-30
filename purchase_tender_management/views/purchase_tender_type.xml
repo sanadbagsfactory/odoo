@@ -2,7 +2,7 @@
     <data>
         <!--Tree view-->
         <record id="purchase_tender_type_tree_view" model="ir.ui.view">
-            <field name="name">purchase.tender.type.tree</field>
+            <field name="name">Purchase RFQ Type</field>
             <field name="model">purchase.tender.type</field>
             <field name="arch" type="xml">
                 <tree>
@@ -13,7 +13,7 @@
 
         <!--Form view-->
         <record id="purchase_tender_type_form_view" model="ir.ui.view">
-            <field name="name">purchase.tender.type.form</field>
+            <field name="name">Purchase RFQ Type</field>
             <field name="model">purchase.tender.type</field>
             <field name="arch" type="xml">
                 <form>
@@ -28,7 +28,7 @@
 
         <!--search view-->
         <record id="purchase_tender_type_search_view" model="ir.ui.view">
-            <field name="name">purchase.tender.type.search</field>
+            <field name="name">Purchase RFQ Type</field>
             <field name="model">purchase.tender.type</field>
             <field name="arch" type="xml">
                 <search>
@@ -38,7 +38,7 @@
         </record>
 
         <record id="action_purchase_tender_type" model="ir.actions.act_window">
-            <field name="name">Purchase Tender Type</field>
+            <field name="name">Purchase RFQ Type</field>
             <field name="res_model">purchase.tender.type</field>
             <field name="view_mode">tree,form,search</field>
             <field name="context">{'search_default_myrequest': 1}</field>
@@ -51,7 +51,7 @@
         </record>
 
 
-        <menuitem name="Purchase Tender Type"
+        <menuitem name="Purchase RFQ Type"
                   parent="purchase.menu_purchase_config"
                   id="menu_purchase_tender_type_id"
                   sequence="21"

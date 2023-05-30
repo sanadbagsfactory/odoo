@@ -7,7 +7,9 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='vendor_id']" position="after">
                     <field name="vendor_ids" widget="many2many_tags"/>
-                    <field name="tender_type"/>
+                    <field name="rfq_type"/>
+                    <field name="ref" invisible="1"/>
+                    <field name="sequence" invisible="1"/>
                 </xpath>
                 <!--Change Smart Button String-->
                 <xpath expr="//field[@name='order_count']" position="attributes">

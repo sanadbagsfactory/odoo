@@ -11,10 +11,10 @@
                 <xpath expr="//header" position="replace">
                     <header>
                         <button name="action_rfq_send" states="draft" string="Send by Email" type="object"
-                                context="{'send_rfq':True}" class="oe_highlight" data-hotkey="g"/>
+                                context="{'send_rfq':True}" class="oe_highlight" data-hotkey="g" invisible="1"/>
                         <button name="print_quotation" string="Print Quotation" type="object" states="draft"
                                 class="oe_highlight"
-                                groups="base.group_user" data-hotkey="k"/>
+                                groups="base.group_user" data-hotkey="k" invisible="1"/>
                         <button name="button_confirm" type="object" states="sent" string="Confirm Order"
                                 context="{'validate_analytic': True}" class="oe_highlight" id="bid_confirm"
                                 data-hotkey="v"/>
@@ -25,13 +25,13 @@
                                 attrs="{'invisible': ['|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'in', ('no', 'invoiced'))]}"
                                 data-hotkey="w"/>
                         <button name="action_rfq_send" states="sent" string="Re-Send by Email" type="object"
-                                context="{'send_rfq':True}" data-hotkey="g"/>
+                                context="{'send_rfq':True}" data-hotkey="g" invisible="1"/>
                         <button name="print_quotation" string="Print Quotation" type="object" states="sent"
-                                groups="base.group_user" data-hotkey="k"/>
+                                groups="base.group_user" data-hotkey="k" invisible="1"/>
                         <button name="button_confirm" type="object" states="draft" context="{'validate_analytic': True}"
                                 string="Confirm Order" id="draft_confirm"/>
                         <button name="action_rfq_send" states="purchase" string="Send PO by Email" type="object"
-                                context="{'send_rfq':False}" data-hotkey="g"/>
+                                context="{'send_rfq':False}" data-hotkey="g" invisible="1"/>
                         <button name="confirm_reminder_mail" string="Confirm Receipt Date" type="object"
                                 attrs="{'invisible': ['|','|', ('state', 'not in', ('purchase', 'done')), ('mail_reminder_confirmed', '=', True), ('date_planned', '=', False)]}"
                                 groups="base.group_no_one" data-hotkey="o"/>
@@ -47,7 +47,8 @@
                         <button name="button_done" type="object" string="Lock" states="purchase" data-hotkey="l"/>
                         <button name="button_unlock" type="object" string="Unlock" states="done"
                                 groups="purchase.group_purchase_manager" data-hotkey="l"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,purchase" readonly="1"/>
+<!--                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,purchase" readonly="1"/>-->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,purchase" readonly="1"/>
                     </header>
                 </xpath>
 
