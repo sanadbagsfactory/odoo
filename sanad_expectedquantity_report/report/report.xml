@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="expected_qty_report_action_id" model="ir.actions.report">
+            <field name="name">Expected Quantity</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+             <field name="binding_model_id" ref="model_purchase_order"/>
+            <field name="binding_type">report</field>
+            <field name="report_name">sanad_expectedquantity_report.expected_qty_report_temp_id</field>
+            <field name="report_file">sanad_expectedquantity_report.expected_qty_report_temp_id</field>
+        </record>
+
+    </data>
+</odoo>
