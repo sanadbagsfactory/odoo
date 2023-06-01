@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--raw material report action-->
+        <record id="raw_material_report_action_id" model="ir.actions.report">
+            <field name="name">Material Receiving Voucher</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+             <field name="binding_model_id" ref="model_stock_picking"/>
+            <field name="binding_type">report</field>
+            <field name="report_name">inventory_material_report.material_receiving_voucher_temp_id</field>
+            <field name="report_file">inventory_material_report.material_receiving_voucher_temp_id</field>
+        </record>
+
+        <!--raw material rejection report action-->
+        <record id="stock_consolidated_report_action_id" model="ir.actions.report">
+            <field name="name">Stock Consolidated Report</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+             <field name="binding_model_id" ref="model_stock_picking"/>
+            <field name="binding_type">report</field>
+            <field name="report_name">inventory_material_report.stock_consolidated_temp_id</field>
+            <field name="report_file">inventory_material_report.stock_consolidated_temp_id</field>
+        </record>
+
+
+
+    </data>
+</odoo>

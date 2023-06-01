@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--header and footer-->
+        <template id="stock_consolidated_header_footer_id">
+            <t t-set="company" t-value="user.company_id"/>
+            <t t-foreach="docs" t-as="o">
+                <div class="header first-page row"
+                     style="width:98%; border-top: 1px solid black;border-bottom: 1px solid black;border-collapse: collapse; margin:8px !important; font-size:10pt; font-family: 'Times New Roman' !important; padding: 5px 0px 5px 0px;">
+                    <table style="text-align:center; width:18%;" class="table-borderless">
+                        <tr>
+                            <td style="padding: 6px 0px 11px 0px;">
+                                <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)"
+                                     alt="Logo" height="50px" width="90px"/>
+                                <br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-top:1px solid black; border-collapse: collapse; padding: 2px 0px 2px 0px;">
+                                <span>
+                                    Sanad Bags Co. Factory
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                    <span height="92px" width="2.5%" style="margin:5px; padding-top:30px;">
+                        <div style="border-left:1px solid black;border-collapse: collapse; height:92px;"/>
+                    </span>
+                    <t t-foreach="request.env['department.document.type'].search([('department_type', '=', 'whu'),('document_type', '=', '4')])"
+                       t-as="doc">
+                        <table style="height:92px; width:79.5%; font-family: 'Times New Roman' !important;"
+                               class="table-borderless">
+                            <tr>
+                                <td width="10%"
+                                    style="border-bottom:1px solid black;border-collapse: collapse; padding-top: 2px;">
+                                    <span>Title:</span>
+                                </td>
+                                <td width="57%"
+                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align:right; padding-top: 2px;">
+                                    <span>Request for Quotation</span>
+
+                                </td>
+                                <td width="2%">&#160;&#160;</td>
+                                <td width="13%"
+                                    style="border-bottom:1px solid black;border-collapse: collapse; padding-top: 2px;">
+                                    <span>Number:</span>
+                                </td>
+                                <td width="18%"
+                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align:right; padding-top: 2px;">
+                                    <t t-if="doc.doc_no">
+                                        <t t-esc="doc.doc_no"/>
+                                    </t>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td width="10%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                    <span>Type:</span>
+                                </td>
+                                <td width="57%"
+                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
+                                    <t t-if="doc.doc_no">
+                                        <t t-esc="doc.document_type==4"/>
+                                        <span>Forms</span>
+                                    </t>
+                                </td>
+                                <td width="2%">&#160;&#160;</td>
+                                <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                    <span>Approved on:</span>
+                                </td>
+                                <td width="18%"
+                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
+                                    <t t-if="doc.approved_on">
+                                        <span>
+                                            <t t-esc="doc.approved_on"/>
+                                        </span>
+                                    </t>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td width="10%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                    <span>Custodian:</span>
+                                </td>
+                                <td width="57%"
+                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
+                                    <t t-if="doc.department_type == 'whu'">
+                                        <span>Warehousing</span>
+                                    </t>
+                                </td>
+                                <td width="2%">&#160;&#160;</td>
+                                <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                    <span>Revision:</span>
+                                </td>
+                                <td width="18%"
+                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
+                                    <t t-if="doc.revision">
+                                        <span>
+                                            <t t-esc="doc.revision"/>
+                                        </span>
+                                    </t>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td width="10%" style="padding-top: 2px;">
+                                    <span>Note:</span>
+                                </td>
+                                <td width="57%" style="text-align:right; padding-top: 2px;">
+                                    <t t-if="doc.notes">
+                                        <span>
+                                            <t t-esc="doc.notes"/>
+                                        </span>
+                                    </t>
+                                </td>
+                                <td width="2%">&#160;&#160;</td>
+                                <td width="13%" style="padding-top: 2px;">
+                                    <span>Page:</span>
+                                </td>
+                                <td width="18%" style="text-align:right; padding-top: 2px;">
+                                    <div>
+                                        <span class="page"/>
+                                        /
+                                        <span class="topage"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </t>
+                </div>
+
+            </t>
+        </template>
+
+
+        <template id="stock_consolidated_temp_id">
+            <t t-call="web.html_container">
+                <!-- <t t-call="report.external_layout"> -->
+                <t t-call="inventory_material_report.stock_consolidated_header_footer_id"/>
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <style>
+                            /* Custom CSS */
+                            table {
+                            border-collapse: collapse;
+                            width: 100%;
+                            margin-bottom: 20px;
+                            font-size:10pt; font-family: 'Times New Roman'
+                            }
+                            th, td {
+                            padding: 8px;
+                            text-align: left;
+                            border: 1px solid #ddd;
+                            font-size:10pt; font-family: 'Times New Roman'
+                            }
+                            th {
+                            background-color: #f2f2f2;
+                            font-size:10pt; font-family: 'Times New Roman'
+                            }
+
+                        </style>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="background-color: white; ">Date.
+                                        <t t-esc="o.date_done.date()"/>
+                                    </th>
+                                    <th style="text-align:right;background-color: white;">Reference No .
+                                        <t t-esc="o.origin"/>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                        </table>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ser.Nor#</th>
+                                    <th>Item Description</th>
+                                    <th>Opening Balance</th>
+                                    <th>Issued Qty</th>
+                                    <th>Receiving Qty</th>
+                                    <th>Balance Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="ser" t-value="0"/>
+                                <t t-foreach="o.move_ids_without_package" t-as="line">
+                                    <t t-set="ser" t-value="ser+1"/>
+                                    <tr>
+                                        <td>
+                                            <t t-esc="ser"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line.product_id.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-if="o.state == 'done'">
+                                                <t t-esc="line.product_id.qty_available - line.quantity_done"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-esc="line.quantity_done"/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            Issue
+                                        </td>
+                                        <td>
+                                            <t t-esc="line.quantity_done"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="(line.product_id.qty_available - line.quantity_done) + line.quantity_done "/>
+                                        </td>
+                                    </tr>
+                                </t>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>
