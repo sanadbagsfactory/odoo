@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_section2b_id,access_section2b_name,model_section2b_inspection,base.group_user,1,1,1,1
+access_section2c_id,access_section2c_name,model_section2c_inspection,base.group_user,1,1,1,1
+access_section2d_id,access_section2d_name,model_section2d_inspection,base.group_user,1,1,1,1
