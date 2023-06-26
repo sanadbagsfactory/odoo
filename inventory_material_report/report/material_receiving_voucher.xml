@@ -225,7 +225,9 @@
                                 <thead>
                                     <tr>
                                         <th style="background-color: white; ">Date.
-                                            <t t-esc="o.date_done.date()"/>
+                                            <t t-if="o.date_done">
+                                                <t t-esc="o.date_done.date()"/>
+                                            </t>
                                         </th>
                                         <th style="text-align:right;background-color: white;">Reference No .
                                             <t t-esc="o.origin"/>
@@ -238,18 +240,24 @@
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td><strong>MRV Type</strong></td>
-                                        <td><t t-if="o.origin">
-                                            Received from Vendor
-                                        </t></td>
+                                        <td>
+                                            <strong>MRV Type</strong>
+                                        </td>
+                                        <td>
+                                            <t t-if="o.origin">
+                                                Received from Vendor
+                                            </t>
+                                        </td>
                                         <td>
                                             <t t-if=" not o.origin">
-                                            Internal Transfer
+                                                Internal Transfer
                                             </t>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Sender</strong></td>
+                                        <td>
+                                            <strong>Sender</strong>
+                                        </td>
                                         <td>
                                             <t t-esc="o.partner_id.name"/>
                                         </td>
@@ -263,10 +271,14 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Reference</strong></td>
-                                        <td><t t-if="o.origin">
-                                            <t t-esc="o.origin"/>
-                                        </t> </td>
+                                        <td>
+                                            <strong>Reference</strong>
+                                        </td>
+                                        <td>
+                                            <t t-if="o.origin">
+                                                <t t-esc="o.origin"/>
+                                            </t>
+                                        </td>
                                         <td>Internal Transfer
                                         </td>
                                     </tr>
