@@ -34,7 +34,7 @@
                                class="table-borderless">
                             <tr>
                                 <td width="10%"
-                                    style="border-bottom:1px solid black;border-collapse: collapse; padding-top: 2px;">
+                                    style="border-bottom:1px solid black;color:black;border-collapse: collapse; padding-top: 2px;">
                                     <span>Title:</span>
                                 </td>
                                 <td width="57%"
@@ -48,10 +48,10 @@
                                     <span>Number:</span>
                                 </td>
                                 <td width="18%"
-                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align:right; padding-top: 2px;">
-                                    <!--<t t-if="doc.doc_no">
+                                    style="border-bottom:1px solid black;border-collapse: collapse; color:black; text-align:right; padding-top: 2px;">
+                                    <t t-if="doc.doc_no">
                                         <t t-esc="doc.doc_no"/>
-                                    </t>-->
+                                    </t>
                                 </td>
                             </tr>
 
@@ -61,11 +61,10 @@
                                 </td>
                                 <td width="57%"
                                     style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
-                                    <span><t t-esc="document_type"/></span>
-                                    <!-- <t t-if="doc.doc_no">
+                                    <t t-if="doc.doc_no">
                                         <t t-esc="doc.document_type==4"/>
                                         <span>Forms</span>
-                                    </t>-->
+                                    </t>
                                 </td>
                                 <td width="2%">&#160;&#160;</td>
                                 <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
@@ -73,12 +72,11 @@
                                 </td>
                                 <td width="18%"
                                     style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
-                                    <span><t t-esc="approved_on"/></span>
-                                    <!--<t t-if="doc.approved_on">
+                                    <t t-if="doc.approved_on">
                                         <span>
                                             <t t-esc="doc.approved_on"/>
                                         </span>
-                                    </t>-->
+                                    </t>
                                 </td>
                             </tr>
 
@@ -88,10 +86,9 @@
                                 </td>
                                 <td width="57%"
                                     style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
-                                    <span><t t-esc="department_type"/></span>
-                                    <!--<t t-if="doc.department_type == 'whu'">
+                                    <t t-if="doc.department_type == 'whu'">
                                         <span>Warehousing</span>
-                                    </t>-->
+                                    </t>
                                 </td>
                                 <td width="2%">&#160;&#160;</td>
                                 <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
@@ -99,12 +96,11 @@
                                 </td>
                                 <td width="18%"
                                     style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
-                                    <span><t t-esc="revision"/></span>
-                                    <!--<t t-if="doc.revision">
+                                    <t t-if="doc.revision">
                                         <span>
                                             <t t-esc="doc.revision"/>
                                         </span>
-                                    </t>-->
+                                    </t>
                                 </td>
                             </tr>
 
@@ -113,12 +109,11 @@
                                     <span>Note:</span>
                                 </td>
                                 <td width="57%" style="text-align:right; padding-top: 2px;">
-                                    <t t-esc="notes"/>
-                                    <!--<t t-if="doc.notes">
+                                    <t t-if="doc.notes">
                                         <span>
                                             <t t-esc="doc.notes"/>
                                         </span>
-                                    </t>-->
+                                    </t>
                                 </td>
                                 <td width="2%">&#160;&#160;</td>
                                 <td width="13%" style="padding-top: 2px;">
