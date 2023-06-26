@@ -9,8 +9,8 @@
             <field name="report_type">qweb-pdf</field>
              <field name="binding_model_id" ref="model_stock_picking"/>
             <field name="binding_type">report</field>
-            <field name="report_name">inventory_material_report.material_receiving_voucher_temp_id</field>
-            <field name="report_file">inventory_material_report.material_receiving_voucher_temp_id</field>
+            <field name="report_name">inventory_material_report.voucher_temp_id</field>
+            <field name="report_file">inventory_material_report.voucher_temp_id</field>
         </record>
 
         <!--raw material rejection report action-->

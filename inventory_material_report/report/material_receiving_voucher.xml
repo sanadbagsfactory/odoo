@@ -27,7 +27,8 @@
                     <span height="92px" width="2.5%" style="margin:5px; padding-top:30px;">
                         <div style="border-left:1px solid black;border-collapse: collapse; height:92px;"/>
                     </span>
-                    <t t-foreach="request.env['department.document.type'].search([('department_type', '=', 'whu'),('document_type', '=', '4')])"
+
+                    <t t-foreach="document_type"
                        t-as="doc">
                         <table style="height:92px; width:79.5%; font-family: 'Times New Roman' !important;"
                                class="table-borderless">
@@ -193,7 +194,7 @@
                 </table>
             </div>
         </template>
-        <template id="material_receiving_voucher_temp_id">
+        <template id="voucher_temp_id">
             <t t-call="web.html_container">
                 <t t-call="inventory_material_report.material_receiving_header_footer_id"/>
                 <t t-foreach="docs" t-as="o">
