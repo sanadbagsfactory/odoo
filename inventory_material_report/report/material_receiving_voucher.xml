@@ -28,7 +28,7 @@
                         <div style="border-left:1px solid black;border-collapse: collapse; height:92px;"/>
                     </span>
 
-                    <t t-foreach="request.env['department.document.type'].search([('department_type', '=', 'whu'),('document_type', '=', '4')])"
+                    <t t-foreach="request.env['department.document.type'].search([('department_type', '=', 'whu'),('doc_short_form', '=', '4')])"
                        t-as="doc">
                         <table style="height:92px; width:79.5%; font-family: 'Times New Roman' !important;"
                                class="table-borderless">
