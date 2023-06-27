@@ -123,7 +123,10 @@
                                 </td>
                                 <td width="2%">&#160;&#160;</td>
                                 <td width="13%" style="padding-top: 2px;">
-                                    <span>Page:</span>
+                                    <div>
+                                        <span>Page:</span>
+                                    </div>
+
                                 </td>
                                 <td width="18%" style="text-align:right; padding-top: 2px;">
                                     <div>
