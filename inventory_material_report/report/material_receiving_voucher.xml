@@ -34,7 +34,7 @@
                                class="table-borderless">
                             <tr>
                                 <td width="10%"
-                                    style="border-bottom:1px solid black;background-color:black;border-collapse: collapse; padding-top: 2px;">
+                                    style="border-bottom:1px solid black;background-color:black;color:white;border-collapse: collapse; padding-top: 2px;">
                                     <span>Title:</span>
                                 </td>
                                 <td width="57%"
