@@ -122,11 +122,16 @@
                                     </t>-->
                                 </td>
                                 <td width="2%">&#160;&#160;</td>
-                                <td width="13%" style="padding-top: 2px;">
+                                <!--<td width="13%" style="padding-top: 2px;">
                                     <div>
                                         <span>Page:</span>
                                     </div>
 
+                                </td>-->
+                                <td width="13%" style="text-align:right; padding-top: 2px;">
+                                    <div>
+                                        Page
+                                    </div>
                                 </td>
                                 <td width="18%" style="text-align:right; padding-top: 2px;">
                                     <div>
