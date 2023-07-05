@@ -32,7 +32,7 @@
 <!--                       t-as="doc">-->
                     <table class="table">
                         <tr>
-                            <td>This is testing</td>
+                            <td style="font-size:40px">This is testing</td>
                         </tr>
                     </table>
                         <!--<table style="height:92px; width:79.5%; font-family: 'Times New Roman' !important;"
