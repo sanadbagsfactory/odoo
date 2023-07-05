@@ -137,88 +137,100 @@
         <template id="stock_consolidated_temp_id">
             <t t-call="web.html_container">
                 <!-- <t t-call="report.external_layout"> -->
-                <t t-call="inventory_material_report.stock_consolidated_header_footer_id"/>
                 <t t-foreach="docs" t-as="o">
-                    <div class="page">
-                        <style>
-                            /* Custom CSS */
-                            table {
-                            border-collapse: collapse;
-                            width: 100%;
-                            margin-bottom: 20px;
-                            font-size:10pt; font-family: 'Times New Roman'
-                            }
-                            th, td {
-                            padding: 8px;
-                            text-align: left;
-                            border: 1px solid #ddd;
-                            font-size:10pt; font-family: 'Times New Roman'
-                            }
-                            th {
-                            background-color: #f2f2f2;
-                            font-size:10pt; font-family: 'Times New Roman'
-                            }
+                    <div t-attf-class="article o_report_layout_standard o_company_#{o.id}_layout"
+                         t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+                         t-att-data-oe-lang="o and o.env.context.get('lang')">
+                        <t t-call="inventory_material_report.stock_consolidated_header_footer_id"/>
+                        <t t-foreach="docs" t-as="o">
+                            <div class="page">
+                                <style>
+                                    /* Custom CSS */
+                                    table {
+                                    border-collapse: collapse;
+                                    width: 100%;
+                                    margin-bottom: 20px;
+                                    font-size:10pt; font-family: 'Times New Roman'
+                                    }
+                                    th, td {
+                                    padding: 8px;
+                                    text-align: left;
+                                    border: 1px solid #ddd;
+                                    font-size:10pt; font-family: 'Times New Roman'
+                                    }
+                                    th {
+                                    background-color: #f2f2f2;
+                                    font-size:10pt; font-family: 'Times New Roman'
+                                    }
 
-                        </style>
+                                </style>
 
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="background-color: white; ">Date.
-                                        <t t-esc="o.date_done.date()"/>
-                                    </th>
-                                    <th style="text-align:right;background-color: white;">Reference No .
-                                        <t t-esc="o.origin"/>
-                                    </th>
-                                </tr>
-                            </thead>
+                                <div class="row">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="background-color: white; ">Date.
+                                                    <t t-if="o.date_done">
+                                                    <t t-esc="o.date_done.date()"/>
+                                                    </t>
+                                                </th>
+                                                <th style="text-align:right;background-color: white;">Reference No .
+                                                    <t t-esc="o.origin"/>
+                                                </th>
+                                            </tr>
+                                        </thead>
 
-                        </table>
+                                    </table>
+                                </div>
 
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Ser.Nor#</th>
-                                    <th>Item Description</th>
-                                    <th>Opening Balance</th>
-                                    <th>Issued Qty</th>
-                                    <th>Receiving Qty</th>
-                                    <th>Balance Qty</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-set="ser" t-value="0"/>
-                                <t t-foreach="o.move_ids_without_package" t-as="line">
-                                    <t t-set="ser" t-value="ser+1"/>
-                                    <tr>
-                                        <td>
-                                            <t t-esc="ser"/>
-                                        </td>
-                                        <td>
-                                            <t t-esc="line.product_id.name"/>
-                                        </td>
-                                        <td>
-                                            <t t-if="o.state == 'done'">
-                                                <t t-esc="line.product_id.qty_available - line.quantity_done"/>
+                                <div class="row">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Ser.Nor#</th>
+                                                <th>Item Description</th>
+                                                <th>Opening Balance</th>
+                                                <th>Issued Qty</th>
+                                                <th>Receiving Qty</th>
+                                                <th>Balance Qty</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-set="ser" t-value="0"/>
+                                            <t t-foreach="o.move_ids_without_package" t-as="line">
+                                                <t t-set="ser" t-value="ser+1"/>
+                                                <tr>
+                                                    <td>
+                                                        <t t-esc="ser"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="line.product_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="o.state == 'done'">
+                                                            <t t-esc="line.product_id.qty_available - line.quantity_done"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <t t-esc="line.quantity_done"/>
+                                                        </t>
+                                                    </td>
+                                                    <td>
+                                                        Issue
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="line.quantity_done"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="(line.product_id.qty_available - line.quantity_done) + line.quantity_done "/>
+                                                    </td>
+                                                </tr>
                                             </t>
-                                            <t t-else="">
-                                                <t t-esc="line.quantity_done"/>
-                                            </t>
-                                        </td>
-                                        <td>
-                                            Issue
-                                        </td>
-                                        <td>
-                                            <t t-esc="line.quantity_done"/>
-                                        </td>
-                                        <td>
-                                            <t t-esc="(line.product_id.qty_available - line.quantity_done) + line.quantity_done "/>
-                                        </td>
-                                    </tr>
-                                </t>
 
-                            </tbody>
-                        </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
                     </div>
                 </t>
             </t>

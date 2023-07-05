@@ -28,121 +28,121 @@
                         <div style="border-left:1px solid black;border-collapse: collapse; height:92px;"/>
                     </span>
 
-<!--                    <t t-foreach="request.env['department.document.type'].search([('department_type', '=', 'whu'),('document_type', '=', 4)])"-->
-<!--                       t-as="doc">-->
-                        <table style="height:92px; width:79.5%; font-family: 'Times New Roman' !important;"
-                               class="table-borderless">
-                            <tr>
-                                <td width="10%"
-                                    style="border-bottom:1px solid black;border-collapse: collapse;">
-                                    <span style="color:black;">Title:</span>
-                                </td>
-                                <td width="57%"
-                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align:right; padding-top: 2px;">
-                                    <span>Request for Quotation</span>
+                    <!--                    <t t-foreach="request.env['department.document.type'].search([('department_type', '=', 'whu'),('document_type', '=', 4)])"-->
+                    <!--                       t-as="doc">-->
+                    <table style="height:92px; width:79.5%; font-family: 'Times New Roman' !important;"
+                           class="table-borderless">
+                        <tr>
+                            <td width="10%"
+                                style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span style="color:black;">Title:</span>
+                            </td>
+                            <td width="57%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align:right; padding-top: 2px;">
+                                <span>Request for Quotation</span>
 
-                                </td>
-                                <td width="2%">&#160;&#160;</td>
-                                <td width="13%"
-                                    style="border-bottom:1px solid black;border-collapse: collapse; padding-top: 2px;">
-                                    <span>Number:</span>
-                                </td>
-                                <td width="18%"
-                                    style="border-bottom:1px solid black;border-collapse: collapse; color:black; text-align:right; padding-top: 2px;">
-                                    <t t-esc="doc_no"/>
-                                    <!--<t t-if="doc.doc_no">
-                                        <t t-esc="doc.doc_no"/>
-                                    </t>-->
-                                </td>
-                            </tr>
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <td width="13%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; padding-top: 2px;">
+                                <span>Number:</span>
+                            </td>
+                            <td width="18%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; color:black; text-align:right; padding-top: 2px;">
+                                <t t-esc="doc_no"/>
+                                <!--<t t-if="doc.doc_no">
+                                    <t t-esc="doc.doc_no"/>
+                                </t>-->
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <td width="10%" style="border-bottom:1px solid black;border-collapse: collapse;">
-                                    <span>Type:</span>
-                                </td>
-                                <td width="57%"
-                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
-                                    <t t-esc="document_type"/>
-                                    <!--<t t-if="doc.doc_no">
-                                        <t t-esc="doc.document_type==4"/>
-                                        <span>Forms</span>
-                                    </t>-->
-                                </td>
-                                <td width="2%">&#160;&#160;</td>
-                                <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
-                                    <span>Approved on:</span>
-                                </td>
-                                <td width="18%"
-                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
-                                   <t t-esc="approved_on"/>
-                                    <!-- <t t-if="doc.approved_on">
-                                        <span>
-                                            <t t-esc="doc.approved_on"/>
-                                        </span>
-                                    </t>-->
-                                </td>
-                            </tr>
+                        <tr>
+                            <td width="10%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Type:</span>
+                            </td>
+                            <td width="57%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
+                                <t t-esc="document_type"/>
+                                <!--<t t-if="doc.doc_no">
+                                    <t t-esc="doc.document_type==4"/>
+                                    <span>Forms</span>
+                                </t>-->
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Approved on:</span>
+                            </td>
+                            <td width="18%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
+                                <t t-esc="approved_on"/>
+                                <!-- <t t-if="doc.approved_on">
+                                    <span>
+                                        <t t-esc="doc.approved_on"/>
+                                    </span>
+                                </t>-->
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <td width="10%" style="border-bottom:1px solid black;border-collapse: collapse;">
-                                    <span>Custodian:</span>
-                                </td>
-                                <td width="57%"
-                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
-                                    <t t-esc="department_type"/>
-                                    <!--<t t-if="doc.department_type == 'whu'">
-                                        <span>Warehousing</span>
-                                    </t>-->
-                                </td>
-                                <td width="2%">&#160;&#160;</td>
-                                <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
-                                    <span>Revision:</span>
-                                </td>
-                                <td width="18%"
-                                    style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
-                                    <t t-esc="revision"/>
-                                    <!--<t t-if="doc.revision">
-                                        <span>
-                                            <t t-esc="doc.revision"/>
-                                        </span>
-                                    </t>-->
-                                </td>
-                            </tr>
+                        <tr>
+                            <td width="10%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Custodian:</span>
+                            </td>
+                            <td width="57%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
+                                <t t-esc="department_type"/>
+                                <!--<t t-if="doc.department_type == 'whu'">
+                                    <span>Warehousing</span>
+                                </t>-->
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Revision:</span>
+                            </td>
+                            <td width="18%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
+                                <t t-esc="revision"/>
+                                <!--<t t-if="doc.revision">
+                                    <span>
+                                        <t t-esc="doc.revision"/>
+                                    </span>
+                                </t>-->
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <td width="10%" style="padding-top: 2px;">
-                                    <span>Note:</span>
-                                </td>
-                                <td width="57%" style="text-align:right; padding-top: 2px;">
-                                    <t t-esc="notes"/>
-                                    <!--<t t-if="doc.notes">
-                                        <span>
-                                            <t t-esc="doc.notes"/>
-                                        </span>
-                                    </t>-->
-                                </td>
-                                <td width="2%">&#160;&#160;</td>
-                                <!--<td width="13%" style="padding-top: 2px;">
-                                    <div>
-                                        <span>Page:</span>
-                                    </div>
+                        <tr>
+                            <td width="10%" style="padding-top: 2px;">
+                                <span>Note:</span>
+                            </td>
+                            <td width="57%" style="text-align:right; padding-top: 2px;">
+                                <t t-esc="notes"/>
+                                <!--<t t-if="doc.notes">
+                                    <span>
+                                        <t t-esc="doc.notes"/>
+                                    </span>
+                                </t>-->
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <!--<td width="13%" style="padding-top: 2px;">
+                                <div>
+                                    <span>Page:</span>
+                                </div>
 
-                                </td>-->
-                                <td width="13%" style="text-align:right; padding-top: 2px;">
-                                    <div>
-                                        Page
-                                    </div>
-                                </td>
-                                <td width="18%" style="text-align:right; padding-top: 2px;">
-                                    <div>
-                                        <span class="page"/>
-                                        /
-                                        <span class="topage"/>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-<!--                    </t>-->
+                            </td>-->
+                            <td width="13%" style="text-align:right; padding-top: 2px;">
+                                <div>
+                                    Page
+                                </div>
+                            </td>
+                            <td width="18%" style="text-align:right; padding-top: 2px;">
+                                <div>
+                                    <span class="page"/>
+                                    /
+                                    <span class="topage"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--                    </t>-->
                 </div>
                 <div class="footer">
                     <span style="color:red; font-size:11pt; font-family: 'Times New Roman' !important;">Electronically
@@ -215,216 +215,138 @@
                     <div t-attf-class="article o_report_layout_standard o_company_#{o.id}_layout"
                          t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
                          t-att-data-oe-lang="o and o.env.context.get('lang')">
-                         <t t-call="inventory_material_report.material_receiving_header_footer_id"/>
-                    <div class="page">
-                        <div class="row">
-                            <style>
-                                /* Custom CSS */
-                                table {
-                                border-collapse: collapse;
-                                width: 100%;
-                                margin-bottom: 20px;
-                                font-size:10pt; font-family: 'Times New Roman'
-                                }
-                                th, td {
-                                padding: 8px;
-                                text-align: left;
-                                border: 1px solid #ddd;
-                                font-size:10pt; font-family: 'Times New Roman'
-                                }
-                                th {
-                                background-color: #f2f2f2;
-                                font-size:10pt; font-family: 'Times New Roman'
-                                }
+                        <t t-call="inventory_material_report.material_receiving_header_footer_id"/>
+                        <div class="page">
+                            <div class="row">
+                                <style>
+                                    /* Custom CSS */
+                                    table {
+                                    border-collapse: collapse;
+                                    width: 100%;
+                                    margin-bottom: 20px;
+                                    font-size:10pt; font-family: 'Times New Roman'
+                                    }
+                                    th, td {
+                                    padding: 8px;
+                                    text-align: left;
+                                    border: 1px solid #ddd;
+                                    font-size:10pt; font-family: 'Times New Roman'
+                                    }
+                                    th {
+                                    background-color: #f2f2f2;
+                                    font-size:10pt; font-family: 'Times New Roman'
+                                    }
 
-                            </style>
+                                </style>
 
 
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th style="background-color: white; ">Date.
-                                            <t t-if="o.date_done">
-                                                <t t-esc="o.date_done.date()"/>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th style="background-color: white; ">Date.
+                                                        <t t-if="o.date_done">
+                                                            <t t-esc="o.date_done.date()"/>
+                                                        </t>
+                                                    </th>
+                                                    <th style="text-align:right;background-color: white;">Reference No .
+                                                        <t t-esc="o.origin"/>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <strong>MRV Type</strong>
+                                                </td>
+                                                <td>
+                                                    <t t-if="o.origin">
+                                                        Received from Vendor
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <t t-if=" not o.origin">
+                                                        Internal Transfer
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Sender</strong>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="o.partner_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <t t-foreach="request.env['department.document.type'].search([('department_type', '=', 'whu'),('document_type', '=', '4')])"
+                                                       t-as="doc">
+                                                        <t t-if="doc.department_type == 'whu'">
+                                                            Warehousing
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Reference</strong>
+                                                </td>
+                                                <td>
+                                                    <t t-if="o.origin">
+                                                        <t t-esc="o.origin"/>
+                                                    </t>
+                                                </td>
+                                                <td>Internal Transfer
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-12">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Item Description</th>
+                                                <th>Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-set="ser" t-value="0"/>
+                                            <t t-foreach="o.move_ids_without_package" t-as="line">
+                                                <t t-set="ser" t-value="ser+1"/>
+                                                <tr>
+                                                    <td>
+                                                        <t t-esc="ser"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="line.product_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="line.quantity_done"/>
+                                                    </td>
+                                                </tr>
                                             </t>
-                                        </th>
-                                        <th style="text-align:right;background-color: white;">Reference No .
-                                            <t t-esc="o.origin"/>
-                                        </th>
-                                    </tr>
-                                </thead>
 
-                            </table>
-
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <strong>MRV Type</strong>
-                                        </td>
-                                        <td>
-                                            <t t-if="o.origin">
-                                                Received from Vendor
-                                            </t>
-                                        </td>
-                                        <td>
-                                            <t t-if=" not o.origin">
-                                                Internal Transfer
-                                            </t>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Sender</strong>
-                                        </td>
-                                        <td>
-                                            <t t-esc="o.partner_id.name"/>
-                                        </td>
-                                        <td>
-                                            <t t-foreach="request.env['department.document.type'].search([('department_type', '=', 'whu'),('document_type', '=', '4')])"
-                                               t-as="doc">
-                                                <t t-if="doc.department_type == 'whu'">
-                                                    Warehousing
-                                                </t>
-                                            </t>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Reference</strong>
-                                        </td>
-                                        <td>
-                                            <t t-if="o.origin">
-                                                <t t-esc="o.origin"/>
-                                            </t>
-                                        </td>
-                                        <td>Internal Transfer
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Item Description</th>
-                                        <th>Quantity</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-set="ser" t-value="0"/>
-                                    <t t-foreach="o.move_ids_without_package" t-as="line">
-                                        <t t-set="ser" t-value="ser+1"/>
-                                        <tr>
-                                            <td>
-                                                <t t-esc="ser"/>
-                                            </td>
-                                            <td>
-                                                <t t-esc="line.product_id.name"/>
-                                            </td>
-                                            <td>
-                                                <t t-esc="line.quantity_done"/>
-                                            </td>
-                                        </tr>
-                                    </t>
-
-                                </tbody>
-                            </table>
-
-                            <!--<style>
-                                table {
-                                border-collapse: collapse;
-                                width: 100%;
-                                }
-                                th, td {
-                                border: 1px solid black;
-                                padding: 8px;
-                                text-align: left;
-                                font-size:10pt; font-family: 'Times New Roman'
-                                }
-                                th {
-                                background-color: #f2f2f2;
-                                }
-                                .row-span {
-                                vertical-align: middle;
-                                }
-                            </style>
-
-                            <table class="mt-1">
-                                <tr>
-                                    <th colspan="5">Section 1 - Expected Materials</th>
-                                    <th>Container. No</th>
-                                    <th><t t-esc="o.name"/> </th>
-                                </tr>
-                                <tr>
-                                    <th colspan="6">Section 2 (A) - Inspection</th>
-                                    <th>Quantitative</th>
-                                </tr>
-
-                                    <t t-foreach="o.move_ids_without_package" t-as="line">
-                                        <tr>
-                                            <td rowspan="2" class="row-span">Received Qty</td>
-                                            <td>1300-GSM</td>
-                                            <td>
-                                                <t t-if="line.product_id.gsm_type == '1300gsm'">
-                                                    <span t-field="line.quantity_done"/>
-                                                </t>
-                                                <t t-else="">0.0</t>
-                                            </td>
-                                            <td>950-GSM</td>
-                                            <td>
-                                                 <t t-if="line.product_id.gsm_type == '950gsm'">
-                                                    <span t-field="line.quantity_done"/>
-                                                </t>
-                                                <t t-else="">0.0</t>
-                                            </td>
-                                            <td>700-GSM</td>
-                                            <td>
-                                                 <t t-if="line.product_id.gsm_type == '700gsm'">
-                                                    <span t-field="line.quantity_done"/>
-                                                </t>
-                                                <t t-else="">0.0</t>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Fabric Color</td>
-                                            <td>
-                                                 <t t-if="line.product_id.categ_id.name == 'blue'">
-                                                    <span t-field="line.quantity_done"/>
-                                                </t>
-                                                <t t-else="">0.0</t>
-                                            </td>
-                                            <td>Wire</td>
-                                            <td>
-                                                 <t t-if="line.product_id.categ_id.name == 'Wire'">
-                                                    <span t-field="line.quantity_done"/>
-                                                </t>
-                                                <t t-else="">0.0</t>
-                                            </td>
-                                            <td>Thread</td>
-                                            <td>
-                                                 <t t-if="line.product_id.categ_id.name == 'Thread'">
-                                                    <span t-field="line.quantity_done"/>
-                                                </t>
-                                                <t t-else="">0.0</t>
-                                            </td>
-                                        </tr>
-
-                                </t>
-                                <tr>
-                                    <td>Documents</td>
-                                    <td>Check</td>
-                                    <td colspan="2">Fabric Lab Certificate *</td>
-                                    <td>Check</td>
-                                    <td colspan="2">Wire Mill Certificate **</td>
-                                </tr>
-
-                            </table>-->
-
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </t>
             </t>
