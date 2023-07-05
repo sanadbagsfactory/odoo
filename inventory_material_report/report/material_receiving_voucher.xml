@@ -30,10 +30,7 @@
 
 <!--                    <t t-foreach="request.env['department.document.type'].search([('department_type', '=', 'whu'),('document_type', '=', 4)])"-->
 <!--                       t-as="doc">-->
-                        <div class="row">
-                            <h1>This is testing</h1>
-                        </div>
-                        <!--<table style="height:92px; width:79.5%; font-family: 'Times New Roman' !important;"
+                        <table style="height:92px; width:79.5%; font-family: 'Times New Roman' !important;"
                                class="table-borderless">
                             <tr>
                                 <td width="10%"
@@ -53,9 +50,9 @@
                                 <td width="18%"
                                     style="border-bottom:1px solid black;border-collapse: collapse; color:black; text-align:right; padding-top: 2px;">
                                     <t t-esc="doc_no"/>
-                                    &lt;!&ndash;<t t-if="doc.doc_no">
+                                    <!--<t t-if="doc.doc_no">
                                         <t t-esc="doc.doc_no"/>
-                                    </t>&ndash;&gt;
+                                    </t>-->
                                 </td>
                             </tr>
 
@@ -66,10 +63,10 @@
                                 <td width="57%"
                                     style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
                                     <t t-esc="document_type"/>
-                                    &lt;!&ndash;<t t-if="doc.doc_no">
+                                    <!--<t t-if="doc.doc_no">
                                         <t t-esc="doc.document_type==4"/>
                                         <span>Forms</span>
-                                    </t>&ndash;&gt;
+                                    </t>-->
                                 </td>
                                 <td width="2%">&#160;&#160;</td>
                                 <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
@@ -78,11 +75,11 @@
                                 <td width="18%"
                                     style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
                                    <t t-esc="approved_on"/>
-                                    &lt;!&ndash; <t t-if="doc.approved_on">
+                                    <!-- <t t-if="doc.approved_on">
                                         <span>
                                             <t t-esc="doc.approved_on"/>
                                         </span>
-                                    </t>&ndash;&gt;
+                                    </t>-->
                                 </td>
                             </tr>
 
@@ -93,9 +90,9 @@
                                 <td width="57%"
                                     style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
                                     <t t-esc="department_type"/>
-                                    &lt;!&ndash;<t t-if="doc.department_type == 'whu'">
+                                    <!--<t t-if="doc.department_type == 'whu'">
                                         <span>Warehousing</span>
-                                    </t>&ndash;&gt;
+                                    </t>-->
                                 </td>
                                 <td width="2%">&#160;&#160;</td>
                                 <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
@@ -104,11 +101,11 @@
                                 <td width="18%"
                                     style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
                                     <t t-esc="revision"/>
-                                    &lt;!&ndash;<t t-if="doc.revision">
+                                    <!--<t t-if="doc.revision">
                                         <span>
                                             <t t-esc="doc.revision"/>
                                         </span>
-                                    </t>&ndash;&gt;
+                                    </t>-->
                                 </td>
                             </tr>
 
@@ -118,19 +115,19 @@
                                 </td>
                                 <td width="57%" style="text-align:right; padding-top: 2px;">
                                     <t t-esc="notes"/>
-                                    &lt;!&ndash;<t t-if="doc.notes">
+                                    <!--<t t-if="doc.notes">
                                         <span>
                                             <t t-esc="doc.notes"/>
                                         </span>
-                                    </t>&ndash;&gt;
+                                    </t>-->
                                 </td>
                                 <td width="2%">&#160;&#160;</td>
-                                &lt;!&ndash;<td width="13%" style="padding-top: 2px;">
+                                <!--<td width="13%" style="padding-top: 2px;">
                                     <div>
                                         <span>Page:</span>
                                     </div>
 
-                                </td>&ndash;&gt;
+                                </td>-->
                                 <td width="13%" style="text-align:right; padding-top: 2px;">
                                     <div>
                                         Page
@@ -144,7 +141,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        </table>-->
+                        </table>
 <!--                    </t>-->
                 </div>
                 <div class="footer">
@@ -213,8 +210,12 @@
         </template>
         <template id="voucher_temp_id">
             <t t-call="web.html_container">
-                <t t-call="inventory_material_report.material_receiving_header_footer_id"/>
+
                 <t t-foreach="docs" t-as="o">
+                    <div t-attf-class="article o_report_layout_standard o_company_#{o.id}_layout"
+                         t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+                         t-att-data-oe-lang="o and o.env.context.get('lang')">
+                         <t t-call="inventory_material_report.material_receiving_header_footer_id"/>
                     <div class="page">
                         <div class="row">
                             <style>
@@ -423,6 +424,7 @@
                             </table>-->
 
                         </div>
+                    </div>
                     </div>
                 </t>
             </t>
