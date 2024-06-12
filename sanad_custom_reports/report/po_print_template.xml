@@ -12,9 +12,9 @@
                         <div class="page"
                              style="margin:8px !important; font-family: 'Times New Roman' !important;  margin:0px 50px 0px 50px !important;">
                             <div class="oe_structure"/>
-                            <div class="oe_row">
-                                <div style="float:left;">
-                                    <table class="table table-borderless">
+<!--                            <div class="oe_row">-->
+<!--                                <div style="float:left;">-->
+                                    <table class="table table-borderless" width="100%">
                                         <tr>
                                             <td>
                                                 <t t-if="o.company_id">
@@ -47,17 +47,16 @@
                                                 <div t-field="o.partner_id"
                                                      t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
                                             </td>
-
                                         </tr>
                                     </table>
-                                </div>
-                                <div style="float:right;">
-                                    <img t-att-src="'/report/barcode/QR/'+o.name" style="height:150px; width:150px;"
-                                         alt="QR Code"/>
-                                </div>
-                            </div>
+<!--                                </div>-->
+<!--                                <div style="float:right;">-->
+<!--                                    <img t-att-src="'/report/barcode/QR/'+o.name" style="height:150px; width:150px;"-->
+<!--                                         alt="QR Code"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <div class="mt-4">
-                                <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Request for Quotation #
+                                <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Quotation #
                                     <span t-field="o.name"/>
                                 </h2>
                                 <h2 t-if="o.state in ['purchase', 'done']">Purchase Order #

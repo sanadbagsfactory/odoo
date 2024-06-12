@@ -33,13 +33,13 @@
     'live_test_url': 'https://youtu.be/lAT5cqVZTZI',
     'website': "https://www.openhrms.com",
     'depends': [
-        'base', 'hr_payroll', 'hr', 'account',
+        'base', 'hr_payroll_community', 'hr', 'account',
     ],
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
         'views/hr_loan_seq.xml',
-        # 'data/salary_rule_loan.xml',
+        'data/salary_rule_loan.xml',
         'views/hr_loan.xml',
         'views/hr_payroll.xml',
     ],

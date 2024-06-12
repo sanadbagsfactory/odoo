@@ -1,0 +1,55 @@
+<odoo>
+  <data>
+    <!-- Inherit Form View to Modify it -->
+    <record id="quality_form_inherit_id" model="ir.ui.view">
+        <field name="name">Quality Form</field>
+        <field name="model">quality.point</field>
+        <field name="inherit_id" ref="quality.quality_point_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//page[@name='instructions']" position="after">
+                <page string="Section 2B Inspection" name="section2b_inspection">
+                    <field name="section2b_id">
+                        <tree>
+                            <field name="product_id"/>
+                            <field name="gsm_type"/>
+                            <field name="sepecification"/>
+                            <field name="actual"/>
+                            <field name="accepted"/>
+                            <field name="rejected"/>
+                            <field name="reference"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="Section 2C Inspection" name="section2c_inspection">
+                    <field name="section2d_id">
+                        <tree>
+                            <field name="product_id"/>
+                            <field name="gsm_type"/>
+                            <field name="sepecification"/>
+                            <field name="actual"/>
+                            <field name="accepted"/>
+                            <field name="rejected"/>
+                            <field name="reference"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="Section 2D Inspection" name="section2d_inspection">
+                    <field name="section2d_id">
+                        <tree>
+                            <field name="product_id"/>
+                            <field name="gsm_type"/>
+                            <field name="sepecification"/>
+                            <field name="actual"/>
+                            <field name="accepted"/>
+                            <field name="rejected"/>
+                            <field name="reference"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+  </data>
+</odoo>

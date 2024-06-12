@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--raw material inspection header and footer-->
+        <template id="expected_qty_report_header_footer_id">
+           <t t-set="company" t-value="user.company_id"/>
+            <t t-foreach="docs" t-as="o">
+                <div class="header first-page row"
+                     style="width:98%; border-top: 1px solid black;border-bottom: 1px solid black;border-collapse: collapse; margin:8px !important; font-size:10pt; font-family: 'Times New Roman' !important; padding: 5px 0px 5px 0px;">
+                    <table style="text-align:center; width:18%;" class="table-borderless">
+                        <tr>
+                            <td style="padding: 6px 0px 11px 0px;">
+                                <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)"
+                                     alt="Logo" height="50px" width="90px"/>
+                                <br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-top:1px solid black; border-collapse: collapse; padding: 2px 0px 2px 0px;">
+                                <span>
+                                    Sanad Bags Co. Factory
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                    <span height="92px" width="2.5%" style="margin:5px; padding-top:30px;">
+                        <div style="border-left:1px solid black;border-collapse: collapse; height:92px;"/>
+                    </span>
+                    <t t-foreach="request.env['department.document.type'].search([('department_type', '=', 'whu'),('document_type', '=', '4')])" t-as="doc">
+                    <table style="height:92px; width:79.5%; font-family: 'Times New Roman' !important;"
+                           class="table-borderless">
+                        <tr>
+                            <td width="10%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; padding-top: 2px;">
+                                <span>Title:</span>
+                            </td>
+                            <td width="57%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align:right; padding-top: 2px;">
+                                <span>Request for Quotation</span>
+
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <td width="13%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; padding-top: 2px;">
+                                <span>Number:</span>
+                            </td>
+                            <td width="18%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align:right; padding-top: 2px;">
+                                <t t-if="doc.doc_no">
+                                    <t t-esc="doc.doc_no"/>
+                                </t>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="10%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Type:</span>
+                            </td>
+                            <td width="57%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
+                                <t t-if="doc.doc_no">
+                                    <t t-esc="doc.document_type==4"/>
+                                    <span>Forms</span>
+                                </t>
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Approved on:</span>
+                            </td>
+                            <td width="18%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align:right;">
+                                <t t-if="doc.approved_on">
+                                    <span><t t-esc="doc.approved_on"/> </span>
+                                </t>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="10%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Custodian:</span>
+                            </td>
+                            <td width="57%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
+                                <t t-if="doc.department_type == 'whu'">
+                                    <span>Warehousing </span>
+                                </t>
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <td width="13%" style="border-bottom:1px solid black;border-collapse: collapse;">
+                                <span>Revision:</span>
+                            </td>
+                            <td width="18%"
+                                style="border-bottom:1px solid black;border-collapse: collapse; text-align: right;">
+                                <t t-if="doc.revision">
+                                    <span><t t-esc="doc.revision"/> </span>
+                                </t>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="10%" style="padding-top: 2px;">
+                                <span>Note:</span>
+                            </td>
+                            <td width="57%" style="text-align:right; padding-top: 2px;">
+                                <t t-if="doc.notes">
+                                    <span><t t-esc="doc.notes"/> </span>
+                                </t>
+                            </td>
+                            <td width="2%">&#160;&#160;</td>
+                            <td width="13%" style="padding-top: 2px;">
+                                <span>Page:</span>
+                            </td>
+                            <td width="18%" style="text-align:right; padding-top: 2px;">
+                                <div>
+                                    <span class="page"/>
+                                    /
+                                    <span class="topage"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    </t>
+                </div>
+                <div class="footer">
+                    <span style="color:red; font-size:11pt; font-family: 'Times New Roman' !important;">Electronically
+                        produced
+                        document, thus, doesn't require a signature or
+                        stamp.
+                    </span>
+                    <br/>
+                    <br/>
+                    <div class="text-left"
+                         style="border-top: 1px solid black; border-bottom: 1px solid black;border-collapse: collapse; font-size:11pt; font-family: 'Times New Roman' !important;">
+                        <p style="padding: 10px 0px 0px 0px;">
+                            This document may contain proprietary and confidential information of Sanad Bags Co. Factory
+                            and
+                            may not be exploited, used, copied, duplicated or reproduced in any form or medium without
+                            the
+                            prior permission of management.
+                        </p>
+                    </div>
+                    <table style="width:100%; font-size:10.5pt; font-family: 'Times New Roman' !important;"
+                           class="table-borderless">
+                        <tr>
+                            <td style="text-align:left;">Printed on:
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M:%S')"/>
+                            </td>
+                            <td style="text-align:right;">Printed by:
+                                <span t-field="o.env.user.id"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </template>
+        <template id="footer_id">
+            <div class="footer">
+                    <span style="color:red; font-size:11pt; font-family: 'Times New Roman' !important;">Electronically
+                        produced
+                        document, thus, doesn't require a signature or
+                        stamp.
+                    </span>
+                    <br/>
+                    <br/>
+                    <div class="text-left"
+                         style="border-top: 1px solid black; border-bottom: 1px solid black;border-collapse: collapse; font-size:11pt; font-family: 'Times New Roman' !important;">
+                        <p style="padding: 10px 0px 0px 0px;">
+                            This document may contain proprietary and confidential information of Sanad Bags Co. Factory
+                            and
+                            may not be exploited, used, copied, duplicated or reproduced in any form or medium without
+                            the
+                            prior permission of management.
+                        </p>
+                    </div>
+                    <table style="width:100%; font-size:10.5pt; font-family: 'Times New Roman' !important;"
+                           class="table-borderless">
+                        <tr>
+                            <td style="text-align:left;">Printed on:
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M:%S')"/>
+                            </td>
+                            <td style="text-align:right;">Printed by:
+                                <span t-field="o.env.user.id"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+        </template>
+        <template id="expected_qty_report_temp_id">
+            <t t-call="web.html_container">
+                <t t-call="sanad_expectedquantity_report.expected_qty_report_header_footer_id"/>
+                <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3 style="text-align:center;font-size:15px;font-size:10pt; font-family: 'Times New Roman'">Raw Material Inspection</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <table width="100%">
+                            <tr>
+                                <td width="50%">Date</td>
+                                <td width="50%" style="text-align:right">Reference</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <style>
+                            table {
+                            border-collapse: collapse;
+                            width: 100%;
+                            }
+                            th, td {
+                            border: 1px solid black;
+                            padding: 8px;
+                            text-align: left;
+                            font-size:10pt; font-family: 'Times New Roman'
+                            }
+                            th {
+                            background-color: #f2f2f2;
+                            }
+                            .row-span {
+                            vertical-align: middle;
+                            }
+                        </style>
+
+                        <table class="mt-1">
+                            <tr>
+                                <th colspan="5">Product</th>
+                                <th>PO. No</th>
+                                <th><t t-esc="o.name"/> </th>
+                            </tr>
+                            <tr>
+                                <th colspan="6">Expected Material</th>
+                                <th>Quantitative</th>
+                            </tr>
+
+                                <t t-foreach="o.order_line" t-as="line">
+                                    <tr>
+                                        <td rowspan="2" class="row-span">Expected Qty</td>
+                                        <td>1300-GSM</td>
+                                        <td>
+                                            <t t-if="line.product_id.gsm_type == '1300gsm'">
+                                                <span t-field="line.product_qty"/>
+                                            </t>
+                                            <t t-else="">0.0</t>
+                                        </td>
+                                        <td>950-GSM</td>
+                                        <td>
+                                             <t t-if="line.product_id.gsm_type == '950gsm'">
+                                                <span t-field="line.product_qty"/>
+                                            </t>
+                                            <t t-else="">0.0</t>
+                                        </td>
+                                        <td>700-GSM</td>
+                                        <td>
+                                             <t t-if="line.product_id.gsm_type == '700gsm'">
+                                                <span t-field="line.product_qty"/>
+                                            </t>
+                                            <t t-else="">0.0</t>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fabric Color</td>
+                                        <td>
+                                             <t t-if="line.product_id.categ_id.name == 'blue'">
+                                                <span t-field="line.product_qty"/>
+                                            </t>
+                                            <t t-else="">0.0</t>
+                                        </td>
+                                        <td>Wire</td>
+                                        <td>
+                                             <t t-if="line.product_id.categ_id.name == 'Wire'">
+                                                <span t-field="line.product_qty"/>
+                                            </t>
+                                            <t t-else="">0.0</t>
+                                        </td>
+                                        <td>Thread</td>
+                                        <td>
+                                             <t t-if="line.product_id.categ_id.name == 'Thread'">
+                                                <span t-field="line.product_qty"/>
+                                            </t>
+                                            <t t-else="">0.0</t>
+                                        </td>
+                                    </tr>
+                                </t>
+
+                            <tr>
+                                <td>Documents</td>
+                                <td>Check</td>
+                                <td colspan="2">Fabric Lab Certificate *</td>
+                                <td>Check</td>
+                                <td colspan="2">Wire Mill Certificate **</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                </div>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

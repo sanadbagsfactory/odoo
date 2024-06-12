@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <data noupdate="1">
+        <record id="purchase_requisition_custom_rfq" model="ir.sequence">
+            <field name="name">Purchase Requisition RFQ</field>
+            <field name="code">purchase.requisition.rfq</field>
+            <field name="prefix">RFQ%(year)s</field>
+            <field name="padding">6</field>
+        </record>
+    </data>
+    </data>
+</odoo>
